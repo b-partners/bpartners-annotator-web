@@ -1,0 +1,6 @@
+.canvas_pick_point {
+    cursor: crosshair ;
+}
+.canvas_hover_point {
+    cursor: context-menu;
+}
