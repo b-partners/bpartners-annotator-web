@@ -41,6 +41,7 @@ export const bpTheme = createTheme({
           borderRadius: '2rem',
           boxShadow: 'none',
           paddingInline: '2rem',
+          textTransform: 'none',
         },
       },
     },

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { TopBarLayout } from '../common/components/layout';
-import { Home, JobList, TaskBoard } from '../pages';
+import { Home, JobList, Login, TaskBoard } from '../pages';
 import { jobsLoader } from './loaders';
 import { taskLoader } from './loaders/task-loader';
 
@@ -8,6 +8,10 @@ const AppRouter = createBrowserRouter([
   {
     path: '/',
     element: <Home />,
+  },
+  {
+    path: '/login',
+    element: <Login />,
   },
   {
     path: '/',

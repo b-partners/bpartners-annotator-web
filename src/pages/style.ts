@@ -1,4 +1,5 @@
 import { SxProps } from '@mui/material';
+import { CSSProperties } from 'react';
 
 export const home_container: SxProps = {
   height: '100vh',
@@ -24,3 +25,7 @@ export const job_list_list_container = {
   maxHeight: 400,
   paddingX: 1,
 };
+
+export const login_container = { ...job_list_container, height: '90vh' };
+export const login_card_content: SxProps = { width: { xs: 300, sm: 400, md: 450 }, height: 400, padding: 3 };
+export const login_button_container: CSSProperties = { textAlign: 'center', marginTop: '2rem' };
