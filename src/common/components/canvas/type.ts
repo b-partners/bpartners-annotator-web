@@ -1,5 +1,5 @@
-import { IAnnotation, IPoint, IPolygon } from '@/common/context';
-import { CanvasHandler, TMouseType } from '@/common/utils';
+import { IAnnotation, IPoint, IPolygon } from '../../context';
+import { CanvasHandler, TMouseType } from '../../utils';
 
 export interface ICanvasProps {
   draw: (ctx: CanvasRenderingContext2D) => {};

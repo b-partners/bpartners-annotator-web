@@ -1,6 +1,6 @@
-import { useCanvasAnnotationContext, useCanvasEditorContext } from '@/common/context';
 import { CropFree, Edit, ZoomIn, ZoomOut } from '@mui/icons-material';
 import { IconButton, Stack } from '@mui/material';
+import { useCanvasAnnotationContext, useCanvasEditorContext } from '../../context';
 
 export const CanvasAction = () => {
   const {

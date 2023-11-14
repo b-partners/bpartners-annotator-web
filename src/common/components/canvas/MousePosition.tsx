@@ -1,7 +1,7 @@
-import { getCanvasImageOffset } from '@/common/utils';
 import { Stack, Typography } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { getMousePositionInCanvas } from '.';
+import { getCanvasImageOffset } from '../../utils';
 
 interface IPositionProps {
   label: string;

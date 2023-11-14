@@ -1,4 +1,4 @@
-import { IAnnotation } from '@/common/context';
+import { IAnnotation } from '../../context';
 
 export interface ILabelItemProps {
   annotation: IAnnotation;

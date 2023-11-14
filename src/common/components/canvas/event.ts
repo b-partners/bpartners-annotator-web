@@ -1,6 +1,6 @@
-import { IAnnotation, IPoint, IPolygon } from '@/common/context';
-import { CanvasHandler, TMouseType, areOverlappingPoints } from '@/common/utils';
 import { IEventHandlerProps, IImageOffset, IPointInfo } from '.';
+import { IAnnotation, IPoint, IPolygon } from '../../context';
+import { CanvasHandler, TMouseType, areOverlappingPoints } from '../../utils';
 
 export const getMousePositionInCanvas = (event: MouseEvent, canvas: HTMLCanvasElement) => {
   const canvasRect = canvas.getBoundingClientRect();

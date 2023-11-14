@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
-import { jobsProvider, userTasksProvider } from '@/providers';
 import { Job, Task } from 'bpartners-annotator-react-client';
 import { useCallback, useEffect, useState } from 'react';
+import { jobsProvider, userTasksProvider } from '../../providers';
 import { cache } from '../utils';
 
 export const useGetTask = () => {

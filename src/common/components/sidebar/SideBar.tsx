@@ -1,9 +1,9 @@
-import { useCanvasAnnotationContext } from '@/common/context';
 import { Delete as DeleteIcon, Inbox } from '@mui/icons-material';
 import { Box, Divider, IconButton, List, ListItem, ListItemAvatar, ListSubheader, MenuItem, TextField, Typography } from '@mui/material';
 import { Label } from 'bpartners-annotator-react-client';
 import { ChangeEvent, FC, useRef } from 'react';
 import { IInputPickerProps, ILabelItemProps, useStyles } from '.';
+import { useCanvasAnnotationContext } from '../../context';
 
 const InputPicker: FC<IInputPickerProps> = ({ annotation }) => {
   const { noDisplay, colorContainer } = useStyles();

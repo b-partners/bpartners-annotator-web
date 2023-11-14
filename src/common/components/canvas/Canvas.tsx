@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { CanvasEditorProvider, IPolygon, useCanvasAnnotationContext } from '@/common/context';
-import { useCanvasScale, useCanvasSize, useImageCreation, useImageOffset } from '@/common/hooks';
-import { CanvasHandler, getColorFromMain } from '@/common/utils';
 import { Box, Stack } from '@mui/material';
 import { FC, useEffect, useMemo, useRef } from 'react';
 import { CANVAS_CONTAINER, CanvasAction, EventHandler, MousePosition } from '.';
+import { CanvasEditorProvider, IPolygon, useCanvasAnnotationContext } from '../../context';
+import { useCanvasScale, useCanvasSize, useImageCreation, useImageOffset } from '../../hooks';
+import { CanvasHandler, getColorFromMain } from '../../utils';
 import './style.css';
 
 export const Canvas: FC = ({}) => {
