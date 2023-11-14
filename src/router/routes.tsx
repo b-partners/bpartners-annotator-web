@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { TopBarLayout } from '../common/components/layout';
-import { Home, JobList } from '../pages';
+import { Home, JobList, TaskBoard } from '../pages';
 import { jobsLoader } from './loaders';
 
 const AppRouter = createBrowserRouter([
@@ -16,6 +16,10 @@ const AppRouter = createBrowserRouter([
         loader: jobsLoader,
         path: '/teams/:teamId/jobs',
         element: <JobList />,
+      },
+      {
+        path: '/teams/:teamId/jobs/:jobId/task/:taskId',
+        element: <TaskBoard />,
       },
     ],
   },
