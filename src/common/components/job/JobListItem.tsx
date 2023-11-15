@@ -20,8 +20,14 @@ export const JobListItem: FC<IJobListItem> = ({ job, teamId }) => {
             size='small'
             variant='outlined'
           />
-          <Chip avatar={<Avatar sx={{ background: blue[300] }}>10</Avatar>} color='info' label='Labelles' size='small' variant='outlined' />
-          <Chip avatar={<Avatar sx={{ background: yellow[300] }}>1</Avatar>} color='warning' label='Taches restantes' size='small' variant='outlined' />
+          <Chip avatar={<Avatar sx={{ background: blue[300] }}>{job.labels?.length}</Avatar>} color='info' label='Labelles' size='small' variant='outlined' />
+          <Chip
+            avatar={<Avatar sx={{ background: yellow[300] }}>{job.remaining_tasks}</Avatar>}
+            color='warning'
+            label='Taches restantes'
+            size='small'
+            variant='outlined'
+          />
         </Stack>
       </Stack>
       <Link href={link}>
