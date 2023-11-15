@@ -38,7 +38,7 @@ export const Sidebar = () => {
   const { annotations } = useCanvasAnnotationContext();
 
   return (
-    <List subheader={<ListSubheader>Labelles</ListSubheader>}>
+    <List subheader={<ListSubheader>Labels</ListSubheader>}>
       {annotations.map((annotation, k) => (
         <LabelItem annotation={annotation} key={`${k} ${annotation.id}`} />
       ))}
@@ -48,7 +48,7 @@ export const Sidebar = () => {
             <Inbox sx={{ fontSize: '6rem' }} />
           </div>
           <Typography width={200} textAlign='center'>
-            Pas encore d&apos;annotation effectué.
+            Pas encore d&apos;annotation effectuée.
           </Typography>
         </Box>
       )}
