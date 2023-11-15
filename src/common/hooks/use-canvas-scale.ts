@@ -1,16 +1,12 @@
-import { RefObject, useEffect, useMemo, useState } from 'react';
+import { RefObject, useMemo, useState } from 'react';
 
-const INITIAL_SCALE = 2;
+const INITIAL_SCALE = 1;
 const SCALE_NUMBER = 0.1;
 
 export const useCanvasScale = (container: RefObject<HTMLDivElement>) => {
   const [defaultScale, setDefaultScale] = useState(INITIAL_SCALE);
   const [scaling, setScale] = useState(defaultScale);
   const MAX_SCALE = useMemo(() => defaultScale + 2, [defaultScale]);
-
-  useEffect(() => {
-    setScale(defaultScale);
-  }, [defaultScale]);
 
   const centerContent = () => {
     if (container.current) {

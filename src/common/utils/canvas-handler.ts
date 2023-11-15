@@ -34,6 +34,12 @@ export class CanvasHandler {
     this.init();
   }
 
+  private _getScalingValue(canvas: RefObject<HTMLCanvasElement>) {
+    const canvasWidth = canvas.current?.width || 0;
+    const canvasStyleWidth = parseInt(canvas.current?.style.width || '0px');
+    return Math.round(canvasStyleWidth / canvasWidth);
+  }
+
   private _initializeSize() {
     if (this._canvasCursorRef.current && this._image) {
       const canvas = this._canvasCursorRef.current,
@@ -54,19 +60,22 @@ export class CanvasHandler {
   public drawMouseCursor() {
     const ctx = this._cursorCtx;
     const clear = () => this.clear(ctx);
+    const canvas = this._canvasCursorRef;
+    const canvasHandler = this;
     return ({ x, y }: IPoint, type: TMouseType) => {
+      const scale = canvasHandler._getScalingValue(canvas);
       if (ctx) {
         clear();
         ctx.lineWidth = 1;
         ctx.beginPath();
         if (type === 'DEFAULT') {
-          ctx.arc(x, y, 7, 0, Math.PI * 2);
+          ctx.arc(x, y, 4 / scale, 0, Math.PI * 2);
           ctx.fill();
         } else if (type === 'END') {
-          ctx.arc(x, y, 7, 0, Math.PI * 2);
+          ctx.arc(x, y, 7 / scale, 0, Math.PI * 2);
           ctx.stroke();
         } else {
-          ctx.arc(x, y, 7, 0, Math.PI * 2);
+          ctx.arc(x, y, 7 / scale, 0, Math.PI * 2);
           ctx.stroke();
         }
         ctx.closePath();
@@ -99,9 +108,10 @@ export class CanvasHandler {
   }
 
   private drawPoint({ x, y }: IPoint, ctx: CanvasRenderingContext2D) {
+    const scale = this._getScalingValue(this._canvasImageRef);
     ctx.beginPath();
     ctx.fillStyle = 'black';
-    ctx.arc(x, y, POINT_SHAPE_RADIUS, 0, 2 * Math.PI);
+    ctx.arc(x, y, POINT_SHAPE_RADIUS / scale, 0, 2 * Math.PI);
     ctx.fill();
     ctx.closePath();
   }
