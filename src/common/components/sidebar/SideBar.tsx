@@ -1,28 +1,9 @@
 import { Delete as DeleteIcon, Inbox } from '@mui/icons-material';
-import { Box, Divider, IconButton, List, ListItem, ListItemAvatar, ListSubheader, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, Divider, IconButton, List, ListItem, ListSubheader, MenuItem, TextField, Typography } from '@mui/material';
 import { Label } from 'bpartners-annotator-react-client';
-import { ChangeEvent, FC, useRef } from 'react';
-import { IInputPickerProps, ILabelItemProps, useStyles } from '.';
+import { FC } from 'react';
+import { ILabelItemProps } from '.';
 import { useCanvasAnnotationContext } from '../../context';
-
-const InputPicker: FC<IInputPickerProps> = ({ annotation }) => {
-  const { noDisplay, colorContainer } = useStyles();
-  const { changeAnnotationColor } = useCanvasAnnotationContext();
-  const color = useRef<HTMLInputElement>(null);
-
-  const handleChange = (event: ChangeEvent) => {
-    event.preventDefault();
-    changeAnnotationColor(annotation.id, color.current?.value || '');
-  };
-
-  return (
-    <label htmlFor={`${annotation.id}-input-color`}>
-      <form className={colorContainer} style={{ background: annotation.polygon.strokeColor }}>
-        <input onChange={handleChange} ref={color} type='color' id={`${annotation.id}-input-color`} className={noDisplay} />
-      </form>
-    </label>
-  );
-};
 
 const LabelItem: FC<ILabelItemProps> = ({ annotation }) => {
   const { changeAnnotationLabel, removeAnnotation, labels } = useCanvasAnnotationContext();
@@ -40,9 +21,6 @@ const LabelItem: FC<ILabelItemProps> = ({ annotation }) => {
           </IconButton>
         }
       >
-        <ListItemAvatar>
-          <InputPicker annotation={annotation} />
-        </ListItemAvatar>
         <TextField select value={annotation.label} size='small' fullWidth>
           {labels.map(label => (
             <MenuItem onClick={handleClick(label)} key={label.id} value={label.name}>

@@ -60,12 +60,7 @@ export class CanvasHandler {
         ctx.lineWidth = 1;
         ctx.beginPath();
         if (type === 'DEFAULT') {
-          ctx.moveTo(x, y);
-          ctx.lineTo(x + 2, y - 5);
-          ctx.lineTo(x + 10, y - 13);
-          ctx.lineTo(x + 13, y - 10);
-          ctx.lineTo(x + 5, y - 2);
-          ctx.lineTo(x, y);
+          ctx.arc(x, y, 7, 0, Math.PI * 2);
           ctx.fill();
         } else if (type === 'END') {
           ctx.arc(x, y, 7, 0, Math.PI * 2);

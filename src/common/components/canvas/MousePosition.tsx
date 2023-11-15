@@ -56,9 +56,9 @@ export const MousePosition: FC<IMousePositionProps> = ({ canvas, image }) => {
   }, [canvas, image]);
 
   return (
-    <Stack direction='row' flexGrow={2} spacing={1}>
+    <>
       <Position label='x' value={x} />
       <Position label='y' value={y} />
-    </Stack>
+    </>
   );
 };

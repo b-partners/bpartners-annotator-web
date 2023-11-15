@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useMemo, useState } from 'react';
 
-const INITIAL_SCALE = 1;
+const INITIAL_SCALE = 2;
 const SCALE_NUMBER = 0.1;
 
 export const useCanvasScale = (container: RefObject<HTMLDivElement>) => {

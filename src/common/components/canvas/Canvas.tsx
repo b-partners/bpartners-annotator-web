@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Stack } from '@mui/material';
+import { Box, CircularProgress, Stack } from '@mui/material';
 import { FC, useEffect, useMemo, useRef } from 'react';
 import { CANVAS_CONTAINER, CanvasAction, EventHandler, MousePosition } from '.';
 import { CanvasEditorProvider, IPolygon, useCanvasAnnotationContext } from '../../context';
@@ -7,7 +7,7 @@ import { useCanvasScale, useCanvasSize, useImageCreation, useImageOffset } from 
 import { CanvasHandler, getColorFromMain } from '../../utils';
 import './style.css';
 
-export const Canvas: FC = ({}) => {
+export const Canvas: FC = () => {
   const { annotations, isAnnotating, setIsAnnotating, addAnnotation, img } = useCanvasAnnotationContext();
   const canvas = useRef<HTMLCanvasElement>(null);
   const canvasImage = useRef<HTMLCanvasElement>(null);
@@ -38,11 +38,18 @@ export const Canvas: FC = ({}) => {
   return (
     <CanvasEditorProvider zoom={zoomActions}>
       <Stack p={0.3} width='70vw' direction='row' spacing={1}>
-        {canvas && canvas.current && <MousePosition image={image} canvas={canvasCursor.current} />}
+        <Stack direction='row' flexGrow={2} spacing={1}>
+          {canvas.current && <MousePosition image={image} canvas={canvasCursor.current} />}
+        </Stack>
         <CanvasAction />
       </Stack>
       <Box ref={canvasContainer} sx={CANVAS_CONTAINER}>
         <Box sx={{ height: ch * scaling, width: cw * scaling }}>
+          {image.src.length === 0 && imageOffset.iho === 0 && (
+            <div style={{ height: ch, width: cw, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute' }}>
+              <CircularProgress size='3rem' />
+            </div>
+          )}
           <canvas ref={canvasImage} height={ch} width={cw} style={{ height: ch * scaling, width: cw * scaling }} />
           <canvas ref={canvas} height={ch} width={cw} style={{ height: ch * scaling, width: cw * scaling }} />
           <canvas ref={canvasCursor} height={ch} width={cw} style={{ height: ch * scaling, width: cw * scaling }} />
