@@ -7,7 +7,7 @@ import { useCanvasScale, useCanvasSize, useImageCreation, useImageOffset } from 
 import { CanvasHandler, getColorFromMain } from '../../utils';
 import './style.css';
 
-export const Canvas: FC = () => {
+export const Canvas: FC<{ isLoading: boolean }> = ({ isLoading }) => {
   const { annotations, isAnnotating, setIsAnnotating, addAnnotation, img } = useCanvasAnnotationContext();
   const canvas = useRef<HTMLCanvasElement>(null);
   const canvasImage = useRef<HTMLCanvasElement>(null);
@@ -29,7 +29,7 @@ export const Canvas: FC = () => {
       const eventHandler = new EventHandler({ annotations, canvas: currentCanvas, image, canvasHandler, imageOffset, isAnnotating, polygon });
       return eventHandler.initEvent(currentCanvasCursor, addAnnotation);
     }
-  }, [isAnnotating, annotations, image, imageOffset]);
+  }, [isAnnotating, annotations, image, imageOffset, isLoading]);
 
   useEffect(() => {
     setIsAnnotating(false);
@@ -45,14 +45,24 @@ export const Canvas: FC = () => {
       </Stack>
       <Box ref={canvasContainer} sx={CANVAS_CONTAINER}>
         <Box sx={{ height: ch * scaling, width: cw * scaling }}>
-          {image.src.length === 0 && imageOffset.iho === 0 && (
-            <div style={{ height: ch, width: cw, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute' }}>
-              <CircularProgress size='3rem' />
-            </div>
-          )}
           <canvas ref={canvasImage} height={ch} width={cw} style={{ height: ch * scaling, width: cw * scaling }} />
           <canvas ref={canvas} height={ch} width={cw} style={{ height: ch * scaling, width: cw * scaling }} />
           <canvas ref={canvasCursor} height={ch} width={cw} style={{ height: ch * scaling, width: cw * scaling }} />
+          {(isLoading || (image.src.length === 0 && imageOffset.iho === 0)) && (
+            <div
+              style={{
+                height: ch,
+                width: cw,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'absolute',
+                background: 'rgba(0,0,0,0.1)',
+              }}
+            >
+              <CircularProgress size='3rem' />
+            </div>
+          )}
         </Box>
       </Box>
     </CanvasEditorProvider>

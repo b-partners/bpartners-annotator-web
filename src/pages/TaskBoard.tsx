@@ -1,11 +1,12 @@
 import { Box, Button, CircularProgress, Grid, Stack } from '@mui/material';
 import { Annotation, Job, Label, Task } from 'bpartners-annotator-react-client';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
 import { Canvas } from '../common/components/canvas';
 import { Sidebar } from '../common/components/sidebar';
 import { CanvasAnnotationProvider, useCanvasAnnotationContext } from '../common/context';
+import { useFetch } from '../common/hooks';
 import { cache } from '../common/utils';
 import { userTasksProvider } from '../providers';
 
@@ -69,15 +70,21 @@ const CancelButton = () => {
 };
 
 export const TaskBoard = () => {
-  const { task, job } = useLoaderData() as { task: Task; job: Job };
-  const imageFetcher = useRefetchImage();
+  const { task: taskLoaded, job } = useLoaderData() as { task: Task; job: Job };
+  const [task, setTask] = useState<Task | null>(taskLoaded);
+  const params = useParams();
+  const { data, fetcher, isLoading } = useFetch(async () => await userTasksProvider.getOne(params?.jobId || '', params?.teamId || ''));
+
+  useEffect(() => {
+    setTask(data);
+  }, [data]);
 
   return task !== null ? (
     <CanvasAnnotationProvider img={task?.imageURI || ''} labels={job?.labels || []}>
       <Grid container height='94%' pl={1}>
         <Grid item xs={10} display='flex' justifyContent='center' alignItems='center'>
           <div>
-            <Canvas />
+            <Canvas isLoading={isLoading} />
           </div>
         </Grid>
         <Grid sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }} item xs={2}>
@@ -86,8 +93,8 @@ export const TaskBoard = () => {
           </Stack>
           <Stack spacing={1} m={2} mb={1}>
             <CancelButton />
-            <Button onClick={imageFetcher}>Changer d'image</Button>
-            <ConfirmButton onEnd={imageFetcher} label={job?.labels || []} taskId={task.id || ''} />
+            <Button onClick={fetcher}>Changer d'image</Button>
+            <ConfirmButton onEnd={fetcher} label={job?.labels || []} taskId={task.id || ''} />
           </Stack>
         </Grid>
       </Grid>
