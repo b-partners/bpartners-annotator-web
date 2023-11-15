@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress, Grid, Stack } from '@mui/material';
 import { Annotation, Job, Label, Task } from 'bpartners-annotator-react-client';
 import { FC, useState } from 'react';
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
 import { Canvas } from '../common/components/canvas';
 import { Sidebar } from '../common/components/sidebar';
@@ -10,6 +10,15 @@ import { cache } from '../common/utils';
 import { userTasksProvider } from '../providers';
 
 const USER_ID = '87910ed1-fb39-4a25-a253-50e43639cd8a';
+
+const useRefetchImage = () => {
+  const params = useParams();
+  const navigate = useNavigate();
+
+  return () => {
+    navigate(`/teams/${params.teamId}/jobs/${params.jobId}`);
+  };
+};
 
 interface IConfirmButton {
   taskId: string;
@@ -61,6 +70,7 @@ const CancelButton = () => {
 
 export const TaskBoard = () => {
   const { task, job } = useLoaderData() as { task: Task; job: Job };
+  const imageFetcher = useRefetchImage();
 
   return task !== null ? (
     <CanvasAnnotationProvider img={task?.imageURI || ''} labels={job?.labels || []}>
@@ -76,8 +86,8 @@ export const TaskBoard = () => {
           </Stack>
           <Stack spacing={1} m={2} mb={1}>
             <CancelButton />
-            <Button>Changer d'image</Button>
-            <ConfirmButton onEnd={() => {}} label={job?.labels || []} taskId={task.id || ''} />
+            <Button onClick={imageFetcher}>Changer d'image</Button>
+            <ConfirmButton onEnd={imageFetcher} label={job?.labels || []} taskId={task.id || ''} />
           </Stack>
         </Grid>
       </Grid>
