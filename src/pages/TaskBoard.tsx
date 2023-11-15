@@ -48,9 +48,15 @@ const ConfirmButton: FC<IConfirmButton> = ({ taskId, label, onEnd }) => {
 
   return (
     <Button onClick={handleClick} disabled={annotations.length === 0 || isLoading}>
-      Terminer
+      Valider l'annotation
     </Button>
   );
+};
+
+const CancelButton = () => {
+  const { setAnnotations } = useCanvasAnnotationContext();
+  const cancel = () => setAnnotations([]);
+  return <Button onClick={cancel}>Annuler</Button>;
 };
 
 export const TaskBoard = () => {
@@ -69,7 +75,8 @@ export const TaskBoard = () => {
             <Sidebar />
           </Stack>
           <Stack spacing={1} m={2} mb={1}>
-            <Button>Annuler</Button>
+            <CancelButton />
+            <Button>Changer d'image</Button>
             <ConfirmButton onEnd={() => {}} label={job?.labels || []} taskId={task.id || ''} />
           </Stack>
         </Grid>
