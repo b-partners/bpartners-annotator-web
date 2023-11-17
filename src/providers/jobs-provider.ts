@@ -1,4 +1,4 @@
-import { CrupdateJob } from 'bpartners-annotator-react-client';
+import { CrupdateJob } from 'bpartners-annotator-Ts-client';
 import { jobsApi } from '.';
 
 export const jobsProvider = {

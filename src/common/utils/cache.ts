@@ -1,5 +1,5 @@
 'use client';
-import { Task } from 'bpartners-annotator-react-client';
+import { Task } from 'bpartners-annotator-Ts-client';
 const CURRENT_TASK = 's3-image-url-item';
 const ACCESS_TOKEN = 'access-token-item';
 

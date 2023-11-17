@@ -1,5 +1,5 @@
 import { Box, Button, CircularProgress, Grid, Stack } from '@mui/material';
-import { Annotation, Job, Label, Task } from 'bpartners-annotator-react-client';
+import { Annotation, Job, Label, Task } from 'bpartners-annotator-Ts-client';
 import { FC, useEffect, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';

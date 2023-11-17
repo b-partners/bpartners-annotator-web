@@ -1,4 +1,4 @@
-import { JobsApi, TasksApi, TeamJobsApi, UserTasksApi } from 'bpartners-annotator-react-client';
+import { JobsApi, TasksApi, TeamJobsApi, UserTasksApi } from 'bpartners-annotator-Ts-client';
 import { authProvider } from '.';
 
 export const jobsApi = () => new JobsApi(authProvider.getAuthConf());

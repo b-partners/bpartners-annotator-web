@@ -1,4 +1,4 @@
-import { Label } from 'bpartners-annotator-react-client';
+import { Label } from 'bpartners-annotator-Ts-client';
 import { FC, ReactNode, createContext, useContext, useState } from 'react';
 import { IAnnotation, IAnnotationContext, ICanvasContext, ICanvasEditorProviderProps } from '.';
 import { getColorFromMain } from '../utils';

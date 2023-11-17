@@ -1,5 +1,5 @@
 import { Amplify, Auth } from 'aws-amplify';
-import { Configuration } from 'bpartners-annotator-react-client';
+import { Configuration } from 'bpartners-annotator-Ts-client';
 import { ICredential } from '.';
 import { cache, createRedirectionUrl, toBase64 } from '../common/utils';
 import aws_config from './aws-config';

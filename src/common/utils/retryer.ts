@@ -12,7 +12,9 @@ export const retryer = async <T>(fetcher: Fetcher<T>) => {
       return data;
     } catch (err) {
       const error = err as AxiosError;
-      if (error.status === '403' || error.status === '401' || retryCount === 2) {
+      console.log(error);
+
+      if (error.status === 403 || error.status === 401 || retryCount === 2) {
         retryCount = 0;
         throw error;
       }

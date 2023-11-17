@@ -1,6 +1,6 @@
 import { Inbox as InboxIcon, NavigateBefore as NavigateBeforeIcon } from '@mui/icons-material';
 import { Box, Button, Card, CardActions, CardContent, CardHeader, List, Typography } from '@mui/material';
-import { Job } from 'bpartners-annotator-react-client';
+import { Job } from 'bpartners-annotator-Ts-client';
 import { Link, useLoaderData, useParams } from 'react-router-dom';
 import { JobListItem } from '../common/components/job';
 import { job_list_card_action, job_list_card_content, job_list_container, job_list_list_container } from './style';
