@@ -1,6 +1,7 @@
-import { Configuration, JobsApi, TasksApi, TeamJobsApi, UserTasksApi } from 'bpartners-annotator-react-client';
+import { JobsApi, TasksApi, TeamJobsApi, UserTasksApi } from 'bpartners-annotator-react-client';
+import { authProvider } from '.';
 
-export const jobsApi = () => new JobsApi(new Configuration());
-export const tasksApi = () => new TasksApi(new Configuration());
-export const teamJobsApi = () => new TeamJobsApi(new Configuration());
-export const userTasksApi = () => new UserTasksApi(new Configuration());
+export const jobsApi = () => new JobsApi(authProvider.getAuthConf());
+export const tasksApi = () => new TasksApi(authProvider.getAuthConf());
+export const teamJobsApi = () => new TeamJobsApi(authProvider.getAuthConf());
+export const userTasksApi = () => new UserTasksApi(authProvider.getAuthConf());

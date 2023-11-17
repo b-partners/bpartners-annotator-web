@@ -1,6 +1,7 @@
 'use client';
 import { Task } from 'bpartners-annotator-react-client';
 const CURRENT_TASK = 's3-image-url-item';
+const ACCESS_TOKEN = 'access-token-item';
 
 export const cache = {
   setCurrentTask(task: Task) {
@@ -11,5 +12,11 @@ export const cache = {
   },
   deleteCurrentTask() {
     localStorage.setItem(CURRENT_TASK, 'null');
+  },
+  getAccessToken() {
+    return localStorage.getItem(ACCESS_TOKEN);
+  },
+  setAccessToken(accessToken: string) {
+    localStorage.setItem(ACCESS_TOKEN, accessToken);
   },
 };
