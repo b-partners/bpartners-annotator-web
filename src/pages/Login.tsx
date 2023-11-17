@@ -1,5 +1,5 @@
-import { LoginOutlined as LoginOutlinedIcon } from '@mui/icons-material';
-import { Box, Card, CardContent, CardHeader, Stack } from '@mui/material';
+import { LoginOutlined as LoginOutlinedIcon, Person2Outlined as Person2OutlinedIcon } from '@mui/icons-material';
+import { Avatar, Box, Card, CardContent, Stack } from '@mui/material';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -27,22 +27,28 @@ export const Login = () => {
 
   return (
     <Box sx={login_container}>
-      <Card>
-        <CardHeader title='Connexion' />
-        <CardContent sx={login_card_content}>
-          <FormProvider {...form}>
-            <form onSubmit={handleSubmit}>
-              <Stack spacing={2}>
-                <BpTextField name='username' label='Email' variant='outlined' />
-                <BpPasswordField name='password' label='Mot de passe' variant='outlined' />
-                <div style={login_button_container}>
-                  <BpButton type='submit' isLoading={isLoading} label='Se connecter' icon={<LoginOutlinedIcon />} />
-                </div>
-              </Stack>
-            </form>
-          </FormProvider>
-        </CardContent>
-      </Card>
+      <div className='login-card-container'>
+        <Card>
+          <CardContent sx={login_card_content}>
+            <FormProvider {...form}>
+              <form onSubmit={handleSubmit}>
+                <Stack spacing={2}>
+                  <BpTextField name='username' label='Email' variant='outlined' />
+                  <BpPasswordField name='password' label='Mot de passe' variant='outlined' />
+                  <div style={login_button_container}>
+                    <BpButton type='submit' isLoading={isLoading} label='Se connecter' icon={<LoginOutlinedIcon />} />
+                  </div>
+                </Stack>
+              </form>
+            </FormProvider>
+          </CardContent>
+        </Card>
+        <Stack className='login-card-header-container'>
+          <Avatar>
+            <Person2OutlinedIcon />
+          </Avatar>
+        </Stack>
+      </div>
     </Box>
   );
 };

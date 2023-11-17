@@ -3,8 +3,8 @@ import zod from 'zod';
 import { FieldErrorMessage } from './errors-message';
 
 const loginSchema = zod.object({
-  username: zod.string({ required_error: FieldErrorMessage.required }),
-  password: zod.string({ required_error: FieldErrorMessage.required }),
+  username: zod.string({ required_error: FieldErrorMessage.required }).min(1, { message: FieldErrorMessage.required }),
+  password: zod.string({ required_error: FieldErrorMessage.required }).min(1, { message: FieldErrorMessage.required }),
 });
 
 export const loginDefaultValues = {

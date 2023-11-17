@@ -45,5 +45,12 @@ export const bpTheme = createTheme({
         },
       },
     },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: '1px 1px 10px #00000010 !important',
+        },
+      },
+    },
   },
 });

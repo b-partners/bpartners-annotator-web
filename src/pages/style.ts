@@ -26,13 +26,38 @@ export const job_list_list_container = {
   paddingX: 1,
 };
 
-export const login_container = { ...job_list_container, height: '90vh' };
+export const login_container: SxProps = {
+  ...job_list_container,
+  height: '90vh',
+  '& .login-card-container': {
+    position: 'relative',
+    '& .MuiCardContent-root': {
+      paddingTop: '5rem',
+    },
+  },
+  '& .login-card-header-container': {
+    position: 'absolute',
+    top: 0,
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    '& .MuiAvatar-root': {
+      height: 150,
+      width: 150,
+      bgcolor: 'white',
+      boxShadow: '1px 1px 10px #00000010',
+      '& .MuiSvgIcon-root': {
+        color: 'rgb(148, 51, 99)',
+        fontSize: '5rem',
+      },
+    },
+  },
+};
 export const login_card_content: SxProps = {
   width: { xs: 300, sm: 350, md: 400 },
-  height: 300,
+  height: 350,
   padding: 3,
   '& form': {
-    marginTop: 4,
+    marginTop: 13,
   },
 };
 export const login_button_container: CSSProperties = { textAlign: 'center', marginTop: '3rem' };

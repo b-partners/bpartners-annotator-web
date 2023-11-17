@@ -16,7 +16,9 @@ export const authProvider = {
 
     const user = await Auth.signIn(username as string, password as string);
 
-    cache.setAccessToken(user['signInUserSession']['accessToken']['jwtToken']);
+    console.log(user);
+
+    cache.setAccessToken(user['signInUserSession']['idToken']['jwtToken']);
 
     if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
       const encodedUsername = encodeURIComponent(toBase64(username as string));
