@@ -37,7 +37,24 @@ export const login_card_content: SxProps = {
 };
 export const login_button_container: CSSProperties = { textAlign: 'center', marginTop: '3rem' };
 
-export const error_container: SxProps = { width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' };
+export const container_center_flex: SxProps = {
+  width: '100vw',
+  height: '100vh',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  '& .circular-progress-container': {
+    textAlign: 'center',
+    paddingBottom: 5,
+    paddingTop: 2,
+  },
+  '& .redirection-message': {
+    position: 'absolute',
+    bottom: 5,
+    left: '50%',
+    transform: 'translate(-50%)',
+  },
+};
 export const error_card_container: SxProps = {
   padding: 1,
   '& .MuiAvatar-square': {
