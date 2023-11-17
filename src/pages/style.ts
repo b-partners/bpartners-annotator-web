@@ -27,8 +27,15 @@ export const job_list_list_container = {
 };
 
 export const login_container = { ...job_list_container, height: '90vh' };
-export const login_card_content: SxProps = { width: { xs: 300, sm: 400, md: 450 }, height: 400, padding: 3 };
-export const login_button_container: CSSProperties = { textAlign: 'center', marginTop: '2rem' };
+export const login_card_content: SxProps = {
+  width: { xs: 300, sm: 350, md: 400 },
+  height: 300,
+  padding: 3,
+  '& form': {
+    marginTop: 4,
+  },
+};
+export const login_button_container: CSSProperties = { textAlign: 'center', marginTop: '3rem' };
 
 export const error_container: SxProps = { width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' };
 export const error_card_container: SxProps = {

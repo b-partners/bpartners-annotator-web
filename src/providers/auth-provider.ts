@@ -20,18 +20,14 @@ const setAccessToken = async () => {
 export const authProvider = {
   async login({ username, password }: ICredential) {
     const redirectionUrl = createRedirectionUrl('/login');
-    try {
-      const user = await Auth.signIn(username as string, password as string);
-      if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-        const encodedUsername = encodeURIComponent(toBase64(username as string));
-        const encodedPassword = encodeURIComponent(toBase64(password as string));
-        return `/login?${paramIsTemporaryPassword}=true&${paramUsername}=${encodedUsername}&${paramTemporaryPassword}=${encodedPassword}`;
-      }
-      await setAccessToken();
-      return redirectionUrl.successUrl;
-    } catch (error) {
-      return redirectionUrl.failureUrl;
+    const user = await Auth.signIn(username as string, password as string);
+    if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
+      const encodedUsername = encodeURIComponent(toBase64(username as string));
+      const encodedPassword = encodeURIComponent(toBase64(password as string));
+      return `/login?${paramIsTemporaryPassword}=true&${paramUsername}=${encodedUsername}&${paramTemporaryPassword}=${encodedPassword}`;
     }
+    await setAccessToken();
+    return redirectionUrl.successUrl;
   },
   getAuthConf() {
     const accessToken = cache.getAccessToken();
