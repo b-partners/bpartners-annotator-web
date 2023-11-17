@@ -14,7 +14,7 @@ export const Home = () => {
             Notre application de labellisation est conçue pour simplifier le processus d&apos;annotation d&apos;images.
           </Typography>
 
-          <Link to='/teams/bf61795f-f701-458e-8b6e-c72814bf036c/jobs'>
+          <Link to='/login'>
             <Button>Commencer</Button>
           </Link>
         </Box>

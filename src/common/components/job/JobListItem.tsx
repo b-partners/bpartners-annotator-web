@@ -1,10 +1,11 @@
 import { OpenInNew as OpenInNewIcon } from '@mui/icons-material';
 import { Avatar, Chip, IconButton, Link, ListItem, ListItemText, Stack } from '@mui/material';
 import { blue, yellow } from '@mui/material/colors';
+import { JobStatus } from 'bpartners-annotator-Ts-client';
 import { FC, createElement } from 'react';
 import { IJobListItem, JOB_ITEM, getJobStatusInfo } from '.';
 export const JobListItem: FC<IJobListItem> = ({ job, teamId }) => {
-  const { icon, label, color } = getJobStatusInfo(job.status || 'PENDING');
+  const { icon, label, color } = getJobStatusInfo(job.status || JobStatus.PENDING);
 
   const link = `/teams/${teamId}/jobs/${job.id}`;
 

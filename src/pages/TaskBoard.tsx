@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress, Grid, Stack } from '@mui/material';
-import { Annotation, Job, Label, Task } from 'bpartners-annotator-react-client';
+import { Annotation, Job, Label, Task } from 'bpartners-annotator-Ts-client';
 import { FC, useEffect, useState } from 'react';
-import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
+import { useLoaderData, useParams } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
 import { Canvas } from '../common/components/canvas';
 import { Sidebar } from '../common/components/sidebar';
@@ -11,15 +11,6 @@ import { cache } from '../common/utils';
 import { userTasksProvider } from '../providers';
 
 const USER_ID = '87910ed1-fb39-4a25-a253-50e43639cd8a';
-
-const useRefetchImage = () => {
-  const params = useParams();
-  const navigate = useNavigate();
-
-  return () => {
-    navigate(`/teams/${params.teamId}/jobs/${params.jobId}`);
-  };
-};
 
 interface IConfirmButton {
   taskId: string;
@@ -76,11 +67,11 @@ export const TaskBoard = () => {
   const { data, fetcher, isLoading } = useFetch(async () => await userTasksProvider.getOne(params?.jobId || '', params?.teamId || ''));
 
   useEffect(() => {
-    setTask(data);
+    setTask({ ...data });
   }, [data]);
 
   return task !== null ? (
-    <CanvasAnnotationProvider img={task?.imageURI || ''} labels={job?.labels || []}>
+    <CanvasAnnotationProvider img={task.imageURI || ''} labels={job.labels || []}>
       <Grid container height='94%' pl={1}>
         <Grid item xs={10} display='flex' justifyContent='center' alignItems='center'>
           <div>

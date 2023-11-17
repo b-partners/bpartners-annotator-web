@@ -5,7 +5,7 @@ import {
   PendingActionsOutlined as PendingActionsOutlinedIcon,
   PlayCircleOutlineOutlined as PlayCircleOutlineOutlinedIcon,
 } from '@mui/icons-material';
-import { JobStatus } from 'bpartners-annotator-react-client';
+import { JobStatus } from 'bpartners-annotator-Ts-client';
 import { IJobStatusInfo } from '.';
 
 export const getJobStatusInfo = (status: JobStatus): IJobStatusInfo => {
@@ -18,7 +18,7 @@ export const getJobStatusInfo = (status: JobStatus): IJobStatusInfo => {
       return { icon: PlayCircleOutlineOutlinedIcon, label: 'Encours', color: '#FFA500' };
     case 'FAILED':
       return { icon: ErrorOutlineOutlinedIcon, label: 'Échoué', color: '#FF0000' };
-    case 'COMPLETED':
+    default:
       return { icon: CheckCircleOutlineOutlinedIcon, label: 'Terminé', color: '#00FF00' };
   }
 };

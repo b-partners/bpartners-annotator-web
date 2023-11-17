@@ -1,4 +1,4 @@
-import { Annotation, UpdateTask } from 'bpartners-annotator-react-client';
+import { Annotation, UpdateTask } from 'bpartners-annotator-Ts-client';
 import { userTasksApi } from '.';
 
 export const userTasksProvider = {

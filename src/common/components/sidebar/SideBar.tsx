@@ -1,6 +1,6 @@
 import { Delete as DeleteIcon, Inbox } from '@mui/icons-material';
 import { Box, Divider, IconButton, List, ListItem, ListSubheader, MenuItem, TextField, Typography } from '@mui/material';
-import { Label } from 'bpartners-annotator-react-client';
+import { Label } from 'bpartners-annotator-Ts-client';
 import { FC } from 'react';
 import { ILabelItemProps } from '.';
 import { useCanvasAnnotationContext } from '../../context';
