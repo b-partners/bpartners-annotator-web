@@ -23,6 +23,7 @@ const CanvasAnnotationContext = createContext<IAnnotationContext>({
 export const CanvasAnnotationProvider: FC<{ children: ReactNode; labels: Label[]; img: string }> = ({ children, labels, img }) => {
   const [annotations, setAnnotations] = useState<IAnnotation[]>([]);
   const [isAnnotating, setIsAnnotating] = useState(false);
+
   return (
     <CanvasAnnotationContext.Provider value={{ annotations, setAnnotations, isAnnotating, setIsAnnotating, labels, img }}>
       {children}
