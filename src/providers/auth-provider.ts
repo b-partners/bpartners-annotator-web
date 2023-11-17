@@ -15,9 +15,6 @@ export const authProvider = {
     const successUrl = '/login/success';
 
     const user = await Auth.signIn(username as string, password as string);
-
-    console.log(user);
-
     cache.setAccessToken(user['signInUserSession']['idToken']['jwtToken']);
 
     if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
@@ -36,4 +33,5 @@ export const authProvider = {
     }
     return undefined;
   },
+  async whoami() {},
 };

@@ -10,7 +10,7 @@ import { useFetch } from '../common/hooks';
 import { cache } from '../common/utils';
 import { userTasksProvider } from '../providers';
 
-const USER_ID = '87910ed1-fb39-4a25-a253-50e43639cd8a';
+export const USER_ID = '0e658700-7bfa-4a2d-a107-29c2260f2691';
 
 interface IConfirmButton {
   taskId: string;

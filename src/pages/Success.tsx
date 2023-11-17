@@ -1,19 +1,28 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useNavigate } from 'react-router-dom';
 import { container_center_flex } from '.';
 import bp_logo from '../assets/bp-logo-full.webp';
+import { accountProvider } from '../providers/account-provider';
 
 export const Success = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      clearTimeout(timeoutId);
-      navigate('/teams/bf61795f-f701-458e-8b6e-c72814bf036c/jobs');
-    }, 2000);
-  }, [navigate]);
+    const getWhoami = async () => {
+      try {
+        const { user } = await accountProvider.whoami();
+        if (user) {
+          navigate(`/teams/${user.team?.id}/jobs`);
+        }
+      } catch (error) {
+        navigate('/teams/0f81e1f2-3ecb-4635-b3ce-d4c174a11372/jobs');
+      }
+    };
+    getWhoami();
+  }, []);
 
   return (
     <Box sx={container_center_flex}>
