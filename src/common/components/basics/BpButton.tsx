@@ -5,7 +5,7 @@ import { IBpButton } from './types';
 
 export const BpButtonTemplate: FC<Omit<IBpButton, 'to'>> = ({ label, isLoading, icon, ...others }) => {
   return (
-    <Button {...others} startIcon={isLoading ? <CircularProgress size='25px' /> : icon} disabled={isLoading}>
+    <Button {...others} endIcon={isLoading ? <CircularProgress size='25px' /> : icon} disabled={isLoading}>
       {label}
     </Button>
   );
