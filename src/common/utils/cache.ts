@@ -2,6 +2,7 @@
 import { Task } from 'bpartners-annotator-Ts-client';
 const CURRENT_TASK = 's3-image-url-item';
 const ACCESS_TOKEN = 'access-token-item';
+const USER_ID = 'user-id-item';
 const WHOAMI = 'whoami-item';
 
 const getJsonFromString = (value: string | null) => {
@@ -33,5 +34,11 @@ export const cache = {
   },
   setWhoami(whoami: any) {
     localStorage.setItem(WHOAMI, JSON.stringify(whoami));
+  },
+  setUserId(userId: string) {
+    localStorage.setItem(USER_ID, userId);
+  },
+  getUserId() {
+    localStorage.getItem(USER_ID);
   },
 };

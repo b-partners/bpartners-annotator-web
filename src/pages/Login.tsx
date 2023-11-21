@@ -18,7 +18,9 @@ export const Login = () => {
       setLoading(true);
       const redirection = await authProvider.login(data);
       navigate(redirection);
-    } catch {
+    } catch (err) {
+      console.log(err);
+
       form.setError('password', { message: FieldErrorMessage.incorrectPassword });
     } finally {
       setLoading(false);

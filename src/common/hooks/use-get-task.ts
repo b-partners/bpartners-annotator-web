@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
-import { Job, Task, TaskStatus } from 'bpartners-annotator-Ts-client';
+import { Job, Task, TaskStatus, Whoami } from 'bpartners-annotator-Ts-client';
 import { useCallback, useEffect, useState } from 'react';
-import { USER_ID } from '../../pages';
 import { jobsProvider, userTasksProvider } from '../../providers';
 import { cache } from '../utils';
 
@@ -38,8 +37,11 @@ export const useGetTask = () => {
   const handleCancel = () => {
     const { jobId, teamId } = params as Record<string, string>;
     setCancelLoading(true);
+    const whoami = cache.getWhoami() as Whoami;
+    const userId = whoami.user?.id || '';
+
     userTasksProvider
-      .updateOne(teamId, jobId, currentTask?.id || '', { ...currentTask, userId: USER_ID, status: TaskStatus.PENDING })
+      .updateOne(teamId, jobId, currentTask?.id || '', { ...currentTask, userId, status: TaskStatus.PENDING })
       .then(() => {
         cache.deleteCurrentTask();
         window.location.replace(`/teams/${teamId}/jobs`);

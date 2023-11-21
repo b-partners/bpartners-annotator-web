@@ -1,5 +1,5 @@
 import { Box, Button, CircularProgress, Grid, Stack } from '@mui/material';
-import { Annotation, Job, Label, Task } from 'bpartners-annotator-Ts-client';
+import { Annotation, Job, Label, Task, Whoami } from 'bpartners-annotator-Ts-client';
 import { FC, useEffect, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
@@ -24,12 +24,14 @@ const ConfirmButton: FC<IConfirmButton> = ({ taskId, label, onEnd }) => {
   const params = useParams();
 
   const handleClick = () => {
+    const whoami = cache.getWhoami() as Whoami;
+    const userId = whoami.user?.id || '';
     const taskAnnotation: Annotation[] = annotations.map(annotation => ({
       id: uuidV4(),
       label: label.find(e => e.name === annotation.label),
       taskId: taskId,
       polygon: { points: annotation.polygon.points },
-      userId: USER_ID,
+      userId,
     }));
     onEnd();
     userTasksProvider
