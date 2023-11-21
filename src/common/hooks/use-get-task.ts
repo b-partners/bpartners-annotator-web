@@ -2,6 +2,7 @@
 'use client';
 import { Job, Task, TaskStatus } from 'bpartners-annotator-Ts-client';
 import { useCallback, useEffect, useState } from 'react';
+import { USER_ID } from '../../pages';
 import { jobsProvider, userTasksProvider } from '../../providers';
 import { cache } from '../utils';
 
@@ -38,7 +39,7 @@ export const useGetTask = () => {
     const { jobId, teamId } = params as Record<string, string>;
     setCancelLoading(true);
     userTasksProvider
-      .updateOne(teamId, jobId, currentTask?.id || '', { ...currentTask, userId: undefined, status: TaskStatus.PENDING })
+      .updateOne(teamId, jobId, currentTask?.id || '', { ...currentTask, userId: USER_ID, status: TaskStatus.PENDING })
       .then(() => {
         cache.deleteCurrentTask();
         window.location.replace(`/teams/${teamId}/jobs`);
