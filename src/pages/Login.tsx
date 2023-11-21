@@ -1,12 +1,13 @@
-import { LoginOutlined as LoginOutlinedIcon, Person2Outlined as Person2OutlinedIcon } from '@mui/icons-material';
-import { Avatar, Box, Card, CardContent, Stack } from '@mui/material';
+import { LoginOutlined as LoginOutlinedIcon } from '@mui/icons-material';
+import { Stack } from '@mui/material';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { BpButton, BpPasswordField, BpTextField } from '../common/components/basics';
 import { FieldErrorMessage, loginDefaultValues, loginResolver } from '../common/components/resolvers';
+import { LoginLayout } from '../common/layout';
 import { authProvider } from '../providers';
-import { login_button_container, login_card_content, login_container } from './style';
+import { login_button_container } from './style';
 
 export const Login = () => {
   const form = useForm({ mode: 'all', resolver: loginResolver, defaultValues: loginDefaultValues });
@@ -28,29 +29,18 @@ export const Login = () => {
   });
 
   return (
-    <Box sx={login_container}>
-      <div className='login-card-container'>
-        <Card>
-          <CardContent sx={login_card_content}>
-            <FormProvider {...form}>
-              <form onSubmit={handleSubmit}>
-                <Stack spacing={2}>
-                  <BpTextField name='username' label='Email' variant='outlined' />
-                  <BpPasswordField name='password' label='Mot de passe' variant='outlined' />
-                  <div style={login_button_container}>
-                    <BpButton type='submit' isLoading={isLoading} label='Se connecter' icon={<LoginOutlinedIcon />} />
-                  </div>
-                </Stack>
-              </form>
-            </FormProvider>
-          </CardContent>
-        </Card>
-        <Stack className='login-card-header-container'>
-          <Avatar>
-            <Person2OutlinedIcon />
-          </Avatar>
-        </Stack>
-      </div>
-    </Box>
+    <LoginLayout>
+      <FormProvider {...form}>
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={2}>
+            <BpTextField name='username' label='Email' variant='outlined' />
+            <BpPasswordField name='password' label='Mot de passe' variant='outlined' />
+            <div style={login_button_container}>
+              <BpButton type='submit' isLoading={isLoading} label='Se connecter' icon={<LoginOutlinedIcon />} />
+            </div>
+          </Stack>
+        </form>
+      </FormProvider>
+    </LoginLayout>
   );
 };
