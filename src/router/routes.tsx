@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { TopBarLayout } from '../common/components/layout';
-import { Error, Home, JobList, Login, Success, TaskBoard } from '../pages';
+import { Error, Home, JobList, Login, NewPassword, Success, TaskBoard } from '../pages';
 import { jobsLoader } from './loaders';
 import { taskLoader } from './loaders/task-loader';
 
@@ -18,6 +18,11 @@ const AppRouter = createBrowserRouter([
   {
     path: '/login',
     element: <Login />,
+    errorElement: <Error />,
+  },
+  {
+    path: '/complete-password',
+    element: <NewPassword />,
     errorElement: <Error />,
   },
   {
