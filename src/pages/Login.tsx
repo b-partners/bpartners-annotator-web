@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { BpButton, BpPasswordField, BpTextField } from '../common/components/basics';
-import { FieldErrorMessage, loginDefaultValues, loginResolver } from '../common/components/resolvers';
 import { LoginLayout } from '../common/layout';
+import { FieldErrorMessage, loginDefaultValues, loginResolver } from '../common/resolvers';
 import { authProvider } from '../providers';
 import { login_button_container } from './style';
 
@@ -21,7 +21,6 @@ export const Login = () => {
       navigate(redirection);
     } catch (err) {
       console.log(err);
-
       form.setError('password', { message: FieldErrorMessage.incorrectPassword });
     } finally {
       setLoading(false);
