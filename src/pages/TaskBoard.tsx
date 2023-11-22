@@ -10,8 +10,6 @@ import { useFetch } from '../common/hooks';
 import { cache } from '../common/utils';
 import { userTasksProvider } from '../providers';
 
-export const USER_ID = '0e658700-7bfa-4a2d-a107-29c2260f2691';
-
 interface IConfirmButton {
   taskId: string;
   label: Label[];
@@ -35,7 +33,7 @@ const ConfirmButton: FC<IConfirmButton> = ({ taskId, label, onEnd }) => {
     }));
     onEnd();
     userTasksProvider
-      .annotateOne(USER_ID, taskId, taskAnnotation)
+      .annotateOne(userId, taskId, taskAnnotation)
       .then(() => {
         const { jobId, teamId } = params as Record<string, string>;
         cache.deleteCurrentTask();
