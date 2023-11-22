@@ -12,13 +12,13 @@ import { cache, retryer } from '../common/utils';
 import { userTasksProvider } from '../providers';
 
 interface IConfirmButton {
-  taskId: string;
+  task: Task;
   label: Label[];
   onEnd: () => void;
 }
 
-const ConfirmButton: FC<IConfirmButton> = ({ taskId, label, onEnd }) => {
-  const { annotations } = useCanvasAnnotationContext();
+const ConfirmButton: FC<IConfirmButton> = ({ label, onEnd, task }) => {
+  const { annotations, setAnnotations } = useCanvasAnnotationContext();
   const [isLoading, setLoading] = useState(false);
   const params = useParams();
 
@@ -28,16 +28,18 @@ const ConfirmButton: FC<IConfirmButton> = ({ taskId, label, onEnd }) => {
     const taskAnnotation: Annotation[] = annotations.map(annotation => ({
       id: uuidV4(),
       label: label.find(e => e.name === annotation.label),
-      taskId: taskId,
+      taskId: task.id || '',
       polygon: { points: annotation.polygon.points },
       userId,
     }));
     onEnd();
-    userTasksProvider
-      .annotateOne(userId, taskId, taskAnnotation)
+    Promise.allSettled([
+      userTasksProvider.annotateOne(userId, task.id || '', taskAnnotation),
+      userTasksProvider.updateOne(params.teamId || '', params.jobId || '', task.id || '', { ...task, status: TaskStatus.COMPLETED }),
+    ])
       .then(() => {
         const { jobId, teamId } = params as Record<string, string>;
-        cache.deleteCurrentTask();
+        setAnnotations([]);
         window.location.replace(`/teams/${teamId}/jobs/${jobId}`);
       })
       .catch(err => {
@@ -91,6 +93,7 @@ export const TaskBoard = () => {
 
   useEffect(() => {
     setTask({ ...data });
+    return () => {};
   }, [data]);
 
   return task !== null ? (
@@ -108,7 +111,7 @@ export const TaskBoard = () => {
           <Stack spacing={1} m={2} mb={1}>
             <CancelButton />
             <ChangeImageButton fetcher={fetcher} task={task} />
-            <ConfirmButton onEnd={fetcher} label={job?.labels || []} taskId={task.id || ''} />
+            <ConfirmButton task={task} onEnd={fetcher} label={job?.labels || []} />
           </Stack>
         </Grid>
       </Grid>
