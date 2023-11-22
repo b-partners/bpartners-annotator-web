@@ -1,23 +1,24 @@
 import { Box, Button, CircularProgress, Grid, Stack } from '@mui/material';
-import { Annotation, Job, Label, Task, Whoami } from 'bpartners-annotator-Ts-client';
+import { Annotation, Job, Label, Task, TaskStatus, Whoami } from 'bpartners-annotator-Ts-client';
 import { FC, useEffect, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
+import { BpButton } from '../common/components/basics';
 import { Canvas } from '../common/components/canvas';
 import { Sidebar } from '../common/components/sidebar';
 import { CanvasAnnotationProvider, useCanvasAnnotationContext } from '../common/context';
 import { useFetch } from '../common/hooks';
-import { cache } from '../common/utils';
+import { cache, retryer } from '../common/utils';
 import { userTasksProvider } from '../providers';
 
 interface IConfirmButton {
-  taskId: string;
+  task: Task;
   label: Label[];
   onEnd: () => void;
 }
 
-const ConfirmButton: FC<IConfirmButton> = ({ taskId, label, onEnd }) => {
-  const { annotations } = useCanvasAnnotationContext();
+const ConfirmButton: FC<IConfirmButton> = ({ label, onEnd, task }) => {
+  const { annotations, setAnnotations } = useCanvasAnnotationContext();
   const [isLoading, setLoading] = useState(false);
   const params = useParams();
 
@@ -27,16 +28,18 @@ const ConfirmButton: FC<IConfirmButton> = ({ taskId, label, onEnd }) => {
     const taskAnnotation: Annotation[] = annotations.map(annotation => ({
       id: uuidV4(),
       label: label.find(e => e.name === annotation.label),
-      taskId: taskId,
+      taskId: task.id || '',
       polygon: { points: annotation.polygon.points },
       userId,
     }));
     onEnd();
-    userTasksProvider
-      .annotateOne(userId, taskId, taskAnnotation)
+    Promise.allSettled([
+      userTasksProvider.annotateOne(userId, task.id || '', taskAnnotation),
+      userTasksProvider.updateOne(params.teamId || '', params.jobId || '', task.id || '', { ...task, status: TaskStatus.COMPLETED }),
+    ])
       .then(() => {
         const { jobId, teamId } = params as Record<string, string>;
-        cache.deleteCurrentTask();
+        setAnnotations([]);
         window.location.replace(`/teams/${teamId}/jobs/${jobId}`);
       })
       .catch(err => {
@@ -60,14 +63,37 @@ const CancelButton = () => {
   return <Button onClick={cancel}>Annuler</Button>;
 };
 
+const ChangeImageButton: FC<{ fetcher: () => void; task: Task }> = ({ fetcher, task }) => {
+  const { setAnnotations } = useCanvasAnnotationContext();
+  const { teamId, jobId } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const cancelAnnotation = async () => {
+    await retryer(async () => await userTasksProvider.updateOne(teamId || '', jobId || '', task.id || '', { ...task, status: TaskStatus.PENDING }));
+  };
+
+  const changeImage = () => {
+    setIsLoading(true);
+    cancelAnnotation()
+      .then(() => {
+        setAnnotations([]);
+        fetcher();
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  return <BpButton isLoading={isLoading} onClick={changeImage} label="Changer d'image" />;
+};
+
 export const TaskBoard = () => {
   const { task: taskLoaded, job } = useLoaderData() as { task: Task; job: Job };
   const [task, setTask] = useState<Task | null>(taskLoaded);
   const params = useParams();
-  const { data, fetcher, isLoading } = useFetch(async () => await userTasksProvider.getOne(params?.jobId || '', params?.teamId || ''));
+  const { data, fetcher, isLoading } = useFetch(async () => await userTasksProvider.getOne(params.jobId || '', params.teamId || ''));
 
   useEffect(() => {
     setTask({ ...data });
+    return () => {};
   }, [data]);
 
   return task !== null ? (
@@ -84,8 +110,8 @@ export const TaskBoard = () => {
           </Stack>
           <Stack spacing={1} m={2} mb={1}>
             <CancelButton />
-            <Button onClick={fetcher}>Changer d'image</Button>
-            <ConfirmButton onEnd={fetcher} label={job?.labels || []} taskId={task.id || ''} />
+            <ChangeImageButton fetcher={fetcher} task={task} />
+            <ConfirmButton task={task} onEnd={fetcher} label={job?.labels || []} />
           </Stack>
         </Grid>
       </Grid>

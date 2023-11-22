@@ -1,6 +1,5 @@
-'use client';
-import { Task } from 'bpartners-annotator-Ts-client';
-const CURRENT_TASK = 's3-image-url-item';
+import { Task, Whoami } from 'bpartners-annotator-Ts-client';
+const CURRENT_TASK = 'current-task-item';
 const ACCESS_TOKEN = 'access-token-item';
 const USER_ID = 'user-id-item';
 const WHOAMI = 'whoami-item';
@@ -17,7 +16,7 @@ export const cache = {
   setCurrentTask(task: Task) {
     localStorage.setItem(CURRENT_TASK, JSON.stringify(task || {}));
   },
-  getCurrentTask() {
+  getCurrentTask(): Task | null {
     return JSON.parse(localStorage.getItem(CURRENT_TASK) || 'null');
   },
   deleteCurrentTask() {
@@ -29,7 +28,7 @@ export const cache = {
   setAccessToken(accessToken: string) {
     localStorage.setItem(ACCESS_TOKEN, accessToken);
   },
-  getWhoami() {
+  getWhoami(): Whoami {
     return getJsonFromString(localStorage.getItem(WHOAMI));
   },
   setWhoami(whoami: any) {
@@ -40,5 +39,8 @@ export const cache = {
   },
   getUserId() {
     localStorage.getItem(USER_ID);
+  },
+  clear() {
+    localStorage.clear();
   },
 };

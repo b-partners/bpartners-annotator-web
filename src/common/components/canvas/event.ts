@@ -105,7 +105,7 @@ export class EventHandler {
       const points = this.annotations[id - 1].polygon.points;
       const lastIndex = points.length - 1;
       const position = this.getMousePositionWithOffset(event);
-      if (index === 0 || index == lastIndex) {
+      if (index === 0 || index === lastIndex) {
         points[lastIndex] = position;
         points[0] = position;
       } else {
