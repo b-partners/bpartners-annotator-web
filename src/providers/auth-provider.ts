@@ -15,14 +15,13 @@ export const authProvider = {
   async login({ username, password }: ICredential) {
     const user = await Auth.signIn(username as string, password as string);
 
-    cache.setAccessToken(user['signInUserSession']['idToken']['jwtToken']);
-
     if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
       const encodedUsername = encodeURIComponent(toBase64(username as string));
       const encodedPassword = encodeURIComponent(toBase64(password as string));
       return `/complete-password?${paramIsTemporaryPassword}=true&${paramUsername}=${encodedUsername}&${paramTemporaryPassword}=${encodedPassword}`;
     }
 
+    cache.setAccessToken(user['signInUserSession']['idToken']['jwtToken']);
     return successUrl;
   },
   getAuthConf() {
@@ -41,6 +40,8 @@ export const authProvider = {
     const temporaryPassword = fromBase64(decodeURIComponent(urlParams.get(paramTemporaryPassword) as string)) as string;
     const user = await Auth.signIn(username, temporaryPassword);
     await Auth.completeNewPassword(user, newPassword);
+    const session = await Auth.currentSession();
+    cache.setAccessToken(session.getIdToken().getJwtToken());
     return successUrl;
   },
 };
