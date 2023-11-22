@@ -1,7 +1,7 @@
 import { Amplify, Auth } from 'aws-amplify';
 import { Configuration } from 'bpartners-annotator-Ts-client';
 import { ICredential } from '.';
-import { cache, toBase64 } from '../common/utils';
+import { cache, fromBase64, toBase64 } from '../common/utils';
 import aws_config from './aws-config';
 
 Amplify.configure(aws_config);
@@ -9,19 +9,20 @@ Amplify.configure(aws_config);
 const paramIsTemporaryPassword = 't';
 const paramUsername = 'u';
 const paramTemporaryPassword = 'p';
+const successUrl = '/login/success';
 
 export const authProvider = {
   async login({ username, password }: ICredential) {
-    const successUrl = '/login/success';
-
     const user = await Auth.signIn(username as string, password as string);
+
     cache.setAccessToken(user['signInUserSession']['idToken']['jwtToken']);
 
     if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
       const encodedUsername = encodeURIComponent(toBase64(username as string));
       const encodedPassword = encodeURIComponent(toBase64(password as string));
-      return `/login?${paramIsTemporaryPassword}=true&${paramUsername}=${encodedUsername}&${paramTemporaryPassword}=${encodedPassword}`;
+      return `/complete-password?${paramIsTemporaryPassword}=true&${paramUsername}=${encodedUsername}&${paramTemporaryPassword}=${encodedPassword}`;
     }
+
     return successUrl;
   },
   getAuthConf() {
@@ -33,5 +34,13 @@ export const authProvider = {
     }
     return undefined;
   },
-  async whoami() {},
+  async updatePassword(newPassword: string) {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const username = fromBase64(decodeURIComponent(urlParams.get(paramUsername) as string)) as string;
+    const temporaryPassword = fromBase64(decodeURIComponent(urlParams.get(paramTemporaryPassword) as string)) as string;
+    const user = await Auth.signIn(username, temporaryPassword);
+    await Auth.completeNewPassword(user, newPassword);
+    return successUrl;
+  },
 };
