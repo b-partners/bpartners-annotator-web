@@ -10,6 +10,7 @@ const paramIsTemporaryPassword = 't';
 const paramUsername = 'u';
 const paramTemporaryPassword = 'p';
 const successUrl = '/login/success';
+const loginUrl = '/login';
 
 export const authProvider = {
   async login({ username, password }: ICredential) {
@@ -43,5 +44,14 @@ export const authProvider = {
     const session = await Auth.currentSession();
     cache.setAccessToken(session.getIdToken().getJwtToken());
     return successUrl;
+  },
+  async isAuthenticated() {
+    const session = await Auth.currentSession();
+    return session.isValid();
+  },
+  async logOut() {
+    await Auth.signOut();
+    cache.clear();
+    return loginUrl;
   },
 };

@@ -41,4 +41,7 @@ export const cache = {
   getUserId() {
     localStorage.getItem(USER_ID);
   },
+  clear() {
+    localStorage.clear();
+  },
 };

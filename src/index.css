@@ -5,3 +5,7 @@ body {
   height: 100vh;
   width: 100vw;
 }
+
+#webpack-dev-server-client-overlay {
+  display: none;
+}
