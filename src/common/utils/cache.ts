@@ -1,5 +1,4 @@
-'use client';
-import { Task } from 'bpartners-annotator-Ts-client';
+import { Task, Whoami } from 'bpartners-annotator-Ts-client';
 const CURRENT_TASK = 's3-image-url-item';
 const ACCESS_TOKEN = 'access-token-item';
 const USER_ID = 'user-id-item';
@@ -29,7 +28,7 @@ export const cache = {
   setAccessToken(accessToken: string) {
     localStorage.setItem(ACCESS_TOKEN, accessToken);
   },
-  getWhoami() {
+  getWhoami(): Whoami {
     return getJsonFromString(localStorage.getItem(WHOAMI));
   },
   setWhoami(whoami: any) {
