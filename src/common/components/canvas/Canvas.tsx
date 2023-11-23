@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, CircularProgress, Stack } from '@mui/material';
+import { Box, Chip, CircularProgress, Stack } from '@mui/material';
+import { Job } from 'bpartners-annotator-Ts-client';
 import { FC, useEffect, useMemo, useRef } from 'react';
 import { CANVAS_CONTAINER, CanvasAction, EventHandler, MousePosition } from '.';
 import { CanvasEditorProvider, IPolygon, useCanvasAnnotationContext } from '../../context';
@@ -7,7 +8,7 @@ import { useCanvasScale, useCanvasSize, useImageCreation, useImageOffset } from 
 import { CanvasHandler, getColorFromMain } from '../../utils';
 import './style.css';
 
-export const Canvas: FC<{ isLoading: boolean }> = ({ isLoading }) => {
+export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job }) => {
   const { annotations, isAnnotating, setIsAnnotating, addAnnotation, img } = useCanvasAnnotationContext();
   const canvas = useRef<HTMLCanvasElement>(null);
   const canvasImage = useRef<HTMLCanvasElement>(null);
@@ -65,6 +66,11 @@ export const Canvas: FC<{ isLoading: boolean }> = ({ isLoading }) => {
           )}
         </Box>
       </Box>
+      <Stack p={0.3} width='70vw' direction='row' spacing={1}>
+        <Stack direction='row' flexGrow={2} spacing={1}>
+          <Chip color='success' label={`Taches restantes: ${job.remaining_tasks}`} size='small' variant='outlined' />
+        </Stack>
+      </Stack>
     </CanvasEditorProvider>
   );
 };
