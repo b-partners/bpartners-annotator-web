@@ -39,10 +39,13 @@ export const useCanvasAnnotationContext = () => {
     return currentAnnotations.findIndex(value => value.id === id);
   };
 
-  const changeAnnotationLabel = (id: number, label: string) => {
+  const changeAnnotationLabel = (id: number, label: Label) => {
     const index = findAnnotationIndexById(id);
     const annotations = context.annotations.slice();
-    annotations[index].label = label;
+    annotations[index].label = label.name || '';
+    const color = getColorFromMain(label.color || '#00ff00');
+    annotations[index].polygon.fillColor = color.fillColor;
+    annotations[index].polygon.strokeColor = color.strokeColor;
     context.setAnnotations(annotations as IAnnotation[]);
   };
 
