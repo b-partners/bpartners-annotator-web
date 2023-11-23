@@ -6,7 +6,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { BpButton } from '../common/components/basics';
 import { Canvas } from '../common/components/canvas';
 import { Sidebar } from '../common/components/sidebar';
-import { CanvasAnnotationProvider, useCanvasAnnotationContext } from '../common/context';
+import { CanvasAnnotationProvider, IAnnotation, useCanvasAnnotationContext } from '../common/context';
 import { useFetch } from '../common/hooks';
 import { cache, retryer } from '../common/utils';
 import { userTasksProvider } from '../providers';
@@ -17,6 +17,15 @@ interface IConfirmButton {
   onEnd: () => void;
 }
 
+const areReadyForValidation = (annotations: IAnnotation[]) => {
+  for (let i = 0; i < annotations.length; i++) {
+    console.log(annotations[i].label);
+
+    if (annotations[i].label.length === 0) return false;
+  }
+  return false;
+};
+
 const ConfirmButton: FC<IConfirmButton> = ({ label, onEnd, task }) => {
   const { annotations, setAnnotations } = useCanvasAnnotationContext();
   const [isLoading, setLoading] = useState(false);
@@ -25,6 +34,12 @@ const ConfirmButton: FC<IConfirmButton> = ({ label, onEnd, task }) => {
   const handleClick = () => {
     const whoami = cache.getWhoami() as Whoami;
     const userId = whoami.user?.id || '';
+
+    const areReady = areReadyForValidation(annotations);
+    if (!areReady) {
+      alert('Veuillez donner un label pour chaque annotation.');
+      return;
+    }
     const taskAnnotation: Annotation[] = annotations.map(annotation => ({
       id: uuidV4(),
       label: label.find(e => e.name === annotation.label),
