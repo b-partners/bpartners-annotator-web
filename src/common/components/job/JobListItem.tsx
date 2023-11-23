@@ -12,7 +12,7 @@ export const JobListItem: FC<IJobListItem> = ({ job, teamId }) => {
   return (
     <ListItem sx={JOB_ITEM} alignItems='flex-start'>
       <Stack>
-        <ListItemText primary={job.id} />
+        <ListItemText primary={job.name || job.id} />
         <Stack direction='row' mt={2} spacing={1}>
           <Chip
             sx={{ outlineColor: color }}

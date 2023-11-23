@@ -116,7 +116,7 @@ export const TaskBoard = () => {
       <Grid container height='94%' pl={1}>
         <Grid item xs={10} display='flex' justifyContent='center' alignItems='center'>
           <div>
-            <Canvas isLoading={isLoading} />
+            <Canvas isLoading={isLoading} job={job} />
           </div>
         </Grid>
         <Grid sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }} item xs={2}>
