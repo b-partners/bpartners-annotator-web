@@ -9,7 +9,7 @@ const LabelItem: FC<ILabelItemProps> = ({ annotation }) => {
   const { changeAnnotationLabel, removeAnnotation, labels } = useCanvasAnnotationContext();
 
   const handleClick = (label: Label) => () => {
-    changeAnnotationLabel(annotation.id, label.name || '');
+    changeAnnotationLabel(annotation.id, label);
   };
 
   return (
