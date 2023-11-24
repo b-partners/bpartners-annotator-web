@@ -1,4 +1,4 @@
-import { UserTask, Whoami } from 'bpartners-annotator-Ts-client';
+import { Task, Whoami } from 'bpartners-annotator-Ts-client';
 const CURRENT_TASK = 'current-task-item';
 const ACCESS_TOKEN = 'access-token-item';
 const USER_ID = 'user-id-item';
@@ -13,10 +13,10 @@ const getJsonFromString = (value: string | null) => {
 };
 
 export const cache = {
-  setCurrentTask(task: UserTask) {
+  setCurrentTask(task: Task) {
     localStorage.setItem(CURRENT_TASK, JSON.stringify(task || {}));
   },
-  getCurrentTask(): UserTask | null {
+  getCurrentTask(): Task | null {
     return JSON.parse(localStorage.getItem(CURRENT_TASK) || 'null');
   },
   deleteCurrentTask() {

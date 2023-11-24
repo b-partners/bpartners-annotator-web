@@ -68,7 +68,13 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
       </Box>
       <Stack p={0.3} width='70vw' direction='row' spacing={1}>
         <Stack direction='row' flexGrow={2} spacing={1}>
-          <Chip color='success' label={`Taches restantes: ${job.remaining_tasks}`} size='small' variant='outlined' />
+          <Chip
+            color='info'
+            label={`Taches restantes: ${job.taskStatistics?.remainingTasks} / ${job.taskStatistics?.totalTasks}`}
+            size='small'
+            variant='outlined'
+          />
+          <Chip color='success' label={`Taches accomplies par l'utilisateur: ${job.taskStatistics?.completedTasksByUserId}`} size='small' variant='outlined' />
         </Stack>
       </Stack>
     </CanvasEditorProvider>
