@@ -47,6 +47,17 @@ const ConfirmButton: FC<IConfirmButton> = ({ label, onEnd, task }) => {
       polygon: { points: annotation.polygon.points },
       userId,
     }));
+
+    if (taskAnnotation.length === 0) {
+      taskAnnotation.push({
+        label: undefined,
+        id: uuidV4(),
+        polygon: undefined,
+        taskId: task.id,
+        userId,
+      });
+    }
+
     onEnd();
     Promise.allSettled([
       userTasksProvider.annotateOne(userId, task.id || '', taskAnnotation),
@@ -65,11 +76,7 @@ const ConfirmButton: FC<IConfirmButton> = ({ label, onEnd, task }) => {
       });
   };
 
-  return (
-    <Button onClick={handleClick} disabled={annotations.length === 0 || isLoading}>
-      Valider l'annotation
-    </Button>
-  );
+  return <BpButton label='Valider l’annotation' onClick={handleClick} isLoading={isLoading} />;
 };
 
 const CancelButton = () => {
