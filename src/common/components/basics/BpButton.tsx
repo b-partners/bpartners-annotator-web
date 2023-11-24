@@ -3,9 +3,9 @@ import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { IBpButton } from './types';
 
-export const BpButtonTemplate: FC<Omit<IBpButton, 'to'>> = ({ label, isLoading, icon, ...others }) => {
+export const BpButtonTemplate: FC<Omit<IBpButton, 'to'>> = ({ label, isLoading, icon, disabled, ...others }) => {
   return (
-    <Button {...others} endIcon={isLoading ? <CircularProgress size='25px' /> : icon} disabled={isLoading}>
+    <Button {...others} endIcon={isLoading ? <CircularProgress size='25px' /> : icon} disabled={isLoading || disabled}>
       {label}
     </Button>
   );

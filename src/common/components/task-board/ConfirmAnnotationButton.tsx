@@ -1,9 +1,11 @@
-import { Annotation, Label, Task, TaskStatus, Whoami } from 'bpartners-annotator-Ts-client';
+import { Checkbox, FormControlLabel, Stack } from '@mui/material';
+import { Annotation, Label, Polygon, Task, TaskStatus, Whoami } from 'bpartners-annotator-Ts-client';
 import { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
 import { userTasksProvider } from '../../../providers';
 import { IAnnotation, useCanvasAnnotationContext } from '../../context';
+import { useFetch } from '../../hooks';
 import { cache } from '../../utils';
 import { BpButton } from '../basics';
 
@@ -25,52 +27,65 @@ const areReadyForValidation = (annotations: IAnnotation[]) => {
 
 export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ label, onEnd, task, isFetcherLoading }) => {
   const { annotations, setAnnotations } = useCanvasAnnotationContext();
-  const [isLoading, setLoading] = useState(false);
   const params = useParams();
+  const [noAnnotation, setNoAnnotation] = useState(false);
 
-  const handleClick = () => {
-    setLoading(true);
+  const createAnnotation = (label?: Label, polygon?: Polygon) => {
     const whoami = cache.getWhoami() as Whoami;
     const userId = whoami.user?.id || '';
-
-    const areReady = areReadyForValidation(annotations);
-    if (!areReady) {
-      alert('Veuillez donner un label pour chaque annotation.');
-      return;
-    }
-    const taskAnnotation: Annotation[] = annotations.map(annotation => ({
+    return {
       id: uuidV4(),
-      label: label.find(e => e.name === annotation.label),
+      label,
       taskId: task.id || '',
-      polygon: { points: annotation.polygon.points },
+      polygon,
       userId,
-    }));
-
-    if (taskAnnotation.length === 0) {
-      taskAnnotation.push({
-        label: undefined,
-        id: uuidV4(),
-        polygon: undefined,
-        taskId: task.id,
-        userId,
-      });
-    }
-
-    Promise.allSettled([
-      userTasksProvider.annotateOne(userId, task.id || '', taskAnnotation),
-      userTasksProvider.updateOne(params.teamId || '', params.jobId || '', task.id || '', { ...task, status: TaskStatus.COMPLETED }),
-    ])
-      .then(() => {
-        setAnnotations([]);
-        onEnd();
-      })
-      .catch(err => {
-        alert((err as Error).message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    };
   };
 
-  return <BpButton label='Valider l’annotation' onClick={handleClick} isLoading={isLoading || isFetcherLoading} />;
+  const fetcher = async () => {
+    const whoami = cache.getWhoami() as Whoami;
+    const userId = whoami.user?.id || '';
+    const taskAnnotation: Annotation[] = annotations.map(annotation =>
+      createAnnotation(
+        label.find(e => e.name === annotation.label),
+        { points: annotation.polygon.points }
+      )
+    );
+    if (taskAnnotation.length === 0) taskAnnotation.push(createAnnotation(undefined, { points: [] }));
+    try {
+      await Promise.allSettled([
+        userTasksProvider.annotateOne(userId, task.id || '', taskAnnotation),
+        userTasksProvider.updateOne(params.teamId || '', params.jobId || '', task.id || '', { ...task, status: TaskStatus.COMPLETED }),
+      ]);
+      setAnnotations([]);
+      onEnd();
+    } catch (err) {
+      alert((err as Error).message);
+    } finally {
+      return;
+    }
+  };
+
+  const { fetcher: fetch, isLoading } = useFetch(fetcher, true);
+
+  const handleClick = () => {
+    const areReady = areReadyForValidation(annotations);
+    if (areReady) {
+      fetch();
+    } else {
+      alert('Veuillez donner un label pour chaque annotation.');
+    }
+  };
+
+  return (
+    <Stack>
+      <BpButton
+        label='Valider l’annotation'
+        onClick={handleClick}
+        disabled={!noAnnotation && annotations.length === 0}
+        isLoading={isLoading || isFetcherLoading}
+      />
+      <FormControlLabel label='Rien à labelliser' control={<Checkbox value={noAnnotation} onClick={() => setNoAnnotation(e => !e)} />} />
+    </Stack>
+  );
 };
