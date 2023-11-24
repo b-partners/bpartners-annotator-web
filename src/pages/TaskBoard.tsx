@@ -9,7 +9,7 @@ import { Sidebar } from '../common/components/sidebar';
 import { CanvasAnnotationProvider, IAnnotation, useCanvasAnnotationContext } from '../common/context';
 import { useFetch } from '../common/hooks';
 import { cache, retryer } from '../common/utils';
-import { userTasksProvider } from '../providers';
+import { teamJobsProvider, userTasksProvider } from '../providers';
 
 interface IConfirmButton {
   task: Task;
@@ -23,7 +23,7 @@ const areReadyForValidation = (annotations: IAnnotation[]) => {
 
     if (annotations[i].label.length === 0) return false;
   }
-  return false;
+  return true;
 };
 
 const ConfirmButton: FC<IConfirmButton> = ({ label, onEnd, task }) => {
@@ -100,24 +100,32 @@ const ChangeImageButton: FC<{ fetcher: () => void; task: Task }> = ({ fetcher, t
   return <BpButton isLoading={isLoading} onClick={changeImage} label="Changer d'image" />;
 };
 
+interface UseJobTaskState {
+  task: Task | null;
+  job: Job | null;
+}
+
 export const TaskBoard = () => {
-  const { task: taskLoaded, job } = useLoaderData() as { task: Task; job: Job };
-  const [task, setTask] = useState<Task | null>(taskLoaded);
+  const { task: taskLoaded, job: jobLoaded } = useLoaderData() as { task: Task; job: Job };
+  const [{ job, task }, setState] = useState<UseJobTaskState>({ job: jobLoaded, task: taskLoaded });
   const params = useParams();
-  const { data, fetcher, isLoading } = useFetch(async () => await userTasksProvider.getOne(params.jobId || '', params.teamId || ''));
+  const { data, fetcher, isLoading } = useFetch(
+    async () =>
+      await Promise.all([userTasksProvider.getOne(params.jobId || '', params.teamId || ''), teamJobsProvider.getOne(params.teamId || '', params.jobId || '')])
+  );
 
   useEffect(() => {
-    setTask({ ...data });
+    if (data) {
+      setState({ job: data[1], task: data[0] });
+    }
     return () => {};
   }, [data]);
 
   return task !== null ? (
-    <CanvasAnnotationProvider img={task.imageUri || ''} labels={job.labels || []}>
+    <CanvasAnnotationProvider img={task.imageUri || ''} labels={job?.labels || []}>
       <Grid container height='94%' pl={1}>
         <Grid item xs={10} display='flex' justifyContent='center' alignItems='center'>
-          <div>
-            <Canvas isLoading={isLoading} job={job} />
-          </div>
+          <div>{job && <Canvas isLoading={isLoading} job={job} />}</div>
         </Grid>
         <Grid sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }} item xs={2}>
           <Stack flexGrow={2}>
