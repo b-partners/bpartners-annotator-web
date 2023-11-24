@@ -6,3 +6,4 @@ export * from './NewPassword';
 export * from './Success';
 export * from './TaskBoard';
 export * from './style';
+export * from './type';

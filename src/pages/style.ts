@@ -99,3 +99,5 @@ export const error_card_container: SxProps = {
     width: 398,
   },
 };
+
+export const canvas_loading: SxProps = { width: '100%', height: '80vh', display: 'flex', justifyContent: 'center', alignItems: 'center' };
