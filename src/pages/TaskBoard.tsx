@@ -15,6 +15,7 @@ interface IConfirmButton {
   task: Task;
   label: Label[];
   onEnd: () => void;
+  isFetcherLoading: boolean;
 }
 
 const areReadyForValidation = (annotations: IAnnotation[]) => {
@@ -26,12 +27,13 @@ const areReadyForValidation = (annotations: IAnnotation[]) => {
   return true;
 };
 
-const ConfirmButton: FC<IConfirmButton> = ({ label, onEnd, task }) => {
+const ConfirmButton: FC<IConfirmButton> = ({ label, onEnd, task, isFetcherLoading }) => {
   const { annotations, setAnnotations } = useCanvasAnnotationContext();
   const [isLoading, setLoading] = useState(false);
   const params = useParams();
 
   const handleClick = () => {
+    setLoading(true);
     const whoami = cache.getWhoami() as Whoami;
     const userId = whoami.user?.id || '';
 
@@ -58,15 +60,13 @@ const ConfirmButton: FC<IConfirmButton> = ({ label, onEnd, task }) => {
       });
     }
 
-    onEnd();
     Promise.allSettled([
       userTasksProvider.annotateOne(userId, task.id || '', taskAnnotation),
       userTasksProvider.updateOne(params.teamId || '', params.jobId || '', task.id || '', { ...task, status: TaskStatus.COMPLETED }),
     ])
       .then(() => {
-        const { jobId, teamId } = params as Record<string, string>;
         setAnnotations([]);
-        window.location.replace(`/teams/${teamId}/jobs/${jobId}`);
+        onEnd();
       })
       .catch(err => {
         alert((err as Error).message);
@@ -76,7 +76,7 @@ const ConfirmButton: FC<IConfirmButton> = ({ label, onEnd, task }) => {
       });
   };
 
-  return <BpButton label='Valider l’annotation' onClick={handleClick} isLoading={isLoading} />;
+  return <BpButton label='Valider l’annotation' onClick={handleClick} isLoading={isLoading || isFetcherLoading} />;
 };
 
 const CancelButton = () => {
@@ -141,7 +141,7 @@ export const TaskBoard = () => {
           <Stack spacing={1} m={2} mb={1}>
             <CancelButton />
             <ChangeImageButton fetcher={fetcher} task={task} />
-            <ConfirmButton task={task} onEnd={fetcher} label={job?.labels || []} />
+            <ConfirmButton isFetcherLoading={isLoading} task={task} onEnd={fetcher} label={job?.labels || []} />
           </Stack>
         </Grid>
       </Grid>
