@@ -160,5 +160,30 @@ export function overrides(theme: any) {
         },
       },
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '.MuiInputBase-root': {
+            padding: 0,
+            textAlign: 'right',
+          },
+          '.MuiInputBase-input': {
+            paddingRight: '3rem',
+          },
+          '.MuiIconButton-root': {
+            position: 'absolute',
+            right: '0.4rem',
+            background: 'inherit',
+          },
+          'MuiTouchRipple-root': {
+            border: 'none !important',
+            outline: 'none !important',
+          },
+          input: {
+            width: '100%',
+          },
+        },
+      },
+    },
   };
 }
