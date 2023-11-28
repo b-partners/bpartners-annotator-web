@@ -55,7 +55,7 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ label, onEnd, task
     try {
       await Promise.allSettled([
         userTasksProvider.annotateOne(userId, task.id || '', taskAnnotation),
-        userTasksProvider.updateOne(params.teamId || '', params.jobId || '', task.id || '', { ...task, status: TaskStatus.COMPLETED }),
+        userTasksProvider.updateOne(params.teamId || '', params.jobId || '', task.id || '', { ...task, status: TaskStatus.COMPLETED, userId }),
       ]);
       setAnnotations([]);
       onEnd();
