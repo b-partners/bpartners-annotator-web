@@ -1,10 +1,13 @@
-import { ThemeProvider } from '@emotion/react';
 import { RouterProvider } from 'react-router-dom';
-import { bpTheme } from './common/utils';
+import { ThemeProvider } from './common/utils/theme';
 import AppRouter from './router/routes';
 
 function App() {
-  return <ThemeProvider theme={bpTheme}>{<RouterProvider router={AppRouter} />}</ThemeProvider>;
+  return (
+    <ThemeProvider>
+      <RouterProvider router={AppRouter} />
+    </ThemeProvider>
+  );
 }
 
 export default App;

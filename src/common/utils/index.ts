@@ -1,5 +1,4 @@
 export * from './base64-utilities';
-export * from './bp-theme';
 export * from './cache';
 export * from './canvas-handler';
 export * from './canvas-utilities';
