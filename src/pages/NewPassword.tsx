@@ -29,7 +29,7 @@ export const NewPassword = () => {
   });
 
   return (
-    <LoginLayout>
+    <LoginLayout title='Nouveau mot de passe'>
       <FormProvider {...form}>
         <form onSubmit={handleSubmit}>
           <Stack spacing={2}>

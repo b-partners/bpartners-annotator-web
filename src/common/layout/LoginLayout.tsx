@@ -1,21 +1,35 @@
-import { Person2Outlined as Person2OutlinedIcon } from '@mui/icons-material';
-import { Avatar, Box, Card, CardContent, Stack } from '@mui/material';
+import { Box, Card, Stack, Typography, alpha, useTheme } from '@mui/material';
 import { FC } from 'react';
-import { LoginLayoutProps, login_card_content, login_container } from '.';
+import { LoginLayoutProps } from '.';
+import { bgGradient } from '../utils/theme';
 
-export const LoginLayout: FC<LoginLayoutProps> = ({ children }) => {
+export const LoginLayout: FC<LoginLayoutProps> = ({ children, title }) => {
+  const theme = useTheme();
+
   return (
-    <Box sx={login_container}>
-      <div className='login-card-container'>
-        <Card>
-          <CardContent sx={login_card_content}>{children}</CardContent>
+    <Box
+      sx={{
+        ...bgGradient({
+          color: alpha(theme.palette.background.default, 0.9),
+          imgUrl: '/assets/background/overlay_4.jpg',
+        }),
+        height: 1,
+      }}
+    >
+      <Stack alignItems='center' justifyContent='center' sx={{ height: 1 }}>
+        <Card
+          sx={{
+            p: 5,
+            width: 1,
+            maxWidth: 420,
+          }}
+        >
+          <Typography variant='h4' mb={4}>
+            {title}
+          </Typography>
+          {children}
         </Card>
-        <Stack className='login-card-header-container'>
-          <Avatar>
-            <Person2OutlinedIcon />
-          </Avatar>
-        </Stack>
-      </div>
+      </Stack>
     </Box>
   );
 };

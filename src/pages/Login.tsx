@@ -28,7 +28,7 @@ export const Login = () => {
   });
 
   return (
-    <LoginLayout>
+    <LoginLayout title='Connection'>
       <FormProvider {...form}>
         <form onSubmit={handleSubmit}>
           <Stack spacing={2}>
