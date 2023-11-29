@@ -14,7 +14,7 @@ interface IMousePositionProps {
 
 const Position: FC<IPositionProps> = ({ label, value }) => {
   return (
-    <Stack direction='row' py={0.3} width={65} px={1} spacing={1}>
+    <Stack direction='row' py={0.3} width={100} px={1} spacing={1}>
       <Typography color='text.secondary'>{label} :</Typography>
       <Typography>{value}</Typography>
     </Stack>
