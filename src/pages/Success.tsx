@@ -5,7 +5,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useNavigate } from 'react-router-dom';
 import { container_center_flex } from '.';
 import bp_logo from '../assets/bp-logo-full.webp';
-import { retryer } from '../common/utils';
+import { redirectionByRole, retryer } from '../common/utils';
 import { accountProvider } from '../providers/account-provider';
 
 export const Success = () => {
@@ -15,7 +15,8 @@ export const Success = () => {
     const getWhoami = async () => {
       try {
         const whoami = await retryer(async () => await accountProvider.whoami());
-        if (!!whoami?.user?.team?.id) navigate(`/teams/${whoami.user.team.id}/jobs`);
+        const redirectionUrl = redirectionByRole(whoami);
+        navigate(redirectionUrl);
       } catch (error) {
         console.log(error);
       }
