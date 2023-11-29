@@ -49,9 +49,9 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
       </Stack>
       <Box ref={canvasContainer} sx={CANVAS_CONTAINER}>
         <Box sx={{ height: ch * scaling, width: cw * scaling }}>
-          <canvas ref={canvasImage} height={ch} width={cw} style={{ height: ch * scaling, width: cw * scaling }} />
-          <canvas ref={canvas} height={ch} width={cw} style={{ height: ch * scaling, width: cw * scaling }} />
-          <canvas ref={canvasCursor} height={ch} width={cw} style={{ height: ch * scaling, width: cw * scaling }} />
+          <canvas ref={canvasImage} height={ch * scaling} width={cw * scaling} />
+          <canvas ref={canvas} height={ch * scaling} width={cw * scaling} />
+          <canvas ref={canvasCursor} height={ch * scaling} width={cw * scaling} />
           {(isLoading || (image.src.length === 0 && imageOffset.iho === 0)) && (
             <div
               style={{

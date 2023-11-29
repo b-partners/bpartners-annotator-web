@@ -28,19 +28,18 @@ export const MousePosition: FC<IMousePositionProps> = ({ canvas, image }) => {
 
   useEffect(() => {
     if (canvas && image) {
-      const { iho, iwo } = getCanvasImageOffset(canvas, image);
       const eventListener = (event: MouseEvent) => {
         const { x: mx, y: my } = getMousePositionInCanvas(event, canvas);
+        const { iho, iwo, ih, iw } = getCanvasImageOffset(canvas, image);
         const pos = { x: 0, y: 0 };
-
-        if (mx > image.width + iwo) {
-          pos.x = image.width + iwo;
+        if (mx > iw + iwo) {
+          pos.x = iw + iwo;
         } else if (mx >= iwo) {
           pos.x = notNegative(mx - iwo);
         }
 
-        if (my > image.height + iho) {
-          pos.y = image.height + iho;
+        if (my > ih + iho) {
+          pos.y = ih + iho;
         } else if (my >= iho) {
           pos.y = notNegative(my - iho);
         }

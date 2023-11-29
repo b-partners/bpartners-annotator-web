@@ -1,14 +1,12 @@
 import { IEventHandlerProps, IImageOffset, IPointInfo } from '.';
 import { IAnnotation, IPoint, IPolygon } from '../../context';
-import { CanvasHandler, TMouseType, areOverlappingPoints } from '../../utils';
+import { CanvasHandler, TMouseType, areOverlappingPoints, getCanvasImageOffset } from '../../utils';
 
 export const getMousePositionInCanvas = (event: MouseEvent, canvas: HTMLCanvasElement) => {
   const canvasRect = canvas.getBoundingClientRect();
-  const scale = parseInt(canvas.style.width) / canvas.width;
-
   const currentX = event.clientX - Math.floor(canvasRect?.left || 0);
   const currentY = event.clientY - Math.floor(canvasRect?.top || 0);
-  return { x: Math.floor((currentX === -1 ? 0 : currentX) / scale), y: Math.floor((currentY === -1 ? 0 : currentY) / scale) };
+  return { x: Math.floor(currentX === -1 ? 0 : currentX), y: Math.floor(currentY === -1 ? 0 : currentY) };
 };
 
 export const getRestrictedValue = (value: number, min: number, max: number) => (value > max ? max - min : value < min ? 0 : value - min);
@@ -72,7 +70,9 @@ export class EventHandler {
     const points = polygon.points;
 
     if (this.isAnnotating) {
-      const position = this.getMousePositionWithOffset(event);
+      const { x, y } = this.getMousePositionWithOffset(event);
+      const scale = Math.floor(this.canvas.width / (window.innerWidth * 0.7));
+      const position = { x: x / scale, y: y / scale };
       if (points.length > 1 && areOverlappingPoints(points[0], position)) {
         points.push(points[0]);
         this.drawMouse(this.realPointPosition(position), 'DEFAULT');
@@ -133,17 +133,18 @@ export class EventHandler {
   }
 
   private realPointPosition({ x, y }: IPoint) {
+    const { iwo, iho } = getCanvasImageOffset(this.canvas, this.image);
     return {
-      x: x + this.imageOffset.iwo,
-      y: y + this.imageOffset.iho,
+      x: x + iwo,
+      y: y + iho,
     };
   }
 
   private getMousePositionWithOffset(event: MouseEvent) {
-    const { iho, iwo } = this.imageOffset;
+    const { ih, iho, iw, iwo } = getCanvasImageOffset(this.canvas, this.image);
     const position = getMousePositionInCanvas(event, this.canvas);
-    position.x = getRestrictedValue(position.x, iwo, this.image.width + iwo);
-    position.y = getRestrictedValue(position.y, iho, this.image.height + iho);
+    position.x = getRestrictedValue(position.x, iwo, iw + iwo);
+    position.y = getRestrictedValue(position.y, iho, ih + iho);
     return position;
   }
 

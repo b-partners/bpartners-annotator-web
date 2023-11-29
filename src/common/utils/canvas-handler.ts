@@ -35,9 +35,7 @@ export class CanvasHandler {
   }
 
   private _getScalingValue(canvas: RefObject<HTMLCanvasElement>) {
-    const canvasWidth = canvas.current?.width || 0;
-    const canvasStyleWidth = parseInt(canvas.current?.style.width || '0px');
-    return Math.round(canvasStyleWidth / canvasWidth);
+    return (canvas.current?.width || 1) / (window.innerWidth * 0.7);
   }
 
   private _initializeSize() {
@@ -60,22 +58,21 @@ export class CanvasHandler {
   public drawMouseCursor() {
     const ctx = this._cursorCtx;
     const clear = () => this.clear(ctx);
-    const canvas = this._canvasCursorRef;
-    const canvasHandler = this;
+    const getScale = () => this._getScalingValue(this._canvasCursorRef);
     return ({ x, y }: IPoint, type: TMouseType) => {
-      const scale = canvasHandler._getScalingValue(canvas);
+      const scale = getScale() > 1 ? getScale() / 2 : getScale();
       if (ctx) {
         clear();
         ctx.lineWidth = 1;
         ctx.beginPath();
         if (type === 'DEFAULT') {
-          ctx.arc(x, y, 4 / scale, 0, Math.PI * 2);
+          ctx.arc(x, y, 4 * scale, 0, Math.PI * 2);
           ctx.fill();
         } else if (type === 'END') {
-          ctx.arc(x, y, 7 / scale, 0, Math.PI * 2);
+          ctx.arc(x, y, 7 * scale, 0, Math.PI * 2);
           ctx.stroke();
         } else {
-          ctx.arc(x, y, 7 / scale, 0, Math.PI * 2);
+          ctx.arc(x, y, 7 * scale, 0, Math.PI * 2);
           ctx.stroke();
         }
         ctx.closePath();
@@ -99,7 +96,8 @@ export class CanvasHandler {
     this._initCtx();
     if (this._polygonCtx && this._image) {
       this.clear(this._polygonCtx);
-      this._imageCtx.drawImage(this._image, this._iwo, this._iho);
+      const scale = this._getScalingValue(this._canvasCursorRef);
+      this._imageCtx.drawImage(this._image, this._iwo, this._iho, this._image.width * scale, this._image.height * scale);
     }
   }
 
@@ -129,6 +127,14 @@ export class CanvasHandler {
   }
 
   private realPointPosition({ x, y }: IPoint) {
+    if (this._canvasCursorRef.current) {
+      const { iwo, iho } = getCanvasImageOffset(this._canvasCursorRef.current, this._image);
+      const scale = this._getScalingValue(this._canvasCursorRef);
+      return {
+        x: scale * x + iwo,
+        y: scale * y + iho,
+      };
+    }
     return {
       x: x + this._iwo,
       y: y + this._iho,
