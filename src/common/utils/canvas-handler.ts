@@ -109,7 +109,7 @@ export class CanvasHandler {
     const scale = this._getScalingValue(this._canvasImageRef);
     ctx.beginPath();
     ctx.fillStyle = 'black';
-    ctx.arc(x, y, POINT_SHAPE_RADIUS / scale, 0, 2 * Math.PI);
+    ctx.arc(x, y, POINT_SHAPE_RADIUS * scale, 0, 2 * Math.PI);
     ctx.fill();
     ctx.closePath();
   }
