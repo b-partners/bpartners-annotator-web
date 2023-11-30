@@ -1,6 +1,6 @@
-import { IEventHandlerProps, IImageOffset, IPointInfo } from '.';
+import { IEventHandlerProps, IPointInfo, ScalingHandler } from '.';
 import { IAnnotation, IPoint, IPolygon } from '../../context';
-import { CanvasHandler, TMouseType, areOverlappingPoints, getCanvasImageOffset } from '../../utils';
+import { CanvasHandler, TMouseType, areOverlappingPoints } from '../../utils';
 
 export const getMousePositionInCanvas = (event: MouseEvent, canvas: HTMLCanvasElement) => {
   const canvasRect = canvas.getBoundingClientRect();
@@ -18,10 +18,10 @@ export class EventHandler {
   private polygon: IPolygon;
   private annotations: IAnnotation[];
   private canvasHandler: CanvasHandler;
-  private imageOffset: IImageOffset;
   private drawMouse: (point: IPoint, type: TMouseType) => void;
   private pointsInfo: IPointInfo[] = [];
   private currentPointInfo: IPointInfo | null = null;
+  private scalingHandler: ScalingHandler;
 
   constructor(props: IEventHandlerProps) {
     this.canvas = props.canvas;
@@ -29,10 +29,10 @@ export class EventHandler {
     this.image = props.image;
     this.isAnnotating = props.isAnnotating;
     this.canvasHandler = props.canvasHandler;
-    this.imageOffset = props.imageOffset;
     this.polygon = props.polygon;
     this.drawMouse = this.canvasHandler.drawMouseCursor();
     this.createPointInfo();
+    this.scalingHandler = new ScalingHandler(props.canvas, props.image);
   }
 
   public initEvent = (canvas: HTMLCanvasElement, addAnnotation: (annotation: IAnnotation) => void) => {
@@ -66,51 +66,57 @@ export class EventHandler {
   }
 
   private mouseDown = (end: (annotation: IAnnotation) => void) => (event: MouseEvent) => {
+    const sc = this.scalingHandler;
+
     const polygon = this.polygon;
     const points = polygon.points;
 
-    if (this.isAnnotating) {
-      const { x, y } = this.getMousePositionWithOffset(event);
-      const scale = Math.floor(this.canvas.width / (window.innerWidth * 0.7));
-      const position = { x: x / scale, y: y / scale };
-      if (points.length > 1 && areOverlappingPoints(points[0], position)) {
-        points.push(points[0]);
-        this.drawMouse(this.realPointPosition(position), 'DEFAULT');
-        end({ label: '', polygon: polygon, id: 0 });
-      } else {
-        points.push(position);
-      }
+    const currentLogicalPosition = sc.getLogicalPosition(event);
+    const currentPhysicalPosition = sc.getPhysicalPositionByEvent(event);
+
+    console.log(currentLogicalPosition, currentPhysicalPosition, sc.getPhysicalPositionByPoint(currentPhysicalPosition));
+
+    if (this.isAnnotating && points.length > 1 && areOverlappingPoints(points[0], currentLogicalPosition)) {
+      points.push(points[0]);
+      this.drawMouse(currentPhysicalPosition, 'DEFAULT');
+      end({ label: '', polygon: polygon, id: 0 });
       this.draw();
+    } else if (this.isAnnotating) {
+      points.push(currentLogicalPosition);
     } else {
-      const currentPosition = this.getMousePositionWithOffset(event);
-      this.currentPointInfo = this.pointsInfo.find(value => areOverlappingPoints(value.point, currentPosition)) || null;
+      this.currentPointInfo = this.pointsInfo.find(value => areOverlappingPoints(value.point, currentLogicalPosition)) || null;
     }
   };
 
   private mouseMove = (event: MouseEvent) => {
-    const currentPosition = getMousePositionInCanvas(event, this.canvas);
-    const isPointInAnnotation = this.pointsInfo.find(value => areOverlappingPoints(this.realPointPosition(value.point), currentPosition));
+    const sc = this.scalingHandler;
+
+    const currentPhysicalPosition = sc.getPhysicalPositionByEvent(event);
+    const currentLogicalPosition = sc.getLogicalPosition(event);
+
+    const isPointInAnnotation = this.pointsInfo.find(value => areOverlappingPoints(value.point, currentLogicalPosition));
     const points = this.polygon.points;
 
-    if (points.length > 0 && areOverlappingPoints(this.realPointPosition(points[0]), currentPosition)) {
-      this.drawMouse(currentPosition, 'END');
+    if (points.length > 0 && areOverlappingPoints(points[0], currentLogicalPosition)) {
+      this.drawMouse(currentPhysicalPosition, 'END');
     } else if (!this.isAnnotating && isPointInAnnotation) {
-      this.drawMouse(currentPosition, 'UNDER_POINT');
+      this.drawMouse(currentPhysicalPosition, 'UNDER_POINT');
     } else {
-      this.drawMouse(currentPosition, 'DEFAULT');
+      this.drawMouse(currentPhysicalPosition, 'DEFAULT');
     }
 
     if (!this.isAnnotating && this.currentPointInfo !== null) {
       const { id, index } = this.currentPointInfo;
       const points = this.annotations[id - 1].polygon.points;
       const lastIndex = points.length - 1;
-      const position = this.getMousePositionWithOffset(event);
+
       if (index === 0 || index === lastIndex) {
-        points[lastIndex] = position;
-        points[0] = position;
+        points[lastIndex] = currentLogicalPosition;
+        points[0] = currentLogicalPosition;
       } else {
-        points[index] = position;
+        points[index] = currentLogicalPosition;
       }
+
       this.draw();
     }
   };
@@ -130,22 +136,6 @@ export class EventHandler {
     return () => {
       canvasHandler.removeCursor();
     };
-  }
-
-  private realPointPosition({ x, y }: IPoint) {
-    const { iwo, iho } = getCanvasImageOffset(this.canvas, this.image);
-    return {
-      x: x + iwo,
-      y: y + iho,
-    };
-  }
-
-  private getMousePositionWithOffset(event: MouseEvent) {
-    const { ih, iho, iw, iwo } = getCanvasImageOffset(this.canvas, this.image);
-    const position = getMousePositionInCanvas(event, this.canvas);
-    position.x = getRestrictedValue(position.x, iwo, iw + iwo);
-    position.y = getRestrictedValue(position.y, iho, ih + iho);
-    return position;
   }
 
   private draw() {
