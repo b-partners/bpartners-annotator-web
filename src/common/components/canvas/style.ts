@@ -5,7 +5,7 @@ export const CANVAS: CSSProperties = { position: 'absolute', top: 0, left: 0, cu
 export const CANVAS_CONTAINER: SxProps = {
   overflow: 'auto',
   position: 'relative',
-  background: 'rgba(0,0,0,0.1)',
+  background: 'rgba(0,0,0,0.05)',
   '&::-webkit-scrollbar': {
     display: 'none',
   },
