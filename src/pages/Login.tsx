@@ -1,8 +1,8 @@
 import { LoginOutlined as LoginOutlinedIcon } from '@mui/icons-material';
-import { Stack } from '@mui/material';
+import { Divider, Stack } from '@mui/material';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BpButton, BpPasswordField, BpTextField } from '../common/components/basics';
 import { LoginLayout } from '../common/layout';
 import { FieldErrorMessage, loginDefaultValues, loginResolver } from '../common/resolvers';
@@ -37,6 +37,10 @@ export const Login = () => {
             <div style={login_button_container}>
               <BpButton type='submit' isLoading={isLoading} label='Se connecter' icon={<LoginOutlinedIcon />} />
             </div>
+            <Divider />
+            <Stack>
+              <Link to='/admin/login'>Utiliser une clé d'api ?</Link>
+            </Stack>
           </Stack>
         </form>
       </FormProvider>

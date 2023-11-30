@@ -4,7 +4,7 @@ export const redirectionByRole = (whoami: Whoami | null) => {
   if (whoami?.user?.role && whoami?.user?.team) {
     switch (whoami.user?.role) {
       case UserRole.ADMIN:
-        return `/dashboard`;
+        return `/teams/${whoami.user.team.id}/jobs`;
       default:
         return `/teams/${whoami.user.team.id}/jobs`;
     }

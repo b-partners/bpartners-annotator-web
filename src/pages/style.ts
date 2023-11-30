@@ -60,7 +60,7 @@ export const login_card_content: SxProps = {
     marginTop: 13,
   },
 };
-export const login_button_container: CSSProperties = { textAlign: 'center', marginTop: '3rem' };
+export const login_button_container: CSSProperties = { textAlign: 'center', marginTop: '3rem', marginBottom: '1rem' };
 
 export const container_center_flex: SxProps = {
   width: '100vw',

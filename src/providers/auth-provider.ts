@@ -27,9 +27,10 @@ export const authProvider = {
   },
   getAuthConf() {
     const accessToken = cache.getAccessToken();
+    const apiKey = cache.getApiKey();
     if (accessToken) {
       const conf = new Configuration({ accessToken });
-      conf.baseOptions = { headers: { Authorization: `Bearer ${accessToken}` } };
+      conf.baseOptions = { headers: { Authorization: accessToken, 'x-api-key': apiKey } };
       return conf;
     }
     return undefined;
