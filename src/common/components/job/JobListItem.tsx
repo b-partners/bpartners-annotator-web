@@ -12,7 +12,7 @@ export const JobListItem: FC<IJobListItem> = ({ job, teamId }) => {
   return (
     <ListItem sx={JOB_ITEM} alignItems='flex-start'>
       <Stack>
-        <Stack direction='row' width='105%'>
+        <Stack direction='row' className='job-title-container'>
           <ListItemText primary={job.name || job.id} />
           <Link href={link}>
             <IconButton size='small'>
