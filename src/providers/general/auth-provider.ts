@@ -52,7 +52,8 @@ export const authProvider = {
   },
   async logOut() {
     await Auth.signOut();
-    cache.clear();
+    cache.setWhoami('undefined');
+    cache.setApiKey('undefined');
     return loginUrl;
   },
   getRedirectionBySession() {
