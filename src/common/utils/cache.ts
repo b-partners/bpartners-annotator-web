@@ -28,7 +28,7 @@ export const cache = {
     return localStorage.getItem(ACCESS_TOKEN) || undefined;
   },
   setAccessToken(accessToken: string) {
-    localStorage.setItem(ACCESS_TOKEN, 'Bearer ' + accessToken);
+    localStorage.setItem(ACCESS_TOKEN, accessToken.length > 0 ? 'Bearer ' + accessToken : '');
   },
   getWhoami(): Whoami {
     return getJsonFromString(localStorage.getItem(WHOAMI));

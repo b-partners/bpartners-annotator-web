@@ -1,18 +1,9 @@
-import { FC, useEffect } from 'react';
-import { createBrowserRouter, useNavigate } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import { ListPageLayout, TopBarLayout } from '../common/components/layout';
 import { Error, Home, JobList, Login, LoginByApiKey, NewPassword, Success, TaskBoard } from '../pages';
 import { AdminJobList, AdminTaskList } from '../pages/admin';
 import { adminJobsLoader, adminTasksLoader, jobsLoader } from './loaders';
 import { taskLoader } from './loaders/task-loader';
-
-const Redirect: FC<{ to: string }> = ({ to }) => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    navigate(to);
-  }, [navigate, to]);
-  return <div></div>;
-};
 
 const AppRouter = createBrowserRouter([
   {
@@ -46,7 +37,6 @@ const AppRouter = createBrowserRouter([
     errorElement: <Error />,
     children: [
       {
-        errorElement: <Error />,
         element: <ListPageLayout />,
         children: [
           {
@@ -65,11 +55,6 @@ const AppRouter = createBrowserRouter([
             element: <AdminTaskList />,
           },
         ],
-      },
-      {
-        path: '/teams',
-        loader: taskLoader,
-        element: <Redirect to='/' />,
       },
       {
         path: '/teams/:teamId/jobs/:jobId',

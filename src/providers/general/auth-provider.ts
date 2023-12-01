@@ -28,12 +28,9 @@ export const authProvider = {
   getAuthConf() {
     const accessToken = cache.getAccessToken();
     const apiKey = cache.getApiKey();
-    if (accessToken) {
-      const conf = new Configuration({ accessToken });
-      conf.baseOptions = { headers: { Authorization: accessToken, 'x-api-key': apiKey } };
-      return conf;
-    }
-    return undefined;
+    const conf = new Configuration({ accessToken });
+    conf.baseOptions = { headers: { Authorization: accessToken, 'x-api-key': apiKey } };
+    return conf;
   },
   async updatePassword(newPassword: string) {
     const queryString = window.location.search;
@@ -52,6 +49,8 @@ export const authProvider = {
   },
   async logOut() {
     await Auth.signOut();
+    cache.setWhoami(null);
+    cache.setAccessToken('');
     cache.setWhoami(null);
     cache.setApiKey('');
     return loginUrl;

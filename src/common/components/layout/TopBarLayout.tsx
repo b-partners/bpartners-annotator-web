@@ -1,25 +1,31 @@
 import { AppBar, Box, Toolbar } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Outlet, useNavigate } from 'react-router-dom';
 import BP_LOGO from '../../../assets/bp-white-logo.png';
 import { authProvider } from '../../../providers';
-import { useFetch } from '../../hooks';
 import { cache } from '../../utils';
 import { BpButton } from '../basics';
 
 export const TopBarLayout = () => {
   const navigate = useNavigate();
-  const logout = async () => {
-    const redirection = await authProvider.logOut();
-    navigate(redirection);
-    return;
+  const [isLoading, setLoading] = useState(false);
+
+  const logout = () => {
+    setLoading(true);
+    authProvider
+      .logOut()
+      .then(redirection => {
+        navigate(redirection);
+      })
+      .catch(console.log)
+      .finally(() => setLoading(false));
   };
-  const { isLoading } = useFetch(logout, true);
 
   useEffect(() => {
     const accessToken = cache.getAccessToken();
-    if (!accessToken || accessToken.length === 0) navigate('/login');
+    const apiKey = cache.getApiKey();
+    if ((!accessToken || accessToken.length === 0) && (!apiKey || apiKey.length === 0)) navigate('/login');
   }, [navigate]);
 
   return (
