@@ -2,6 +2,7 @@
 import { Job } from '@bpartners-annotator/typescript-client';
 import { Box, Chip, CircularProgress, Stack } from '@mui/material';
 import { FC, useEffect, useMemo, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { CANVAS_CONTAINER, CanvasAction, EventHandler, MousePosition } from '.';
 import { CanvasEditorProvider, IPolygon, useCanvasAnnotationContext } from '../../context';
 import { useCanvasScale, useCanvasSize, useImageCreation, useImageOffset } from '../../hooks';
@@ -36,6 +37,8 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
     setIsAnnotating(false);
   }, [annotations]);
 
+  const { pathname } = useLocation();
+
   return (
     <CanvasEditorProvider zoom={zoomActions}>
       <Stack p={0.3} width='70vw' direction='row' spacing={1}>
@@ -66,17 +69,24 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
           )}
         </Box>
       </Box>
-      <Stack p={0.3} width='70vw' direction='row' spacing={1}>
-        <Stack direction='row' flexGrow={2} spacing={1}>
-          <Chip
-            color='info'
-            label={`Taches restantes: ${job.taskStatistics?.remainingTasks} / ${job.taskStatistics?.totalTasks}`}
-            size='small'
-            variant='outlined'
-          />
-          <Chip color='success' label={`Taches accomplies par l'utilisateur: ${job.taskStatistics?.completedTasksByUserId}`} size='small' variant='outlined' />
+      {pathname[1] !== 'j' && (
+        <Stack p={0.3} width='70vw' direction='row' spacing={1}>
+          <Stack direction='row' flexGrow={2} spacing={1}>
+            <Chip
+              color='info'
+              label={`Taches restantes: ${job.taskStatistics?.remainingTasks} / ${job.taskStatistics?.totalTasks}`}
+              size='small'
+              variant='outlined'
+            />
+            <Chip
+              color='success'
+              label={`Taches accomplies par l'utilisateur: ${job.taskStatistics?.completedTasksByUserId}`}
+              size='small'
+              variant='outlined'
+            />
+          </Stack>
         </Stack>
-      </Stack>
+      )}
     </CanvasEditorProvider>
   );
 };

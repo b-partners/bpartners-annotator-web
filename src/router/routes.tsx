@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { ListPageLayout, TopBarLayout } from '../common/components/layout';
 import { Error, Home, JobList, Login, LoginByApiKey, NewPassword, Success, TaskBoard } from '../pages';
-import { AdminJobList, AdminTaskList } from '../pages/admin';
-import { adminJobsLoader, adminTasksLoader, jobsLoader } from './loaders';
+import { AdminJobList, AdminTaskBoard, AdminTaskList } from '../pages/admin';
+import { adminBatchLoader, adminJobsLoader, adminTasksLoader, jobsLoader } from './loaders';
 import { taskLoader } from './loaders/task-loader';
 
 const AppRouter = createBrowserRouter([
@@ -60,6 +60,11 @@ const AppRouter = createBrowserRouter([
         path: '/teams/:teamId/jobs/:jobId',
         loader: taskLoader,
         element: <TaskBoard />,
+      },
+      {
+        loader: adminBatchLoader,
+        path: '/jobs/:jobId/tasks/:taskId/review',
+        element: <AdminTaskBoard />,
       },
     ],
   },

@@ -1,5 +1,5 @@
 import { AnnotationBatchReview } from '@bpartners-annotator/typescript-client';
-import { annotationsApi } from '..';
+import { annotationsApi, MAX_PER_PAGE } from '..';
 
 export const annotationsProvider = {
   async updateReview(jobId: string, taskId: string, annotationBatchId: string, annotationBatchReview: AnnotationBatchReview[]) {
@@ -10,7 +10,7 @@ export const annotationsProvider = {
     const { data } = await annotationsApi().getAnnotationBatchByJobTaskAndId(jobId, taskId, annotationBatchId);
     return data;
   },
-  async getBatchs(jobId: string, taskId: string, page?: number | undefined, pageSize?: number | undefined) {
+  async getBatchs(jobId: string, taskId: string, page = 1, pageSize = MAX_PER_PAGE) {
     const { data } = await annotationsApi().getAnnotationBatchesByJobTask(jobId, taskId, page, pageSize);
     return data;
   },

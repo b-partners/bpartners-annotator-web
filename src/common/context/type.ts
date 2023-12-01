@@ -34,6 +34,7 @@ export interface IAnnotationContext {
   setIsAnnotating: Dispatch<SetStateAction<boolean>>;
   labels: Label[];
   img: string;
+  batchId: string;
 }
 
 export interface ICanvasContext {

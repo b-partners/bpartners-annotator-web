@@ -8,7 +8,7 @@ import { useListPageContext } from '../../context';
 
 export const TaskListItem: FC<ITaskListItem> = ({ task }) => {
   const params = useParams() as { jobId: string };
-  const link = `/jobs/${params.jobId}/tasks/${task.id}`;
+  const link = `/jobs/${params.jobId}/tasks/${task.id}/review`;
   const { color, icon, label } = getTaskStatusInfo(task.status || TaskStatus.PENDING);
   const { setLoading } = useListPageContext();
 
