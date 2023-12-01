@@ -2,8 +2,8 @@ import { AnnotationBatchReview } from '@bpartners-annotator/typescript-client';
 import { annotationsApi, MAX_PER_PAGE } from '..';
 
 export const annotationsProvider = {
-  async updateReview(jobId: string, taskId: string, annotationBatchId: string, annotationBatchReview: AnnotationBatchReview[]) {
-    const { data } = await annotationsApi().crupdateJobTaskAnnotationReviews(jobId, taskId, annotationBatchId, annotationBatchReview);
+  async updateReview(jobId: string, taskId: string, annotationBatchId: string, reviewId: string, annotationBatchReview: AnnotationBatchReview) {
+    const { data } = await annotationsApi().crupdateJobTaskAnnotationReview(jobId, taskId, annotationBatchId, reviewId, annotationBatchReview);
     return data;
   },
   async getBatch(jobId: string, taskId: string, annotationBatchId: string) {

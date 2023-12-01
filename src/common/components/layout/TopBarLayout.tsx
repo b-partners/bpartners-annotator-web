@@ -4,6 +4,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Outlet, useNavigate } from 'react-router-dom';
 import BP_LOGO from '../../../assets/bp-white-logo.png';
 import { authProvider } from '../../../providers';
+import { DialogProvider } from '../../context';
 import { cache } from '../../utils';
 import { BpButton } from '../basics';
 
@@ -29,7 +30,7 @@ export const TopBarLayout = () => {
   }, [navigate]);
 
   return (
-    <>
+    <DialogProvider>
       <AppBar position='relative' sx={{ height: '64px' }}>
         <Toolbar>
           <LazyLoadImage src={BP_LOGO} alt='BpLogo' width={120} />
@@ -47,6 +48,6 @@ export const TopBarLayout = () => {
       >
         <Outlet />
       </Box>
-    </>
+    </DialogProvider>
   );
 };

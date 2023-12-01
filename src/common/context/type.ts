@@ -50,3 +50,13 @@ export interface IListPageState {
   isLoading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
 }
+export interface IDialogState {
+  isOpen: boolean;
+  content: ReactNode;
+  setState: Dispatch<
+    SetStateAction<{
+      isOpen: boolean;
+      content: ReactNode;
+    }>
+  >;
+}

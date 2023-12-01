@@ -182,6 +182,10 @@ export function overrides(theme: any) {
           input: {
             width: '100%',
           },
+          textarea: {
+            paddingInline: '5px',
+            paddingBlock: '2px',
+          },
         },
       },
     },
