@@ -3,7 +3,7 @@ import { Job } from 'bpartners-annotator-Ts-client';
 
 export interface IJobListItem {
   job: Job;
-  teamId: string;
+  link: string;
 }
 
 export interface IJobStatusInfo {

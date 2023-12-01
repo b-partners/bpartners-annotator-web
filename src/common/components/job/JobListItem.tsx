@@ -4,10 +4,8 @@ import { blue } from '@mui/material/colors';
 import { JobStatus } from 'bpartners-annotator-Ts-client';
 import { FC, createElement } from 'react';
 import { IJobListItem, JOB_ITEM, getJobStatusInfo } from '.';
-export const JobListItem: FC<IJobListItem> = ({ job, teamId }) => {
+export const JobListItem: FC<IJobListItem> = ({ job, link }) => {
   const { icon, label, color } = getJobStatusInfo(job.status || JobStatus.PENDING);
-
-  const link = `/teams/${teamId}/jobs/${job.id}`;
 
   return (
     <ListItem sx={JOB_ITEM} alignItems='flex-start'>

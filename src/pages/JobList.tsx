@@ -9,14 +9,12 @@ export const JobList = () => {
   const { jobs } = useLoaderData() as { jobs: Job[] };
   const { teamId } = useParams();
 
-  console.log(jobs);
-
   return (
     <>
       {jobs.length > 0 && (
         <List sx={job_list_list_container}>
           {jobs.map(job => (
-            <JobListItem teamId={teamId || ''} key={job.id} job={job} />
+            <JobListItem key={job.id} link={`/teams/${teamId}/jobs/${job.id}`} job={job} />
           ))}
         </List>
       )}
