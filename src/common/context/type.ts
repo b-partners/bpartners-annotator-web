@@ -44,3 +44,8 @@ export interface ICanvasEditorProviderProps {
   children: ReactNode;
   zoom: IZoomContext;
 }
+
+export interface IListPageState {
+  isLoading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+}

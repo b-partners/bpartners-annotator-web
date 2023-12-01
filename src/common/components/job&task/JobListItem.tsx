@@ -1,19 +1,22 @@
 import { JobStatus } from '@bpartners-annotator/typescript-client';
 import { OpenInNew as OpenInNewIcon } from '@mui/icons-material';
-import { Avatar, Chip, IconButton, Link, ListItem, ListItemText, Stack } from '@mui/material';
+import { Avatar, Chip, IconButton, ListItem, ListItemText, Stack } from '@mui/material';
 import { blue } from '@mui/material/colors';
 import { FC, createElement } from 'react';
+import { Link } from 'react-router-dom';
 import { IJobListItem, JOB_ITEM, getJobStatusInfo } from '.';
+import { useListPageContext } from '../../context';
 export const JobListItem: FC<IJobListItem> = ({ job, link }) => {
   const { icon, label, color } = getJobStatusInfo(job.status || JobStatus.PENDING);
+  const { setLoading } = useListPageContext();
 
   return (
     <ListItem sx={JOB_ITEM} alignItems='flex-start'>
       <Stack>
         <Stack direction='row' className='job-title-container'>
           <ListItemText primary={job.name || job.id} />
-          <Link href={link}>
-            <IconButton size='small'>
+          <Link to={link}>
+            <IconButton size='small' onClick={() => setLoading(true)}>
               <OpenInNewIcon />
             </IconButton>
           </Link>

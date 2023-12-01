@@ -1,22 +1,24 @@
 import { TaskStatus } from '@bpartners-annotator/typescript-client';
 import { OpenInNew as OpenInNewIcon } from '@mui/icons-material';
-import { Avatar, Chip, IconButton, Link, ListItem, ListItemText, Stack } from '@mui/material';
+import { Avatar, Chip, IconButton, ListItem, ListItemText, Stack } from '@mui/material';
 import { FC, createElement } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ITaskListItem, JOB_ITEM, getTaskStatusInfo } from '.';
+import { useListPageContext } from '../../context';
 
 export const TaskListItem: FC<ITaskListItem> = ({ task }) => {
   const params = useParams() as { jobId: string };
   const link = `/jobs/${params.jobId}/tasks/${task.id}`;
   const { color, icon, label } = getTaskStatusInfo(task.status || TaskStatus.PENDING);
+  const { setLoading } = useListPageContext();
 
   return (
     <ListItem sx={JOB_ITEM} alignItems='flex-start'>
       <Stack>
         <Stack direction='row' className='job-title-container'>
           <ListItemText primary={task.id} />
-          <Link href={link}>
-            <IconButton size='small'>
+          <Link to={link}>
+            <IconButton size='small' onClick={() => setLoading(true)}>
               <OpenInNewIcon />
             </IconButton>
           </Link>
