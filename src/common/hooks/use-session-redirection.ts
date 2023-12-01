@@ -9,5 +9,7 @@ export const useSessionRedirection = () => {
     if (!redirection.includes('login')) {
       navigate(redirection);
     }
+
+    return () => {};
   }, [navigate]);
 };

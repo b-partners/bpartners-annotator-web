@@ -48,7 +48,7 @@ export const cache = {
   getApiKey() {
     return fromBase64(localStorage.getItem(API_KEY) || '');
   },
-  setApiKey(apiKey: string) {
+  setApiKey(apiKey: any) {
     localStorage.setItem(API_KEY, toBase64(apiKey));
   },
 };
