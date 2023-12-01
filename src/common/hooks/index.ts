@@ -6,6 +6,7 @@ export * from './use-get-task';
 export * from './use-image-creation';
 export * from './use-image-offset';
 export * from './use-responsive';
+export * from './use-session-redirection';
 export * from './use-waiter';
 export * from './use-width';
 export * from './use-window-size';

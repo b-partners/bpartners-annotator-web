@@ -1,10 +1,12 @@
 import { Box, Card, Stack, Typography, alpha, useTheme } from '@mui/material';
 import { FC } from 'react';
 import { LoginLayoutProps } from '.';
+import { useSessionRedirection } from '../hooks';
 import { bgGradient } from '../utils/theme';
 
 export const LoginLayout: FC<LoginLayoutProps> = ({ children, title }) => {
   const theme = useTheme();
+  useSessionRedirection();
 
   return (
     <Box

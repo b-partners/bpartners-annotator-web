@@ -4,11 +4,11 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { home_container } from '.';
 import bp_logo from '../assets/bp-logo-full.webp';
 import { BpButton } from '../common/components/basics';
-import { cache } from '../common/utils';
+import { authProvider } from '../providers';
 
 export const Home = () => {
-  const whoami = cache.getWhoami();
   const [isLoading, setLoading] = useState(false);
+  const redirection = authProvider.getRedirectionBySession();
 
   useEffect(() => {
     return () => setLoading(false);
@@ -23,7 +23,7 @@ export const Home = () => {
             Notre application de labellisation est conçue pour simplifier le processus d&apos;annotation d&apos;images.
           </Typography>
 
-          <BpButton label='Commencer' isLoading={isLoading} onClick={() => setLoading(true)} to={`/teams/${whoami?.user?.team?.id}/jobs`} />
+          <BpButton label='Commencer' isLoading={isLoading} onClick={() => setLoading(true)} to={redirection} />
         </Box>
       </Stack>
     </Box>

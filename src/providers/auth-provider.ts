@@ -55,4 +55,14 @@ export const authProvider = {
     cache.clear();
     return loginUrl;
   },
+  getRedirectionBySession() {
+    const apiKey = cache.getApiKey();
+    const whoami = cache.getWhoami();
+    if (!!apiKey) {
+      return '/jobs';
+    } else if (!!whoami) {
+      return `/teams/${whoami?.user?.team?.id}/jobs`;
+    }
+    return '/login';
+  },
 };
