@@ -1,4 +1,4 @@
-import { Task, Whoami } from 'bpartners-annotator-Ts-client';
+import { Task, Whoami } from '@bpartners-annotator/typescript-client';
 import { fromBase64, toBase64 } from './base64-utilities';
 const CURRENT_TASK = 'current-task-item';
 const ACCESS_TOKEN = 'access-token-item';

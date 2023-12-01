@@ -1,4 +1,4 @@
-import { Annotation, UpdateTask } from 'bpartners-annotator-Ts-client';
+import { Annotation, UpdateTask } from '@bpartners-annotator/typescript-client';
 import { userTasksApi } from '.';
 import { cache } from '../common/utils';
 

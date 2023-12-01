@@ -1,7 +1,7 @@
+import { JobStatus } from '@bpartners-annotator/typescript-client';
 import { OpenInNew as OpenInNewIcon } from '@mui/icons-material';
 import { Avatar, Chip, IconButton, Link, ListItem, ListItemText, Stack } from '@mui/material';
 import { blue } from '@mui/material/colors';
-import { JobStatus } from 'bpartners-annotator-Ts-client';
 import { FC, createElement } from 'react';
 import { IJobListItem, JOB_ITEM, getJobStatusInfo } from '.';
 export const JobListItem: FC<IJobListItem> = ({ job, link }) => {

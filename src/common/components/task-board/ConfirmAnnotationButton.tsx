@@ -1,5 +1,5 @@
+import { Annotation, Label, Polygon, Task, TaskStatus, Whoami } from '@bpartners-annotator/typescript-client';
 import { Checkbox, FormControlLabel, Stack } from '@mui/material';
-import { Annotation, Label, Polygon, Task, TaskStatus, Whoami } from 'bpartners-annotator-Ts-client';
 import { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';

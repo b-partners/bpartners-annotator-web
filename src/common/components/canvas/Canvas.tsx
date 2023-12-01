@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { Job } from '@bpartners-annotator/typescript-client';
 import { Box, Chip, CircularProgress, Stack } from '@mui/material';
-import { Job } from 'bpartners-annotator-Ts-client';
 import { FC, useEffect, useMemo, useRef } from 'react';
 import { CANVAS_CONTAINER, CanvasAction, EventHandler, MousePosition } from '.';
 import { CanvasEditorProvider, IPolygon, useCanvasAnnotationContext } from '../../context';

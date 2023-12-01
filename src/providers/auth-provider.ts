@@ -1,5 +1,5 @@
+import { Configuration } from '@bpartners-annotator/typescript-client';
 import { Amplify, Auth } from 'aws-amplify';
-import { Configuration } from 'bpartners-annotator-Ts-client';
 import { ICredential } from '.';
 import { cache, fromBase64, toBase64 } from '../common/utils';
 import aws_config from './aws-config';

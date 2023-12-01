@@ -1,4 +1,4 @@
-import { JobsApi, SecurityApi, TasksApi, TeamJobsApi, UserTasksApi } from 'bpartners-annotator-Ts-client';
+import { JobsApi, SecurityApi, TasksApi, TeamJobsApi, UserTasksApi } from '@bpartners-annotator/typescript-client';
 import { authProvider } from '.';
 
 export const jobsApi = () => new JobsApi(authProvider.getAuthConf());

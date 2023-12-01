@@ -1,4 +1,4 @@
-import { Label } from 'bpartners-annotator-Ts-client';
+import { Label } from '@bpartners-annotator/typescript-client';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 export enum ECanvasAction {

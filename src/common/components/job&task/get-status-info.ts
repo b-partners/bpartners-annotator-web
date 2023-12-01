@@ -1,3 +1,4 @@
+import { JobStatus, TaskStatus } from '@bpartners-annotator/typescript-client';
 import {
   CheckCircleOutlineOutlined as CheckCircleOutlineOutlinedIcon,
   ErrorOutlineOutlined as ErrorOutlineOutlinedIcon,
@@ -5,7 +6,6 @@ import {
   PendingActionsOutlined as PendingActionsOutlinedIcon,
   PlayCircleOutlineOutlined as PlayCircleOutlineOutlinedIcon,
 } from '@mui/icons-material';
-import { JobStatus, TaskStatus } from 'bpartners-annotator-Ts-client';
 import { IJobStatusInfo } from '.';
 
 export const getJobStatusInfo = (status: JobStatus): IJobStatusInfo => {

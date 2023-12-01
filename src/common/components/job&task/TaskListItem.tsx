@@ -1,6 +1,6 @@
+import { TaskStatus } from '@bpartners-annotator/typescript-client';
 import { OpenInNew as OpenInNewIcon } from '@mui/icons-material';
 import { Avatar, Chip, IconButton, Link, ListItem, ListItemText, Stack } from '@mui/material';
-import { TaskStatus } from 'bpartners-annotator-Ts-client';
 import { FC, createElement } from 'react';
 import { useParams } from 'react-router-dom';
 import { ITaskListItem, JOB_ITEM, getTaskStatusInfo } from '.';

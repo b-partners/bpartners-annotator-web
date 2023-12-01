@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
-import { Job, Task, TaskStatus, Whoami } from 'bpartners-annotator-Ts-client';
+import { Job, Task, TaskStatus, Whoami } from '@bpartners-annotator/typescript-client';
 import { useCallback, useEffect, useState } from 'react';
 import { jobsProvider, userTasksProvider } from '../../providers';
 import { cache } from '../utils';

@@ -1,5 +1,5 @@
+import { Job, Task } from '@bpartners-annotator/typescript-client';
 import { SvgIconComponent } from '@mui/icons-material';
-import { Job, Task } from 'bpartners-annotator-Ts-client';
 
 export interface IJobListItem {
   job: Job;
