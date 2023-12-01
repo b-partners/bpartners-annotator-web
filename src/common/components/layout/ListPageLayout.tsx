@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { page_list_card_action, page_list_card_content, page_list_container } from '.';
 import { ListPageProvider, useListPageContext } from '../../context';
-import { useGetPrevRoute } from '../../hooks';
+import { useGetListPageTitle, useGetPrevRoute } from '../../hooks';
 import { BpButton } from '../basics';
 
 const Loading = () => {
@@ -39,11 +39,13 @@ export const ListPageLayout = () => {
     navigate(getPath());
   };
 
+  const title = useGetListPageTitle();
+
   return (
     <ListPageProvider>
       <Box sx={page_list_container}>
         <Card>
-          <CardHeader title='Liste des jobs' />
+          <CardHeader title={title} />
           <CardContent sx={page_list_card_content}>
             <Loading />
           </CardContent>
