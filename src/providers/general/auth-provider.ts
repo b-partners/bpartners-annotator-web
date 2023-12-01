@@ -1,7 +1,7 @@
+import { Configuration } from '@bpartners-annotator/typescript-client';
 import { Amplify, Auth } from 'aws-amplify';
-import { Configuration } from 'bpartners-annotator-Ts-client';
-import { ICredential } from '.';
-import { cache, fromBase64, toBase64 } from '../common/utils';
+import { ICredential } from '..';
+import { cache, fromBase64, toBase64 } from '../../common/utils';
 import aws_config from './aws-config';
 
 Amplify.configure(aws_config);
@@ -19,7 +19,7 @@ export const authProvider = {
     if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
       const encodedUsername = encodeURIComponent(toBase64(username as string));
       const encodedPassword = encodeURIComponent(toBase64(password as string));
-      return `/complete-password?${paramIsTemporaryPassword}=true&${paramUsername}=${encodedUsername}&${paramTemporaryPassword}=${encodedPassword}`;
+      return `/login/complete-password?${paramIsTemporaryPassword}=true&${paramUsername}=${encodedUsername}&${paramTemporaryPassword}=${encodedPassword}`;
     }
 
     cache.setAccessToken(user['signInUserSession']['idToken']['jwtToken']);
@@ -27,12 +27,10 @@ export const authProvider = {
   },
   getAuthConf() {
     const accessToken = cache.getAccessToken();
-    if (accessToken) {
-      const conf = new Configuration({ accessToken });
-      conf.baseOptions = { headers: { Authorization: `Bearer ${accessToken}` } };
-      return conf;
-    }
-    return undefined;
+    const apiKey = cache.getApiKey();
+    const conf = new Configuration({ accessToken });
+    conf.baseOptions = { headers: { Authorization: accessToken, 'x-api-key': apiKey } };
+    return conf;
   },
   async updatePassword(newPassword: string) {
     const queryString = window.location.search;
@@ -51,7 +49,20 @@ export const authProvider = {
   },
   async logOut() {
     await Auth.signOut();
-    cache.clear();
+    cache.setWhoami(null);
+    cache.setAccessToken('');
+    cache.setWhoami(null);
+    cache.setApiKey('');
     return loginUrl;
+  },
+  getRedirectionBySession() {
+    const apiKey = cache.getApiKey();
+    const whoami = cache.getWhoami();
+    if (!!apiKey) {
+      return '/jobs';
+    } else if (!!whoami) {
+      return `/teams/${whoami?.user?.team?.id}/jobs`;
+    }
+    return '/login';
   },
 };

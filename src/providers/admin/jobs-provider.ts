@@ -1,5 +1,5 @@
-import { CrupdateJob } from 'bpartners-annotator-Ts-client';
-import { jobsApi } from '.';
+import { CrupdateJob } from '@bpartners-annotator/typescript-client';
+import { jobsApi } from '..';
 
 export const jobsProvider = {
   async getOne(jobId: string) {

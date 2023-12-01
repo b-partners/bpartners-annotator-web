@@ -1,4 +1,4 @@
-import { tasksApi } from '.';
+import { tasksApi } from '..';
 
 export const tasksProvider = {
   async getOne(jobId: string, taskId: string) {

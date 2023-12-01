@@ -1,9 +1,13 @@
+import { Job, Task } from '@bpartners-annotator/typescript-client';
 import { SvgIconComponent } from '@mui/icons-material';
-import { Job } from 'bpartners-annotator-Ts-client';
 
 export interface IJobListItem {
   job: Job;
-  teamId: string;
+  link: string;
+}
+
+export interface ITaskListItem {
+  task: Task;
 }
 
 export interface IJobStatusInfo {

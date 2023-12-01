@@ -1,4 +1,4 @@
-import { Label } from 'bpartners-annotator-Ts-client';
+import { Label } from '@bpartners-annotator/typescript-client';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 export enum ECanvasAction {
@@ -34,6 +34,7 @@ export interface IAnnotationContext {
   setIsAnnotating: Dispatch<SetStateAction<boolean>>;
   labels: Label[];
   img: string;
+  batchId: string;
 }
 
 export interface ICanvasContext {
@@ -43,4 +44,19 @@ export interface ICanvasContext {
 export interface ICanvasEditorProviderProps {
   children: ReactNode;
   zoom: IZoomContext;
+}
+
+export interface IListPageState {
+  isLoading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+}
+export interface IDialogState {
+  isOpen: boolean;
+  content: ReactNode;
+  setState: Dispatch<
+    SetStateAction<{
+      isOpen: boolean;
+      content: ReactNode;
+    }>
+  >;
 }

@@ -1,13 +1,10 @@
-import { UserRole, Whoami } from 'bpartners-annotator-Ts-client';
+import { UserRole, Whoami } from '@bpartners-annotator/typescript-client';
 
 export const redirectionByRole = (whoami: Whoami | null) => {
-  if (whoami?.user?.role && whoami?.user?.team) {
-    switch (whoami.user?.role) {
-      case UserRole.ADMIN:
-        return `/dashboard`;
-      default:
-        return `/teams/${whoami.user.team.id}/jobs`;
-    }
+  switch (whoami?.user?.role) {
+    case UserRole.ADMIN:
+      return `/jobs`;
+    default:
+      return `/teams/${whoami?.user?.team?.id}/jobs`;
   }
-  return '/login';
 };

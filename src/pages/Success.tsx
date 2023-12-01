@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { container_center_flex } from '.';
 import bp_logo from '../assets/bp-logo-full.webp';
 import { redirectionByRole, retryer } from '../common/utils';
-import { accountProvider } from '../providers/account-provider';
+import { accountProvider } from '../providers/general/account-provider';
 
 export const Success = () => {
   const navigate = useNavigate();

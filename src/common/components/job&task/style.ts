@@ -14,4 +14,12 @@ export const JOB_ITEM: SxProps = {
   '&:active': {
     boxShadow: 'none',
   },
+  '& a': {
+    position: 'absolute',
+    right: 0,
+  },
+  '& .job-title-container': {
+    position: 'relative',
+    width: 380,
+  },
 };

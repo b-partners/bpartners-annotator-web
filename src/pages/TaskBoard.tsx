@@ -1,5 +1,5 @@
+import { Job, Task } from '@bpartners-annotator/typescript-client';
 import { Box, CircularProgress, Grid, Stack } from '@mui/material';
-import { Job, Task } from 'bpartners-annotator-Ts-client';
 import { useEffect, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 import { Canvas } from '../common/components/canvas';

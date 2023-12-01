@@ -1,6 +1,7 @@
-import { Label } from 'bpartners-annotator-Ts-client';
+import { AnnotationBatch, Label } from '@bpartners-annotator/typescript-client';
 import { FC, ReactNode, createContext, useContext, useState } from 'react';
 import { IAnnotation, IAnnotationContext, ICanvasContext, ICanvasEditorProviderProps } from '.';
+import { annotationsMapper } from '../mappers';
 import { getColorFromMain } from '../utils';
 
 const CanvasEditorContext = createContext<ICanvasContext>({
@@ -18,14 +19,21 @@ const CanvasAnnotationContext = createContext<IAnnotationContext>({
   setIsAnnotating: () => {},
   labels: [],
   img: '',
+  batchId: '',
 });
 
-export const CanvasAnnotationProvider: FC<{ children: ReactNode; labels: Label[]; img: string }> = ({ children, labels, img }) => {
-  const [annotations, setAnnotations] = useState<IAnnotation[]>([]);
+export const CanvasAnnotationProvider: FC<{ children: ReactNode; labels: Label[]; img: string; batch?: AnnotationBatch }> = ({
+  children,
+  labels,
+  img,
+  batch,
+}) => {
+  const annotation = batch?.annotations?.map((annotation, key) => annotationsMapper.toDomain(annotation, key));
+  const [annotations, setAnnotations] = useState<IAnnotation[]>(annotation || []);
   const [isAnnotating, setIsAnnotating] = useState(false);
 
   return (
-    <CanvasAnnotationContext.Provider value={{ annotations, setAnnotations, isAnnotating, setIsAnnotating, labels, img }}>
+    <CanvasAnnotationContext.Provider value={{ annotations, setAnnotations, isAnnotating, setIsAnnotating, labels, img, batchId: batch?.id || '' }}>
       {children}
     </CanvasAnnotationContext.Provider>
   );

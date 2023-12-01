@@ -1,4 +1,4 @@
-import { Job, Task } from 'bpartners-annotator-Ts-client';
+import { Job, Task } from '@bpartners-annotator/typescript-client';
 
 export interface UseJobTaskState {
   task: Task | null;

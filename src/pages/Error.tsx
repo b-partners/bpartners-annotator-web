@@ -12,7 +12,6 @@ const ShowError = () => {
   return (
     <>
       <Stack spacing={1}>
-        q
         <Stack direction='row' spacing={2} alignItems='center'>
           <ErrorRoundedIcon sx={{ fontSize: '2rem' }} color='error' />
           <Typography color='error' fontSize='2rem'>

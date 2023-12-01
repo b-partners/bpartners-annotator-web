@@ -1,7 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { TopBarLayout } from '../common/components/layout';
-import { Error, Home, JobList, Login, NewPassword, Success, TaskBoard } from '../pages';
-import { jobsLoader } from './loaders';
+import { ListPageLayout, TopBarLayout } from '../common/components/layout';
+import { Error, Home, JobList, Login, LoginByApiKey, NewPassword, Success, TaskBoard } from '../pages';
+import { AdminJobList, AdminTaskBoard, AdminTaskList } from '../pages/admin';
+import { adminBatchLoader, adminJobsLoader, adminTasksLoader, jobsLoader } from './loaders';
 import { taskLoader } from './loaders/task-loader';
 
 const AppRouter = createBrowserRouter([
@@ -21,7 +22,12 @@ const AppRouter = createBrowserRouter([
     errorElement: <Error />,
   },
   {
-    path: '/complete-password',
+    path: '/login/api-key',
+    element: <LoginByApiKey />,
+    errorElement: <Error />,
+  },
+  {
+    path: '/login/complete-password',
     element: <NewPassword />,
     errorElement: <Error />,
   },
@@ -31,14 +37,34 @@ const AppRouter = createBrowserRouter([
     errorElement: <Error />,
     children: [
       {
-        loader: jobsLoader,
-        path: '/teams/:teamId/jobs',
-        element: <JobList />,
+        element: <ListPageLayout />,
+        children: [
+          {
+            loader: jobsLoader,
+            path: '/teams/:teamId/jobs',
+            element: <JobList />,
+          },
+          {
+            loader: adminJobsLoader,
+            path: '/jobs',
+            element: <AdminJobList />,
+          },
+          {
+            loader: adminTasksLoader,
+            path: '/jobs/:jobId/tasks',
+            element: <AdminTaskList />,
+          },
+        ],
       },
       {
         path: '/teams/:teamId/jobs/:jobId',
         loader: taskLoader,
         element: <TaskBoard />,
+      },
+      {
+        loader: adminBatchLoader,
+        path: '/jobs/:jobId/tasks/:taskId/review',
+        element: <AdminTaskBoard />,
       },
     ],
   },

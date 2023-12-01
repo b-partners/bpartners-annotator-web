@@ -1,8 +1,10 @@
-import { Task, Whoami } from 'bpartners-annotator-Ts-client';
+import { Task, Whoami } from '@bpartners-annotator/typescript-client';
+import { fromBase64, toBase64 } from './base64-utilities';
 const CURRENT_TASK = 'current-task-item';
 const ACCESS_TOKEN = 'access-token-item';
 const USER_ID = 'user-id-item';
 const WHOAMI = 'whoami-item';
+const API_KEY = 'api-key-item';
 
 const getJsonFromString = (value: string | null) => {
   try {
@@ -23,10 +25,10 @@ export const cache = {
     localStorage.setItem(CURRENT_TASK, 'null');
   },
   getAccessToken() {
-    return localStorage.getItem(ACCESS_TOKEN);
+    return localStorage.getItem(ACCESS_TOKEN) || undefined;
   },
   setAccessToken(accessToken: string) {
-    localStorage.setItem(ACCESS_TOKEN, accessToken);
+    localStorage.setItem(ACCESS_TOKEN, accessToken.length > 0 ? 'Bearer ' + accessToken : '');
   },
   getWhoami(): Whoami {
     return getJsonFromString(localStorage.getItem(WHOAMI));
@@ -42,5 +44,11 @@ export const cache = {
   },
   clear() {
     localStorage.clear();
+  },
+  getApiKey() {
+    return fromBase64(localStorage.getItem(API_KEY) || '');
+  },
+  setApiKey(apiKey: any) {
+    localStorage.setItem(API_KEY, toBase64(apiKey));
   },
 };

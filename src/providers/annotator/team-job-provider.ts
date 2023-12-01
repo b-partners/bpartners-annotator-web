@@ -1,4 +1,4 @@
-import { teamJobsApi } from '.';
+import { teamJobsApi } from '..';
 
 export const teamJobsProvider = {
   async getOne(teamId: string, jobId: string) {

@@ -1,4 +1,4 @@
-import { Task, TaskStatus } from 'bpartners-annotator-Ts-client';
+import { Task, TaskStatus } from '@bpartners-annotator/typescript-client';
 import { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { userTasksProvider } from '../../../providers';
