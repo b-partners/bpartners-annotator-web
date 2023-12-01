@@ -2,7 +2,7 @@ import { Inbox as InboxIcon } from '@mui/icons-material';
 import { Box, List, Typography } from '@mui/material';
 import { Job } from 'bpartners-annotator-Ts-client';
 import { useLoaderData, useParams } from 'react-router-dom';
-import { JobListItem } from '../common/components/job';
+import { JobListItem } from '../common/components/job&task';
 import { job_list_list_container } from './style';
 
 export const JobList = () => {

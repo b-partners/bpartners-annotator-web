@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { ListPageLayout, TopBarLayout } from '../common/components/layout';
 import { Error, Home, JobList, Login, LoginByApiKey, NewPassword, Success, TaskBoard } from '../pages';
-import { AdminJobList } from '../pages/admin';
-import { adminJobsLoader, jobsLoader } from './loaders';
+import { AdminJobList, AdminTaskList } from '../pages/admin';
+import { adminJobsLoader, adminTasksLoader, jobsLoader } from './loaders';
 import { taskLoader } from './loaders/task-loader';
 
 const AppRouter = createBrowserRouter([
@@ -22,12 +22,12 @@ const AppRouter = createBrowserRouter([
     errorElement: <Error />,
   },
   {
-    path: '/admin/login',
+    path: '/login/api-key',
     element: <LoginByApiKey />,
     errorElement: <Error />,
   },
   {
-    path: '/complete-password',
+    path: '/login/complete-password',
     element: <NewPassword />,
     errorElement: <Error />,
   },
@@ -49,6 +49,11 @@ const AppRouter = createBrowserRouter([
             loader: adminJobsLoader,
             path: '/jobs',
             element: <AdminJobList />,
+          },
+          {
+            loader: adminTasksLoader,
+            path: '/jobs/:jobId/tasks',
+            element: <AdminTaskList />,
           },
         ],
       },

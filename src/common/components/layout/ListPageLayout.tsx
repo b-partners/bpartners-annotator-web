@@ -1,9 +1,26 @@
 import { NavigateBefore as NavigateBeforeIcon } from '@mui/icons-material';
-import { Box, Button, Card, CardActions, CardContent, CardHeader } from '@mui/material';
-import { Link, Outlet } from 'react-router-dom';
+import { Box, Card, CardActions, CardContent, CardHeader } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { page_list_card_action, page_list_card_content, page_list_container } from '.';
+import { useGetPrevRoute } from '../../hooks';
+import { BpButton } from '../basics';
 
 export const ListPageLayout = () => {
+  const getPath = useGetPrevRoute();
+  const [isLoading, setLoading] = useState(false);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setLoading(false);
+  }, [pathname]);
+
+  const handleClick = () => {
+    setLoading(true);
+    navigate(getPath());
+  };
+
   return (
     <Box sx={page_list_container}>
       <Card>
@@ -12,11 +29,7 @@ export const ListPageLayout = () => {
           <Outlet />
         </CardContent>
         <CardActions sx={page_list_card_action}>
-          <Link to='/'>
-            <Button size='small' startIcon={<NavigateBeforeIcon />} variant='text'>
-              Retour
-            </Button>
-          </Link>
+          <BpButton variant='text' startIcon={<NavigateBeforeIcon />} onClick={handleClick} isLoading={isLoading} label='Retour' />
         </CardActions>
       </Card>
     </Box>

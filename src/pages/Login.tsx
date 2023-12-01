@@ -39,7 +39,7 @@ export const Login = () => {
             </div>
             <Divider />
             <Stack>
-              <Link to='/admin/login'>Utiliser une clé d'api ?</Link>
+              <Link to='/login/api-key'>Utiliser une clé d'api ?</Link>
             </Stack>
           </Stack>
         </form>
