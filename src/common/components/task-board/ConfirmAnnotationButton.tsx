@@ -1,9 +1,10 @@
-import { Annotation, Label, Polygon, Task, TaskStatus, Whoami } from '@bpartners-annotator/typescript-client';
+import { Annotation, AnnotationBatch, Label, Task, TaskStatus, Whoami } from '@bpartners-annotator/typescript-client';
 import { Checkbox, FormControlLabel, Stack } from '@mui/material';
 import { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
 import { userTasksProvider } from '../../../providers';
+import { userAnnotationsProvider } from '../../../providers/annotator/user-annotations-provider';
 import { IAnnotation, useCanvasAnnotationContext } from '../../context';
 import { useFetch } from '../../hooks';
 import { cache } from '../../utils';
@@ -30,31 +31,21 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ label, onEnd, task
   const params = useParams();
   const [noAnnotation, setNoAnnotation] = useState(false);
 
-  const createAnnotation = (label?: Label, polygon?: Polygon) => {
-    const whoami = cache.getWhoami() as Whoami;
-    const userId = whoami.user?.id || '';
-    return {
-      id: uuidV4(),
-      label,
-      taskId: task.id || '',
-      polygon,
-      userId,
-    };
-  };
-
   const fetcher = async () => {
     const whoami = cache.getWhoami() as Whoami;
     const userId = whoami.user?.id || '';
-    const taskAnnotation: Annotation[] = annotations.map(annotation =>
-      createAnnotation(
-        label.find(e => e.name === annotation.label),
-        { points: annotation.polygon.points }
-      )
-    );
-    if (taskAnnotation.length === 0) taskAnnotation.push(createAnnotation(undefined, { points: [] }));
+    const taskAnnotation: Annotation[] = annotations.map(annotation => ({
+      id: uuidV4(),
+      label: label.find(e => e.name === annotation.label),
+      taskId: task.id || '',
+      polygon: { points: annotation.polygon.points },
+      userId,
+    }));
+
+    const annotationBatch: AnnotationBatch = { id: uuidV4(), annotations: taskAnnotation };
     try {
       await Promise.allSettled([
-        userTasksProvider.annotateOne(userId, task.id || '', taskAnnotation),
+        userAnnotationsProvider.annotate(userId, task.id || '', annotationBatch.id || '', annotationBatch),
         userTasksProvider.updateOne(params.teamId || '', params.jobId || '', task.id || '', { ...task, status: TaskStatus.COMPLETED, userId }),
       ]);
       setAnnotations([]);
