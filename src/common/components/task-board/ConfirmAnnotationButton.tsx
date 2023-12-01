@@ -44,10 +44,8 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ label, onEnd, task
 
     const annotationBatch: AnnotationBatch = { id: uuidV4(), annotations: taskAnnotation };
     try {
-      await Promise.allSettled([
-        userAnnotationsProvider.annotate(userId, task.id || '', annotationBatch.id || '', annotationBatch),
-        userTasksProvider.updateOne(params.teamId || '', params.jobId || '', task.id || '', { ...task, status: TaskStatus.COMPLETED, userId }),
-      ]);
+      await userAnnotationsProvider.annotate(userId, task.id || '', annotationBatch.id || '', annotationBatch);
+      await userTasksProvider.updateOne(params.teamId || '', params.jobId || '', task.id || '', { ...task, status: TaskStatus.COMPLETED, userId });
       setAnnotations([]);
       onEnd();
     } catch (err) {
