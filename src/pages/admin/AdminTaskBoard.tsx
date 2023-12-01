@@ -92,7 +92,31 @@ export const RejectButton = () => {
 };
 
 export const ValidateButton = () => {
-  return <BpButton label='Valider' />;
+  const { batchId } = useCanvasAnnotationContext();
+  const [isLoading, setLoading] = useState(false);
+  const { jobId, taskId } = useParams() as { jobId: string; taskId: string };
+  const getPrevRoute = useGetPrevRoute();
+  const navigate = useNavigate();
+
+  const handleValidate = () => {
+    const reviewId = uuidV4();
+    setLoading(true);
+    annotationsProvider
+      .updateReview(jobId, taskId, batchId, reviewId, {
+        id: reviewId,
+        annotationBatchId: batchId,
+        reviews: [],
+        status: ReviewStatus.ACCEPTED,
+      })
+      .then(() => {
+        navigate(getPrevRoute());
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  return <BpButton label='Valider' onClick={handleValidate} isLoading={isLoading} />;
 };
 
 export const AdminTaskBoard = () => {
