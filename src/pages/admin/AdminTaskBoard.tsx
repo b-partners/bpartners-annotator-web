@@ -91,6 +91,15 @@ export const RejectButton = () => {
   return <BpButton label='Rejeter' onClick={handleClick} />;
 };
 
+export const CancelButton = () => {
+  const getPrevRoute = useGetPrevRoute();
+  const navigate = useNavigate();
+
+  const handleClick = () => navigate(getPrevRoute());
+
+  return <BpButton label='Annuler' onClick={handleClick} />;
+};
+
 export const ValidateButton = () => {
   const { batchId } = useCanvasAnnotationContext();
   const [isLoading, setLoading] = useState(false);
@@ -121,7 +130,7 @@ export const ValidateButton = () => {
 
 export const AdminTaskBoard = () => {
   const { batchs, job, task } = useLoaderData() as { batchs: AnnotationBatch[]; task: Task; job: Job };
-  const [batch, setBatch] = useState(batchs[0]);
+  const [batch, setBatch] = useState(batchs[0] || {});
 
   return task !== null ? (
     <CanvasAnnotationProvider batch={batch} img={task.imageUri || ''} labels={job?.labels || []}>
@@ -130,7 +139,6 @@ export const AdminTaskBoard = () => {
           <div>{job && <Canvas isLoading={false} job={job} />}</div>
           <Stack justifyContent='space-between' direction='row' width='70vh' mt={1}>
             <RejectButton />
-            <Box flexGrow={1}></Box>
             <ValidateButton />
           </Stack>
         </Grid>
@@ -149,7 +157,9 @@ export const AdminTaskBoard = () => {
             </List>
             <Sidebar />
           </Stack>
-          <Stack spacing={1} m={2} mb={1}></Stack>
+          <Stack spacing={1} m={2} mb={1}>
+            <CancelButton />
+          </Stack>
         </Grid>
       </Grid>
     </CanvasAnnotationProvider>

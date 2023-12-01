@@ -1,4 +1,4 @@
-import { Task } from '@bpartners-annotator/typescript-client';
+import { Task, TaskStatus } from '@bpartners-annotator/typescript-client';
 import { Inbox as InboxIcon } from '@mui/icons-material';
 import { Box, List, Typography } from '@mui/material';
 import { useLoaderData } from 'react-router-dom';
@@ -10,7 +10,11 @@ export const AdminTaskList = () => {
 
   return (
     <>
-      {tasks.length > 0 && <List sx={job_list_list_container}>{tasks.length > 0 && tasks.map(task => <TaskListItem key={task.id} task={task} />)}</List>}
+      {tasks.length > 0 && (
+        <List sx={job_list_list_container}>
+          {tasks.length > 0 && tasks.filter(task => task.status === TaskStatus.COMPLETED).map(task => <TaskListItem key={task.id} task={task} />)}
+        </List>
+      )}
       {tasks.length === 0 && (
         <Box textAlign='center' sx={{ color: 'text.secondary' }}>
           <InboxIcon sx={{ fontSize: '15rem' }} />
