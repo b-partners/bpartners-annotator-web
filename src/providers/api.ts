@@ -10,7 +10,7 @@ import {
   UserTasksApi,
   UsersApi,
 } from '@bpartners-annotator/typescript-client';
-import { authProvider } from '.';
+import { authProvider } from './general';
 
 // admin api
 export const jobsApi = () => new JobsApi(authProvider.getAuthConf());

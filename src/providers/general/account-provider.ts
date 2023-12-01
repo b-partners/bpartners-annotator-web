@@ -1,5 +1,5 @@
-import { cache } from '../common/utils';
-import { securityApi } from './api';
+import { cache } from '../../common/utils';
+import { securityApi } from '../api';
 
 export const accountProvider = {
   async whoami() {

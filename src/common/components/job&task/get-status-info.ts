@@ -29,7 +29,7 @@ export const getTaskStatusInfo = (status: TaskStatus) => {
       return { icon: CheckCircleOutlineOutlinedIcon, label: 'Terminé', color: '#00FF00' };
     case TaskStatus.PENDING:
       return { icon: PendingActionsOutlinedIcon, label: 'En attente', color: '#A9A9A9' };
-    case TaskStatus.UNDER_COMPLETION:
+    default:
       return { icon: PlayCircleOutlineOutlinedIcon, label: 'Encours', color: '#FFA500' };
   }
 };

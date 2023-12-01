@@ -1,6 +1,6 @@
 import { Annotation, UpdateTask } from '@bpartners-annotator/typescript-client';
-import { userTasksApi } from '.';
-import { cache } from '../common/utils';
+import { userTasksApi } from '..';
+import { cache } from '../../common/utils';
 
 export const userTasksProvider = {
   async getOne(jobId: string, teamId: string) {
@@ -11,7 +11,7 @@ export const userTasksProvider = {
     return data;
   },
   async annotateOne(userId: string, taskId: string, taskAnnotation: Annotation[]) {
-    const { data } = await userTasksApi().annotateTask(userId, taskId, taskAnnotation);
+    const { data } = await userTasksApi().annotateTask(userId, taskId, taskAnnotation as any);
     return data;
   },
   async updateOne(teamId: string, jobId: string, taskId: string, resource: UpdateTask) {
