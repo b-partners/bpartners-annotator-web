@@ -14,4 +14,11 @@ export const CANVAS_CONTAINER: SxProps = {
   height: '80vh',
   width: '70vw',
   '& > div > canvas': CANVAS,
+  '& .circular-progress-container': {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    background: 'rgba(0,0,0,0.1)',
+  },
 };

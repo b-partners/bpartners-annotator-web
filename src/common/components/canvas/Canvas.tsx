@@ -53,17 +53,7 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
           <canvas ref={canvas} height={ch * scaling} width={cw * scaling} />
           <canvas ref={canvasCursor} height={ch * scaling} width={cw * scaling} />
           {(isLoading || (image.src.length === 0 && imageOffset.iho === 0)) && (
-            <div
-              style={{
-                height: ch,
-                width: cw,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'absolute',
-                background: 'rgba(0,0,0,0.1)',
-              }}
-            >
+            <div style={{ height: ch, width: cw }}>
               <CircularProgress size='3rem' />
             </div>
           )}

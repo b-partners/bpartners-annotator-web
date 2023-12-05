@@ -12,8 +12,6 @@ export const getMousePositionInCanvas = (event: MouseEvent, canvas: HTMLCanvasEl
 export const getRestrictedValue = (value: number, min: number, max: number) => (value > max ? max - min : value < min ? 0 : value - min);
 
 export class EventHandler {
-  private canvas: HTMLCanvasElement;
-  private image: HTMLImageElement;
   private isAnnotating: boolean;
   private polygon: IPolygon;
   private annotations: IAnnotation[];
@@ -24,9 +22,7 @@ export class EventHandler {
   private scalingHandler: ScalingHandler;
 
   constructor(props: IEventHandlerProps) {
-    this.canvas = props.canvas;
     this.annotations = props.annotations;
-    this.image = props.image;
     this.isAnnotating = props.isAnnotating;
     this.canvasHandler = props.canvasHandler;
     this.polygon = props.polygon;
@@ -74,8 +70,6 @@ export class EventHandler {
     const currentLogicalPosition = sc.getLogicalPosition(event);
     const currentPhysicalPosition = sc.getPhysicalPositionByEvent(event);
 
-    console.log(currentLogicalPosition, currentPhysicalPosition, sc.getPhysicalPositionByPoint(currentPhysicalPosition));
-
     if (this.isAnnotating && points.length > 1 && areOverlappingPoints(points[0], currentLogicalPosition)) {
       points.push(points[0]);
       this.drawMouse(currentPhysicalPosition, 'DEFAULT');
@@ -83,6 +77,7 @@ export class EventHandler {
       this.draw();
     } else if (this.isAnnotating) {
       points.push(currentLogicalPosition);
+      this.draw();
     } else {
       this.currentPointInfo = this.pointsInfo.find(value => areOverlappingPoints(value.point, currentLogicalPosition)) || null;
     }
@@ -116,7 +111,6 @@ export class EventHandler {
       } else {
         points[index] = currentLogicalPosition;
       }
-
       this.draw();
     }
   };

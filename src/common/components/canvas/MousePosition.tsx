@@ -1,7 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
-import { getMousePositionInCanvas } from '.';
-import { getCanvasImageOffset } from '../../utils';
+import { ScalingHandler } from '.';
 
 interface IPositionProps {
   label: string;
@@ -21,29 +20,14 @@ const Position: FC<IPositionProps> = ({ label, value }) => {
   );
 };
 
-const notNegative = (value: number) => (value < 0 ? 0 : value);
-
 export const MousePosition: FC<IMousePositionProps> = ({ canvas, image }) => {
   const [{ x, y }, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     if (canvas && image) {
+      const sH = new ScalingHandler(canvas, image);
       const eventListener = (event: MouseEvent) => {
-        const { x: mx, y: my } = getMousePositionInCanvas(event, canvas);
-        const { iho, iwo, ih, iw } = getCanvasImageOffset(canvas, image);
-        const pos = { x: 0, y: 0 };
-        if (mx > iw + iwo) {
-          pos.x = iw + iwo;
-        } else if (mx >= iwo) {
-          pos.x = notNegative(mx - iwo);
-        }
-
-        if (my > ih + iho) {
-          pos.y = ih + iho;
-        } else if (my >= iho) {
-          pos.y = notNegative(my - iho);
-        }
-
+        const pos = sH.getRestrictedPhysicalPositionByEvent(event);
         setMousePosition(pos);
       };
 

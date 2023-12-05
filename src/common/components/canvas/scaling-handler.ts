@@ -43,22 +43,24 @@ export class ScalingHandler {
     return { x, y };
   };
 
+  public getRestrictedPhysicalPositionByEvent(event: MouseEvent) {
+    const { iho, iwo } = this.getImageOffset();
+    const { ih, iw } = this.getImageSize();
+    const currentPhysicalPosition = this.getPhysicalPositionByEvent(event);
+    currentPhysicalPosition.x = Math.round(this.getRestrictedValue(currentPhysicalPosition.x, iwo, iw + iwo));
+    currentPhysicalPosition.y = Math.round(this.getRestrictedValue(currentPhysicalPosition.y, iho, ih + iho));
+    return currentPhysicalPosition;
+  }
+
   public getPhysicalPositionByPoint = (point: IPoint) => {
     const { x, y } = this.getScaledUpPosition(point);
     const { iho, iwo } = this.getImageOffset();
-    return { x: x + iwo, y: y + iho };
+    return { x: Math.floor(x + iwo), y: Math.floor(y + iho) };
   };
 
   public getLogicalPosition(event: MouseEvent) {
-    const { iho, iwo } = this.getImageOffset();
-    const { ih, iw } = this.getImageSize();
-
-    const currentPhysicalPosition = this.getPhysicalPositionByEvent(event);
-    const currentLogicalPosition = this.getScaledDownPosition(currentPhysicalPosition);
-
-    currentLogicalPosition.x = this.getRestrictedValue(currentLogicalPosition.x, iwo, iw + iwo);
-    currentLogicalPosition.y = this.getRestrictedValue(currentLogicalPosition.y, iho, ih + iho);
-
+    const currentPhysicalRestrictedPosition = this.getRestrictedPhysicalPositionByEvent(event);
+    const currentLogicalPosition = this.getScaledDownPosition(currentPhysicalRestrictedPosition);
     return currentLogicalPosition;
   }
 }
