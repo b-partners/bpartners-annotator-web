@@ -1,8 +1,9 @@
 import { RefObject } from 'react';
 import { TMouseType, getCanvasImageOffset } from '.';
+import { ScalingHandler } from '../components/canvas';
 import { IPoint, IPolygon } from '../context';
 
-const POINT_SHAPE_RADIUS = 3;
+const POINT_SHAPE_RADIUS = 4;
 
 export class CanvasHandler {
   private _canvasPolygonRef: RefObject<HTMLCanvasElement>;
@@ -21,6 +22,8 @@ export class CanvasHandler {
   private _iwo: number = 0;
   private _iho: number = 0;
 
+  private _scalingHandler: ScalingHandler;
+
   constructor(
     canvasPolygon: RefObject<HTMLCanvasElement>,
     canvasImage: RefObject<HTMLCanvasElement>,
@@ -32,18 +35,14 @@ export class CanvasHandler {
     this._canvasCursorRef = canvasCursor;
     this._image = image;
     this.init();
-  }
-
-  private _getScalingValue(canvas: RefObject<HTMLCanvasElement>) {
-    const canvasWidth = canvas.current?.width || 0;
-    const canvasStyleWidth = parseInt(canvas.current?.style.width || '0px');
-    return Math.round(canvasStyleWidth / canvasWidth);
+    this._scalingHandler = new ScalingHandler(canvasCursor.current as any, image);
   }
 
   private _initializeSize() {
     if (this._canvasCursorRef.current && this._image) {
       const canvas = this._canvasCursorRef.current,
         image = this._image;
+      this._scalingHandler = new ScalingHandler(canvas, this._image);
       this._cw = canvas.width;
       this._ch = canvas.height;
       const { iwo, iho } = getCanvasImageOffset(canvas, image);
@@ -60,22 +59,21 @@ export class CanvasHandler {
   public drawMouseCursor() {
     const ctx = this._cursorCtx;
     const clear = () => this.clear(ctx);
-    const canvas = this._canvasCursorRef;
-    const canvasHandler = this;
+    const getScale = () => this._scalingHandler.getScale();
     return ({ x, y }: IPoint, type: TMouseType) => {
-      const scale = canvasHandler._getScalingValue(canvas);
+      const scale = getScale() > 1 ? getScale() / 2 : getScale();
       if (ctx) {
         clear();
         ctx.lineWidth = 1;
         ctx.beginPath();
         if (type === 'DEFAULT') {
-          ctx.arc(x, y, 4 / scale, 0, Math.PI * 2);
+          ctx.arc(x, y, 4 * scale, 0, Math.PI * 2);
           ctx.fill();
         } else if (type === 'END') {
-          ctx.arc(x, y, 7 / scale, 0, Math.PI * 2);
+          ctx.arc(x, y, 7 * scale, 0, Math.PI * 2);
           ctx.stroke();
         } else {
-          ctx.arc(x, y, 7 / scale, 0, Math.PI * 2);
+          ctx.arc(x, y, 7 * scale, 0, Math.PI * 2);
           ctx.stroke();
         }
         ctx.closePath();
@@ -99,7 +97,8 @@ export class CanvasHandler {
     this._initCtx();
     if (this._polygonCtx && this._image) {
       this.clear(this._polygonCtx);
-      this._imageCtx.drawImage(this._image, this._iwo, this._iho);
+      const scale = this._scalingHandler.getScale();
+      this._imageCtx.drawImage(this._image, this._iwo, this._iho, this._image.width * scale, this._image.height * scale);
     }
   }
 
@@ -107,32 +106,29 @@ export class CanvasHandler {
     ctx.clearRect(0, 0, this._cw, this._ch);
   }
 
-  private drawPoint({ x, y }: IPoint, ctx: CanvasRenderingContext2D) {
-    const scale = this._getScalingValue(this._canvasImageRef);
+  private drawPoint(point: IPoint, ctx: CanvasRenderingContext2D) {
+    const sc = this._scalingHandler;
+    const { x, y } = sc.getPhysicalPositionByPoint(point);
+    const scale = sc.getScale();
+
     ctx.beginPath();
     ctx.fillStyle = 'black';
-    ctx.arc(x, y, POINT_SHAPE_RADIUS / scale, 0, 2 * Math.PI);
+    ctx.arc(x, y, POINT_SHAPE_RADIUS * scale * 0.7, 0, 2 * Math.PI);
     ctx.fill();
     ctx.closePath();
   }
 
   private drawPoints(points: IPoint[]) {
+    const sc = this._scalingHandler;
     if (!!this._polygonCtx && points.length > 0) {
       const ctx = this._polygonCtx;
-      const { x: x0, y: y0 } = this.realPointPosition(points[0]);
+      const { x: x0, y: y0 } = sc.getPhysicalPositionByPoint(points[0]);
       ctx.moveTo(x0, y0);
       points.slice(1).forEach(point => {
-        const { x, y } = this.realPointPosition(point);
+        const { x, y } = sc.getPhysicalPositionByPoint(point);
         ctx.lineTo(x, y);
       });
     }
-  }
-
-  private realPointPosition({ x, y }: IPoint) {
-    return {
-      x: x + this._iwo,
-      y: y + this._iho,
-    };
   }
 
   draw(polygons: IPolygon[]) {
@@ -150,7 +146,7 @@ export class CanvasHandler {
         ctx.closePath();
         ctx.strokeStyle = polygon.strokeColor;
         ctx.fillStyle = polygon.strokeColor;
-        polygon.points.forEach(point => this.drawPoint(this.realPointPosition(point), ctx));
+        polygon.points.forEach(point => this.drawPoint(point, ctx));
       });
     }
   }

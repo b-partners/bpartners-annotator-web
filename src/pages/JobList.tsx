@@ -1,13 +1,19 @@
 import { Job } from '@bpartners-annotator/typescript-client';
 import { Inbox as InboxIcon } from '@mui/icons-material';
 import { Box, List, Typography } from '@mui/material';
+import { useEffect } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 import { JobListItem } from '../common/components/job&task';
+import { cache } from '../common/utils';
 import { job_list_list_container } from './style';
 
 export const JobList = () => {
   const { jobs } = useLoaderData() as { jobs: Job[] };
   const { teamId } = useParams();
+
+  useEffect(() => {
+    cache.deleteCurrentTask();
+  }, []);
 
   return (
     <>
