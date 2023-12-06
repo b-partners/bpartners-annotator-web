@@ -3,7 +3,7 @@ import { TMouseType, getCanvasImageOffset } from '.';
 import { ScalingHandler } from '../components/canvas';
 import { IPoint, IPolygon } from '../context';
 
-const POINT_SHAPE_RADIUS = 3;
+const POINT_SHAPE_RADIUS = 4;
 
 export class CanvasHandler {
   private _canvasPolygonRef: RefObject<HTMLCanvasElement>;
@@ -113,7 +113,7 @@ export class CanvasHandler {
 
     ctx.beginPath();
     ctx.fillStyle = 'black';
-    ctx.arc(x, y, POINT_SHAPE_RADIUS * (scale / 2), 0, 2 * Math.PI);
+    ctx.arc(x, y, POINT_SHAPE_RADIUS * scale * 0.7, 0, 2 * Math.PI);
     ctx.fill();
     ctx.closePath();
   }
