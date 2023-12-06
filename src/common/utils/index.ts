@@ -3,6 +3,7 @@ export * from './cache';
 export * from './canvas-handler';
 export * from './canvas-utilities';
 export * from './get-canvas-image-offset';
+export * from './object-utilities';
 export * from './redirection-by-role';
 export * from './redirection-urls';
 export * from './retryer';
