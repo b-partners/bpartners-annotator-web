@@ -1,12 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Job, Task } from '@bpartners-annotator/typescript-client';
 import { Box, CircularProgress, Grid, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { Canvas } from '../common/components/canvas';
 import { Sidebar } from '../common/components/sidebar';
 import { CancelAnnotationButton, ConfirmAnnotationButton, NextAnnotationButton } from '../common/components/task-board';
 import { CanvasAnnotationProvider } from '../common/context';
-import { useFetch } from '../common/hooks';
+import { useFetch, useGetPrevRoute } from '../common/hooks';
+import { cache, isEmpty } from '../common/utils';
 import { teamJobsProvider, userTasksProvider } from '../providers';
 import { canvas_loading } from './style';
 import { UseJobTaskState } from './type';
@@ -19,8 +21,15 @@ export const TaskBoard = () => {
     async () =>
       await Promise.all([userTasksProvider.getOne(params.jobId || '', params.teamId || ''), teamJobsProvider.getOne(params.teamId || '', params.jobId || '')])
   );
+  const prevRoute = useGetPrevRoute(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (isEmpty(taskLoaded) || (!!data && isEmpty(data[0]))) {
+      cache.deleteCurrentTask();
+      navigate(prevRoute());
+    }
+
     if (data) setState({ job: data[1], task: data[0] });
     return () => {};
   }, [data]);
