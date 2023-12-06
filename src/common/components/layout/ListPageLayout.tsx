@@ -50,7 +50,9 @@ export const ListPageLayout = () => {
             <Loading />
           </CardContent>
           <CardActions sx={page_list_card_action}>
-            <BpButton variant='text' startIcon={<NavigateBeforeIcon />} onClick={handleClick} isLoading={isLoading} label='Retour' />
+            {getPath() !== '/teams' && (
+              <BpButton variant='text' startIcon={<NavigateBeforeIcon />} onClick={handleClick} isLoading={isLoading} label='Retour' />
+            )}
           </CardActions>
         </Card>
       </Box>
