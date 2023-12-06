@@ -48,6 +48,7 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ label, onEnd, task
       await userTasksProvider.updateOne(params.teamId || '', params.jobId || '', task.id || '', { ...task, status: TaskStatus.COMPLETED, userId });
       setAnnotations([]);
       onEnd();
+      setNoAnnotation(false);
     } catch (err) {
       alert((err as Error).message);
     } finally {
@@ -74,7 +75,7 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ label, onEnd, task
         disabled={!noAnnotation && annotations.length === 0}
         isLoading={isLoading || isFetcherLoading}
       />
-      <FormControlLabel label='Rien à labelliser' control={<Checkbox value={noAnnotation} onClick={() => setNoAnnotation(e => !e)} />} />
+      <FormControlLabel label='Rien à labelliser' control={<Checkbox value={noAnnotation} checked={noAnnotation} onClick={() => setNoAnnotation(e => !e)} />} />
     </Stack>
   );
 };
