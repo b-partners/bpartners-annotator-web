@@ -1,6 +1,6 @@
 import { IEventHandlerProps, IPointInfo, ScalingHandler } from '.';
 import { IAnnotation, IPoint, IPolygon } from '../../context';
-import { CanvasHandler, TMouseType, areOverlappingPoints } from '../../utils';
+import { CanvasHandler, TMouseType, areOverlappingPoints, getColorFromMain } from '../../utils';
 
 export const getMousePositionInCanvas = (event: MouseEvent, canvas: HTMLCanvasElement) => {
   const canvasRect = canvas.getBoundingClientRect();
@@ -78,8 +78,13 @@ export class EventHandler {
     } else if (this.isAnnotating) {
       points.push(currentLogicalPosition);
       this.draw();
-    } else {
+    } else if (!this.isAnnotating) {
       this.currentPointInfo = this.pointsInfo.find(value => areOverlappingPoints(value.point, currentLogicalPosition)) || null;
+    }
+    if (!this.isAnnotating && !this.currentPointInfo) {
+      this.isAnnotating = true;
+      this.polygon = { ...getColorFromMain('#00ff00'), points: [currentLogicalPosition] };
+      this.draw();
     }
   };
 
