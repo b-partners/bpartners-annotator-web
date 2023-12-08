@@ -3,7 +3,7 @@ import { userAnnotationsApi } from '../api';
 
 export const userAnnotationsProvider = {
   async annotate(userId: string, taskId: string, annotationBatchId: string, annotationBatch?: AnnotationBatch | undefined) {
-    const { data } = await userAnnotationsApi().annotateTask(userId, taskId, annotationBatchId, annotationBatch);
+    const { data } = await userAnnotationsApi().annotateAndCompleteTask(userId, taskId, annotationBatchId, annotationBatch);
     return data;
   },
   async getReview(userId: string, taskId: string, annotationBatchId: string, reviewId: string) {

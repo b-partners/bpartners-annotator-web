@@ -1,9 +1,7 @@
-import { Annotation, AnnotationBatch, Label, Task, TaskStatus, Whoami } from '@bpartners-annotator/typescript-client';
+import { Annotation, AnnotationBatch, Label, Task, Whoami } from '@bpartners-annotator/typescript-client';
 import { Checkbox, FormControlLabel, Stack } from '@mui/material';
 import { FC, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
-import { userTasksProvider } from '../../../providers';
 import { userAnnotationsProvider } from '../../../providers/annotator/user-annotations-provider';
 import { IAnnotation, useCanvasAnnotationContext } from '../../context';
 import { useFetch } from '../../hooks';
@@ -28,7 +26,6 @@ const areReadyForValidation = (annotations: IAnnotation[]) => {
 
 export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ label, onEnd, task, isFetcherLoading }) => {
   const { annotations, setAnnotations } = useCanvasAnnotationContext();
-  const params = useParams();
   const [noAnnotation, setNoAnnotation] = useState(false);
 
   const fetcher = async () => {
@@ -45,7 +42,6 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ label, onEnd, task
     const annotationBatch: AnnotationBatch = { id: uuidV4(), annotations: taskAnnotation };
     try {
       await userAnnotationsProvider.annotate(userId, task.id || '', annotationBatch.id || '', annotationBatch);
-      await userTasksProvider.updateOne(params.teamId || '', params.jobId || '', task.id || '', { ...task, status: TaskStatus.COMPLETED, userId });
       setAnnotations([]);
       onEnd();
       setNoAnnotation(false);
