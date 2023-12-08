@@ -82,7 +82,7 @@ export class EventHandler {
       this.currentPointInfo = this.pointsInfo.find(value => areOverlappingPoints(value.point, currentLogicalPosition)) || null;
     }
 
-    if (!this.isAnnotating && !this.currentPointInfo && sc.isPointOutsideOrImage(currentLogicalPosition)) {
+    if (!this.isAnnotating && !this.currentPointInfo && !sc.isPointOutsideOrImage(currentLogicalPosition)) {
       this.isAnnotating = true;
       this.polygon = { ...getColorFromMain('#00ff00'), points: [currentLogicalPosition] };
       this.draw();
