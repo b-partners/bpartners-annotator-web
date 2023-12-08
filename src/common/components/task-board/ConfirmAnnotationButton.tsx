@@ -17,8 +17,6 @@ interface IConfirmButton {
 
 const areReadyForValidation = (annotations: IAnnotation[]) => {
   for (let i = 0; i < annotations.length; i++) {
-    console.log(annotations[i].label);
-
     if (annotations[i].label.length === 0) return false;
   }
   return true;
