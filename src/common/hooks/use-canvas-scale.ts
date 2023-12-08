@@ -13,7 +13,7 @@ export const useCanvasScale = (container: RefObject<HTMLDivElement>) => {
       const currentContainer = container.current;
       const middleY = (currentContainer.scrollHeight - currentContainer.clientHeight) / 2;
       const middleX = (currentContainer.scrollWidth - currentContainer.clientWidth) / 2;
-      container.current.scrollTo({ left: middleX, top: middleY, behavior: 'instant' });
+      container.current.scrollTo({ left: middleX, top: middleY });
     }
   };
 
