@@ -9,7 +9,6 @@ export const CANVAS_CONTAINER: SxProps = {
   '&::-webkit-scrollbar': {
     display: 'none',
   },
-  scrollBehavior: 'smooth',
   zIndex: 999,
   height: '80vh',
   width: '70vw',
