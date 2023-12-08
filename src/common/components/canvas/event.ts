@@ -123,7 +123,9 @@ export class EventHandler {
   private escapeKeyDown() {
     const eventHandler = this;
     return (event: KeyboardEvent) => {
-      if (eventHandler.isAnnotating && event.key === 'Escape') {
+      console.log(event.key);
+
+      if (eventHandler.isAnnotating && (event.key === 'Escape' || event.key === 'Backspace')) {
         eventHandler.polygon.points.pop();
         eventHandler.draw();
       }
