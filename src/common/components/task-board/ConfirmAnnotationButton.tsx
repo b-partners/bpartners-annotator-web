@@ -40,6 +40,7 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ label, onEnd, task
     const annotationBatch: AnnotationBatch = { id: uuidV4(), annotations: taskAnnotation };
     try {
       await userAnnotationsProvider.annotate(userId, task.id || '', annotationBatch.id || '', annotationBatch);
+      cache.deleteCurrentTask();
       setAnnotations([]);
       onEnd();
       setNoAnnotation(false);
