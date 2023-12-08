@@ -12,7 +12,9 @@ export const NextAnnotationButton: FC<{ fetcher: () => void; task: Task }> = ({ 
   const [isLoading, setIsLoading] = useState(false);
 
   const cancelAnnotation = async () => {
-    await retryer(async () => await userTasksProvider.updateOne(teamId || '', jobId || '', task.id || '', { ...task, status: TaskStatus.PENDING }));
+    await retryer(
+      async () => await userTasksProvider.updateOne(teamId || '', jobId || '', task.id || '', { ...task, userId: undefined, status: TaskStatus.PENDING })
+    );
   };
 
   const changeImage = () => {

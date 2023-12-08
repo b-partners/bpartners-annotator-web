@@ -11,7 +11,7 @@ export const userTasksProvider = {
     return data;
   },
   async annotateOne(userId: string, taskId: string, taskAnnotation: Annotation[]) {
-    const { data } = await userTasksApi().annotateTask(userId, taskId, taskAnnotation as any);
+    const { data } = await userTasksApi().annotateAndCompleteTask(userId, taskId, taskAnnotation as any);
     return data;
   },
   async updateOne(teamId: string, jobId: string, taskId: string, resource: UpdateTask) {
