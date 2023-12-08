@@ -18,6 +18,12 @@ export class ScalingHandler {
     return { iw: Math.floor(width * scale), ih: Math.floor(height * scale) };
   };
 
+  public isPointOutsideOrImage(point: IPoint) {
+    const { ih, iw } = this.getImageSize();
+    const testingValues = [0, ih, iw];
+    return !testingValues.includes(point.x) && !testingValues.includes(point.y);
+  }
+
   public getImageOffset = () => {
     const { ih, iw } = this.getImageSize();
     const { width, height } = this.canvas;

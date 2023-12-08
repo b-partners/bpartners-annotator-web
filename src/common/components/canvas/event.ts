@@ -81,7 +81,8 @@ export class EventHandler {
     } else if (!this.isAnnotating) {
       this.currentPointInfo = this.pointsInfo.find(value => areOverlappingPoints(value.point, currentLogicalPosition)) || null;
     }
-    if (!this.isAnnotating && !this.currentPointInfo) {
+
+    if (!this.isAnnotating && !this.currentPointInfo && sc.isPointOutsideOrImage(currentLogicalPosition)) {
       this.isAnnotating = true;
       this.polygon = { ...getColorFromMain('#00ff00'), points: [currentLogicalPosition] };
       this.draw();
@@ -123,8 +124,6 @@ export class EventHandler {
   private escapeKeyDown() {
     const eventHandler = this;
     return (event: KeyboardEvent) => {
-      console.log(event.key);
-
       if (eventHandler.isAnnotating && (event.key === 'Escape' || event.key === 'Backspace')) {
         eventHandler.polygon.points.pop();
         eventHandler.draw();
