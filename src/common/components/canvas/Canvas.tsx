@@ -16,7 +16,7 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
   const canvasCursor = useRef<HTMLCanvasElement>(null);
   const canvasContainer = useRef<HTMLDivElement>(null);
   const { image } = useImageCreation(img);
-  const { scaling, setDefaultScaling, ...zoomActions } = useCanvasScale(canvasContainer);
+  const { scaling, centerContent, ...zoomActions } = useCanvasScale(canvasContainer, image);
   const { ch, cw } = useCanvasSize();
   const canvasHandler = useMemo(() => new CanvasHandler(canvas, canvasImage, canvasCursor, image), [image, canvas, canvasImage, canvasCursor]);
   const imageOffset = useImageOffset(canvas, image);
@@ -36,6 +36,10 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
   useEffect(() => {
     setIsAnnotating(false);
   }, [annotations]);
+
+  useEffect(() => {
+    centerContent();
+  }, [scaling]);
 
   const { pathname } = useLocation();
 
