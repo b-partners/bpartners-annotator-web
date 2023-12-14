@@ -16,12 +16,13 @@ export const useFetch = <T>(fetcher: () => Promise<T>, onlyOnMutate: boolean = f
     isLoading: false,
   });
 
-  const localFetcher = () => {
+  const localFetcher = (onDone?: () => void) => {
     const _ = async () => {
       setState(e => ({ ...e, error: null, isLoading: true }));
       try {
         const data = await retryer(fetcher);
         setState(e => ({ ...e, data, isLoading: false }));
+        onDone && onDone();
       } catch (err) {
         const error = err as AxiosError;
         setState(e => ({ ...e, error, isLoading: false }));

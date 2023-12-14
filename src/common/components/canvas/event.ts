@@ -1,4 +1,4 @@
-import { IEventHandlerProps, IPointInfo, ScalingHandler } from '.';
+import { IEventHandlerProps, IPointInfo, ScalingHandler, getAnnotationsLastLabel } from '.';
 import { IAnnotation, IPoint, IPolygon } from '../../context';
 import { CanvasHandler, TMouseType, areOverlappingPoints, getColorFromMain } from '../../utils';
 
@@ -73,7 +73,7 @@ export class EventHandler {
     if (this.isAnnotating && points.length > 1 && areOverlappingPoints(points[0], currentLogicalPosition)) {
       points.push(points[0]);
       this.drawMouse(currentPhysicalPosition, 'DEFAULT');
-      end({ label: '', polygon: polygon, id: 0 });
+      end({ label: getAnnotationsLastLabel(this.annotations), polygon: polygon, id: 0 });
       this.draw();
     } else if (this.isAnnotating) {
       points.push(currentLogicalPosition);

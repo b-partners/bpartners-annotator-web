@@ -1,9 +1,9 @@
 import { RefObject, useCallback, useEffect, useMemo, useState } from 'react';
 
-const INITIAL_SCALE = 4;
-const SCALE_NUMBER = 0.1;
+const INITIAL_SCALE = 1;
+const SCALE_NUMBER = 0.2;
 
-export const useCanvasScale = (container: RefObject<HTMLDivElement>) => {
+export const useCanvasScale = (container: RefObject<HTMLDivElement>, image: HTMLImageElement) => {
   const [defaultScale, setDefaultScale] = useState(INITIAL_SCALE);
   const [scaling, setScale] = useState(defaultScale);
   const MAX_SCALE = useMemo(() => defaultScale + 2, [defaultScale]);
@@ -20,6 +20,14 @@ export const useCanvasScale = (container: RefObject<HTMLDivElement>) => {
   useEffect(() => {
     centerContent();
   }, [centerContent]);
+
+  useEffect(() => {
+    if (image.width !== 0) {
+      const newScale = (window.innerWidth * 0.15) / image.width;
+      setDefaultScale(newScale);
+      setScale(newScale);
+    }
+  }, [centerContent, image]);
 
   const zoomIn = () => {
     if (scaling < MAX_SCALE) {
@@ -38,7 +46,14 @@ export const useCanvasScale = (container: RefObject<HTMLDivElement>) => {
     setScale(defaultScale);
     centerContent();
   };
-  const setDefaultScaling = (newScale: number) => setDefaultScale(newScale);
+  const setDefaultScaling = (newScale: number) => {
+    if (newScale !== Infinity) {
+      console.log(newScale);
 
-  return { zoomIn, zoomOut, scaling, resetZoom, setDefaultScaling };
+      setDefaultScale(newScale);
+      setScale(newScale);
+    }
+  };
+
+  return { zoomIn, zoomOut, scaling, resetZoom, setDefaultScaling, centerContent };
 };

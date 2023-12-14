@@ -47,7 +47,7 @@ export const TaskBoard = () => {
           <Stack spacing={1} m={2} mb={1}>
             <CancelAnnotationButton />
             <NextAnnotationButton fetcher={fetcher} task={task} />
-            <ConfirmAnnotationButton isFetcherLoading={isLoading} task={task} onEnd={fetcher} label={job?.labels || []} />
+            <ConfirmAnnotationButton isFetcherLoading={isLoading} task={task} onEnd={fetcher} labels={job?.labels || []} />
           </Stack>
         </Grid>
       </Grid>

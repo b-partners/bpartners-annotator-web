@@ -67,13 +67,13 @@ export class CanvasHandler {
         ctx.lineWidth = 1;
         ctx.beginPath();
         if (type === 'DEFAULT') {
-          ctx.arc(x, y, 3 * scale, 0, Math.PI * 2);
+          ctx.arc(x, y, 2 * scale, 0, Math.PI * 2);
           ctx.fill();
         } else if (type === 'END') {
-          ctx.arc(x, y, 7 * scale, 0, Math.PI * 2);
+          ctx.arc(x, y, 4 * scale, 0, Math.PI * 2);
           ctx.stroke();
         } else {
-          ctx.arc(x, y, 7 * scale, 0, Math.PI * 2);
+          ctx.arc(x, y, 4 * scale, 0, Math.PI * 2);
           ctx.stroke();
         }
         ctx.closePath();
