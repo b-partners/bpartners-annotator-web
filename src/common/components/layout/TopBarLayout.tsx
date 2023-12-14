@@ -1,4 +1,5 @@
-import { AppBar, Box, Toolbar } from '@mui/material';
+import { Logout as LogoutIcon } from '@mui/icons-material';
+import { AppBar, Box, CircularProgress, IconButton, Toolbar } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -6,7 +7,6 @@ import BP_LOGO from '../../../assets/bp-white-logo.png';
 import { authProvider } from '../../../providers';
 import { DialogProvider } from '../../context';
 import { cache } from '../../utils';
-import { BpButton } from '../basics';
 
 export const TopBarLayout = () => {
   const navigate = useNavigate();
@@ -35,7 +35,9 @@ export const TopBarLayout = () => {
         <Toolbar>
           <LazyLoadImage src={BP_LOGO} alt='BpLogo' width={120} />
           <Box flexGrow={2}></Box>
-          <BpButton variant='text' sx={{ color: '#fff' }} label='Se déconnecter' isLoading={isLoading} onClick={logout} />
+          <IconButton title='Se déconnecter' onClick={logout} sx={{ color: 'white' }}>
+            {isLoading ? <CircularProgress sx={{ color: 'white' }} size='25px' /> : <LogoutIcon />}
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Box
