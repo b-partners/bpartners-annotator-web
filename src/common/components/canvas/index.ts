@@ -5,3 +5,4 @@ export * from './event';
 export * from './scaling-handler';
 export * from './style';
 export * from './type';
+export * from './utilities';

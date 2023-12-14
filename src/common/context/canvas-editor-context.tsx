@@ -79,7 +79,7 @@ export const useCanvasAnnotationContext = () => {
     if (len !== 0) {
       const id = annotations[len - 1].id + 1;
       annotations[len].id = id;
-      annotations[len].label = `Label ${id}`;
+      annotations[len].label = annotation.label || '';
     }
     context.setAnnotations(annotations);
   };
