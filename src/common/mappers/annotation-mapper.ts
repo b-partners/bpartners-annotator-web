@@ -1,7 +1,7 @@
 import { Annotation, Label } from '@bpartners-annotator/typescript-client';
 import { v4 as uuidV4 } from 'uuid';
 import { IAnnotation } from '../context';
-import { getColorFromMain } from '../utils';
+import { cache, getColorFromMain } from '../utils';
 
 export const annotationsMapper = {
   toDomain(annotation: Annotation, id: number): IAnnotation {
@@ -16,13 +16,14 @@ export const annotationsMapper = {
       },
     };
   },
-  toRest(annotation: IAnnotation, userId: string, taskId: string, labels: Label[]): Annotation {
+  toRest(annotation: IAnnotation, labels: Label[], taskId?: string): Annotation {
+    const { user } = cache.getWhoami();
     return {
       id: uuidV4(),
       label: labels.find(e => e.name === annotation.label),
-      taskId: taskId,
+      taskId,
       polygon: { points: annotation.polygon.points },
-      userId,
+      userId: user?.id,
     };
   },
 };

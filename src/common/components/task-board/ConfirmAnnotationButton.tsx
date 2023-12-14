@@ -1,19 +1,36 @@
-import { Annotation, AnnotationBatch, Label, Task, Whoami } from '@bpartners-annotator/typescript-client';
-import { Checkbox, FormControlLabel, Stack } from '@mui/material';
+import { Annotation, AnnotationBatch, Whoami } from '@bpartners-annotator/typescript-client';
+import { Checkbox, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, Stack } from '@mui/material';
 import { FC, useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 import { userAnnotationsProvider } from '../../../providers/annotator/user-annotations-provider';
-import { IAnnotation, useCanvasAnnotationContext } from '../../context';
+import { IAnnotation, useCanvasAnnotationContext, useDialog } from '../../context';
 import { useFetch } from '../../hooks';
+import { annotationsMapper } from '../../mappers';
 import { cache } from '../../utils';
 import { BpButton } from '../basics';
+import { IConfirmButton } from './types';
 
-interface IConfirmButton {
-  task: Task;
-  label: Label[];
-  onEnd: () => void;
-  isFetcherLoading: boolean;
-}
+const NoAnnotationConfirm: FC<{ fetcher: () => Promise<void> }> = ({ fetcher }) => {
+  const { closeDialog } = useDialog();
+  const { fetcher: fetch, isLoading } = useFetch(fetcher, true);
+
+  const handleClick = () => fetch(() => closeDialog());
+
+  return (
+    <>
+      <DialogTitle>Rejet d'annotation</DialogTitle>
+      <DialogContent>
+        <DialogContentText id='alert-dialog-slide-description'>Veuillez commenté ci dessous la raison du rejet de cette annotation.</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Stack width='100%' justifyContent='space-between' direction='row'>
+          <BpButton label='Annuler' isLoading={isLoading} onClick={closeDialog} />
+          <BpButton label='Valider' isLoading={isLoading} onClick={handleClick} />
+        </Stack>
+      </DialogActions>
+    </>
+  );
+};
 
 const areReadyForValidation = (annotations: IAnnotation[]) => {
   for (let i = 0; i < annotations.length; i++) {
@@ -22,20 +39,15 @@ const areReadyForValidation = (annotations: IAnnotation[]) => {
   return true;
 };
 
-export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ label, onEnd, task, isFetcherLoading }) => {
+export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ labels, onEnd, task, isFetcherLoading }) => {
   const { annotations, setAnnotations } = useCanvasAnnotationContext();
   const [noAnnotation, setNoAnnotation] = useState(false);
+  const { openDialog } = useDialog();
 
   const fetcher = async () => {
     const whoami = cache.getWhoami() as Whoami;
     const userId = whoami.user?.id || '';
-    const taskAnnotation: Annotation[] = annotations.map(annotation => ({
-      id: uuidV4(),
-      label: label.find(e => e.name === annotation.label),
-      taskId: task.id || '',
-      polygon: { points: annotation.polygon.points },
-      userId,
-    }));
+    const taskAnnotation: Annotation[] = annotations.map(annotation => annotationsMapper.toRest(annotation, labels, task.id));
 
     const annotationBatch: AnnotationBatch = { id: uuidV4(), annotations: taskAnnotation };
     try {
@@ -55,8 +67,10 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ label, onEnd, task
 
   const handleClick = () => {
     const areReady = areReadyForValidation(annotations);
-    if (areReady) {
+    if (areReady && !noAnnotation) {
       fetch();
+    } else if (areReady) {
+      openDialog(<NoAnnotationConfirm fetcher={fetcher} />);
     } else {
       alert('Veuillez donner un label pour chaque annotation.');
     }
