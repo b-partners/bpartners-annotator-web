@@ -1,4 +1,4 @@
-import { Label } from '@bpartners-annotator/typescript-client';
+import { AnnotationReview, Label } from '@bpartners-annotator/typescript-client';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 export enum ECanvasAction {
@@ -35,6 +35,8 @@ export interface IAnnotationContext {
   labels: Label[];
   img: string;
   batchId: string;
+  globalReviews: AnnotationReview[];
+  annotationsReviews: AnnotationReview[];
 }
 
 export interface ICanvasContext {

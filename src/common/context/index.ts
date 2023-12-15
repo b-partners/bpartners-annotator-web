@@ -1,3 +1,4 @@
+export * from './canvas-annotation-context';
 export * from './canvas-editor-context';
 export * from './dialog-context';
 export * from './list-page-context';
