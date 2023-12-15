@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Job, Task } from '@bpartners-annotator/typescript-client';
 import { Box, CircularProgress, Grid, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
@@ -10,19 +9,20 @@ import { CanvasAnnotationProvider } from '../common/context';
 import { useFetch, useGetPrevRoute } from '../common/hooks';
 import { cache, isEmpty } from '../common/utils';
 import { teamJobsProvider, userTasksProvider } from '../providers';
+import { UserTaskLoader } from '../router/loaders';
 import { canvas_loading } from './style';
 import { UseJobTaskState } from './type';
 
 export const TaskBoard = () => {
-  const { task: taskLoaded, job: jobLoaded } = useLoaderData() as { task: Task; job: Job };
-  const [{ job, task }, setState] = useState<UseJobTaskState>({ job: jobLoaded, task: taskLoaded });
   const params = useParams();
+  const navigate = useNavigate();
+  const prevRoute = useGetPrevRoute(1);
+  const { task: taskLoaded, job: jobLoaded, annotationBatch: annotationBatchLoaded } = useLoaderData() as UserTaskLoader;
+  const [{ job, task }, setState] = useState<UseJobTaskState>({ job: jobLoaded, task: taskLoaded });
   const { data, fetcher, isLoading } = useFetch(
     async () =>
       await Promise.all([userTasksProvider.getOne(params.jobId || '', params.teamId || ''), teamJobsProvider.getOne(params.teamId || '', params.jobId || '')])
   );
-  const prevRoute = useGetPrevRoute(1);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (isEmpty(taskLoaded) || (!!data && isEmpty(data[0]))) {
@@ -35,7 +35,7 @@ export const TaskBoard = () => {
   }, [data]);
 
   return task !== null ? (
-    <CanvasAnnotationProvider img={task.imageUri || ''} labels={job?.labels || []}>
+    <CanvasAnnotationProvider img={task.imageUri || ''} batch={annotationBatchLoaded} labels={job?.labels || []}>
       <Grid container height='94%' pl={1}>
         <Grid item xs={10} display='flex' justifyContent='center' alignItems='center'>
           <div>{job && <Canvas isLoading={isLoading} job={job} />}</div>

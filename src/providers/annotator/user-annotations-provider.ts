@@ -19,7 +19,7 @@ export const userAnnotationsProvider = {
     return data;
   },
   async getBatchs(userId: string, taskId: string) {
-    const { data } = await userAnnotationsApi().getUserTaskAnnotationBatches(userId, taskId);
+    const { data } = await userAnnotationsApi().getUserTaskAnnotationBatches(userId, taskId, 1, 500);
     return data;
   },
 };

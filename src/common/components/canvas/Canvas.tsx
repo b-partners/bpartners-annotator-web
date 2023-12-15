@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Job } from '@bpartners-annotator/typescript-client';
-import { Box, Chip, CircularProgress, Stack } from '@mui/material';
+import { Box, Chip, CircularProgress, Grid, Stack } from '@mui/material';
 import { FC, useEffect, useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CANVAS_CONTAINER, CanvasAction, EventHandler, MousePosition } from '.';
@@ -45,12 +45,14 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
 
   return (
     <CanvasEditorProvider zoom={zoomActions}>
-      <Stack p={0.3} width='70vw' direction='row' spacing={1}>
-        <Stack direction='row' flexGrow={2} spacing={1}>
-          {canvas.current && <MousePosition image={image} canvas={canvasCursor.current} />}
-        </Stack>
-        <CanvasAction />
-      </Stack>
+      <Grid container p={0.3} width='70vw' direction='row' spacing={1}>
+        <Grid xs={10} direction='row' flexGrow={2} spacing={1}>
+          <Stack direction='row'>{canvas.current && <MousePosition image={image} canvas={canvasCursor.current} />}</Stack>
+        </Grid>
+        <Grid sx={{ textAlign: 'end' }} xs={2}>
+          <CanvasAction />
+        </Grid>
+      </Grid>
       <Box ref={canvasContainer} sx={CANVAS_CONTAINER}>
         <Box sx={{ height: ch * scaling, width: cw * scaling }}>
           <canvas ref={canvasImage} height={ch * scaling} width={cw * scaling} />
