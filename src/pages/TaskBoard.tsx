@@ -3,6 +3,7 @@ import { Box, CircularProgress, Grid, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { Canvas } from '../common/components/canvas';
+import { TaskReviewComment } from '../common/components/job&task';
 import { Sidebar } from '../common/components/sidebar';
 import { CancelAnnotationButton, ConfirmAnnotationButton, NextAnnotationButton } from '../common/components/task-board';
 import { CanvasAnnotationProvider } from '../common/context';
@@ -51,6 +52,7 @@ export const TaskBoard = () => {
             globalReviews={globalReviewsLoaded}
             labels={job?.labels || []}
         >
+            <TaskReviewComment />
             <Grid container height='94%' pl={1}>
                 <Grid item xs={10} display='flex' justifyContent='center' alignItems='center'>
                     <div>{job && <Canvas isLoading={isLoading} job={job} />}</div>
