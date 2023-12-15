@@ -1,6 +1,9 @@
 import { Label } from '@bpartners-annotator/typescript-client';
-import { Delete as DeleteIcon } from '@mui/icons-material';
+import { Delete as DeleteIcon, ExpandMore } from '@mui/icons-material';
 import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
     Box,
     Divider,
     IconButton,
@@ -17,11 +20,17 @@ import { useCanvasAnnotationContext } from '../../context';
 import { BpEmptyList } from '../basics';
 
 const LabelItem: FC<ILabelItemProps> = ({ annotation }) => {
-    const { changeAnnotationLabel, removeAnnotation, labels } = useCanvasAnnotationContext();
+    const { changeAnnotationLabel, removeAnnotation, labels, annotationsReviews } = useCanvasAnnotationContext();
 
     const handleClick = (label: Label) => () => {
         changeAnnotationLabel(annotation.id, label);
     };
+
+    console.log(annotationsReviews);
+
+    const currentReview = annotationsReviews.find(
+        review => review.annotationId && annotation.uuid && review.annotationId === annotation.uuid
+    );
 
     return (
         <>
@@ -40,13 +49,16 @@ const LabelItem: FC<ILabelItemProps> = ({ annotation }) => {
                     ))}
                 </TextField>
             </ListItem>
-            <Box p={1}>
-                <Typography textAlign='justify'>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi labore voluptate illo provident
-                    rem quis voluptatibus repellat, minus possimus asperiores voluptas veniam harum, numquam unde?
-                    Reprehenderit magni ipsum aliquid nam.
-                </Typography>
-            </Box>
+            {currentReview && (
+                <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMore />}>
+                        <Typography>Commentaires</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Typography textAlign='justify'>{currentReview.comment}</Typography>
+                    </AccordionDetails>
+                </Accordion>
+            )}
             <Divider />
         </>
     );

@@ -24,7 +24,8 @@ export const CanvasAnnotationProvider: FC<{
     globalReviews?: AnnotationReview[];
     annotationsReviews?: AnnotationReview[];
 }> = ({ children, labels, img, batch, annotationsReviews = [], globalReviews = [] }) => {
-    const annotation = batch?.annotations?.map((annotation, key) => annotationsMapper.toDomain(annotation, key));
+    const annotation = batch?.annotations?.map((annotation, key) => annotationsMapper.toDomain(annotation, key + 1));
+
     const [annotations, setAnnotations] = useState<IAnnotation[]>(annotation || []);
     const [isAnnotating, setIsAnnotating] = useState(false);
 
