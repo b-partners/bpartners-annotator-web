@@ -1,62 +1,65 @@
-import { Label } from '@bpartners-annotator/typescript-client';
+import { AnnotationReview, Label } from '@bpartners-annotator/typescript-client';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 export enum ECanvasAction {
-  NO_ACTION = 'NO_ACTION',
-  POLYGONE = 'POLYGONE',
+    NO_ACTION = 'NO_ACTION',
+    POLYGONE = 'POLYGONE',
 }
 
 export interface IPoint {
-  x: number;
-  y: number;
+    x: number;
+    y: number;
 }
 export interface IPolygon {
-  fillColor: string;
-  strokeColor: string;
-  points: IPoint[];
+    fillColor: string;
+    strokeColor: string;
+    points: IPoint[];
 }
 export interface IAnnotation {
-  label: string;
-  polygon: IPolygon;
-  id: number;
+    label: string;
+    polygon: IPolygon;
+    id: number;
+    uuid?: string;
 }
 
 export interface IZoomContext {
-  zoomIn: () => void;
-  zoomOut: () => void;
-  resetZoom: () => void;
+    zoomIn: () => void;
+    zoomOut: () => void;
+    resetZoom: () => void;
 }
 
 export interface IAnnotationContext {
-  annotations: IAnnotation[];
-  setAnnotations: Dispatch<SetStateAction<IAnnotation[]>>;
-  isAnnotating: boolean;
-  setIsAnnotating: Dispatch<SetStateAction<boolean>>;
-  labels: Label[];
-  img: string;
-  batchId: string;
+    annotations: IAnnotation[];
+    setAnnotations: Dispatch<SetStateAction<IAnnotation[]>>;
+    isAnnotating: boolean;
+    setIsAnnotating: Dispatch<SetStateAction<boolean>>;
+    labels: Label[];
+    img: string;
+    batchId: string;
+    globalReviews: AnnotationReview[];
+    annotationsReviews: AnnotationReview[];
 }
 
 export interface ICanvasContext {
-  zoom: IZoomContext;
+    zoom: IZoomContext;
 }
 
 export interface ICanvasEditorProviderProps {
-  children: ReactNode;
-  zoom: IZoomContext;
+    children: ReactNode;
+    zoom: IZoomContext;
 }
 
 export interface IListPageState {
-  isLoading: boolean;
-  setLoading: Dispatch<SetStateAction<boolean>>;
+    isLoading: boolean;
+    setLoading: Dispatch<SetStateAction<boolean>>;
 }
 export interface IDialogState {
-  isOpen: boolean;
-  content: ReactNode;
-  setState: Dispatch<
-    SetStateAction<{
-      isOpen: boolean;
-      content: ReactNode;
-    }>
-  >;
+    isOpen: boolean;
+    content: ReactNode;
+    setState: Dispatch<
+        SetStateAction<{
+            isOpen: boolean;
+            content: ReactNode;
+        }>
+    >;
 }
