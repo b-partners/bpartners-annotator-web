@@ -2,6 +2,7 @@ export * from './base64-utilities';
 export * from './cache';
 export * from './canvas-handler';
 export * from './canvas-utilities';
+export * from './date-formater';
 export * from './get-canvas-image-offset';
 export * from './object-utilities';
 export * from './redirection-by-role';
