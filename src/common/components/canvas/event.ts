@@ -135,6 +135,10 @@ export class EventHandler {
         return (event: KeyboardEvent) => {
             if (eventHandler.isAnnotating && (event.key === 'Escape' || event.key === 'Backspace')) {
                 eventHandler.polygon.points.pop();
+                if (eventHandler.polygon.points.length === 0) {
+                    this.isAnnotating = false;
+                    this.currentPointInfo = null;
+                }
                 eventHandler.draw();
             }
         };

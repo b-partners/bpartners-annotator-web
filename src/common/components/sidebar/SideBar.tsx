@@ -26,8 +26,6 @@ const LabelItem: FC<ILabelItemProps> = ({ annotation }) => {
         changeAnnotationLabel(annotation.id, label);
     };
 
-    console.log(annotationsReviews);
-
     const currentReview = annotationsReviews.find(
         review => review.annotationId && annotation.uuid && review.annotationId === annotation.uuid
     );
