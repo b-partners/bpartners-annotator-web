@@ -3,8 +3,6 @@ import { TMouseType, getCanvasImageOffset } from '.';
 import { ScalingHandler } from '../components/canvas';
 import { IPoint, IPolygon } from '../context';
 
-const POINT_SHAPE_RADIUS = 2;
-
 export class CanvasHandler {
     private _canvasPolygonRef: RefObject<HTMLCanvasElement>;
     private _canvasImageRef: RefObject<HTMLCanvasElement>;
