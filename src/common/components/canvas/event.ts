@@ -1,6 +1,13 @@
 import { IEventHandlerProps, IPointInfo, ScalingHandler, getAnnotationsLastColors, getAnnotationsLastLabel } from '.';
 import { IAnnotation, IPoint, IPolygon } from '../../context';
-import { CanvasHandler, TMouseType, areOverlappingPoints, getColorFromMain } from '../../utils';
+import {
+    CanvasHandler,
+    TMouseType,
+    areOverlappingPoints,
+    findMidpoint,
+    getColorFromMain,
+    pointBelongsToOrIsClose,
+} from '../../utils';
 
 export const getMousePositionInCanvas = (event: MouseEvent, canvas: HTMLCanvasElement) => {
     const canvasRect = canvas.getBoundingClientRect();
@@ -21,6 +28,7 @@ export class EventHandler {
     private pointsInfo: IPointInfo[] = [];
     private currentPointInfo: IPointInfo | null = null;
     private scalingHandler: ScalingHandler;
+    private currentMiddlePosition: (IPointInfo & { annotationIndex: number }) | null = null;
 
     constructor(props: IEventHandlerProps) {
         this.annotations = props.annotations;
@@ -89,9 +97,25 @@ export class EventHandler {
                 this.pointsInfo.find(value => areOverlappingPoints(value.point, currentLogicalPosition)) || null;
         }
 
-        if (!this.isAnnotating && !this.currentPointInfo && !sc.isPointOutsideOrImage(currentLogicalPosition)) {
+        if (
+            !this.currentMiddlePosition &&
+            !this.isAnnotating &&
+            !this.currentPointInfo &&
+            !sc.isPointOutsideOrImage(currentLogicalPosition)
+        ) {
             this.isAnnotating = true;
             this.polygon = { ...getColorFromMain('#00ff00'), points: [currentLogicalPosition] };
+            this.draw();
+        }
+
+        if (this.currentMiddlePosition && !this.currentPointInfo && !this.isAnnotating) {
+            const annotationIndex = this.currentMiddlePosition.annotationIndex;
+            const pointIndex = this.currentMiddlePosition.index;
+            const point = this.currentMiddlePosition.point;
+
+            this.annotations[annotationIndex].polygon.points.splice(pointIndex, 0, point);
+            this.currentMiddlePosition = null;
+            this.createPointInfo();
             this.draw();
         }
     };
@@ -111,6 +135,8 @@ export class EventHandler {
             this.drawMouse(currentPhysicalPosition, 'END');
         } else if (!this.isAnnotating && isPointInAnnotation) {
             this.drawMouse(currentPhysicalPosition, 'UNDER_POINT');
+        } else if (this.currentMiddlePosition) {
+            this.drawMouse(currentPhysicalPosition, 'ADD_POINT');
         } else {
             this.drawMouse(currentPhysicalPosition, 'DEFAULT');
         }
@@ -127,6 +153,27 @@ export class EventHandler {
                 points[index] = currentLogicalPosition;
             }
             this.draw();
+        }
+
+        if (!this.isAnnotating) {
+            this.annotations.forEach((annotation, index) => {
+                for (let a = 1; a < annotation.polygon.points.length; a++) {
+                    const segment = [annotation.polygon.points[a - 1], annotation.polygon.points[a]] as any;
+                    const areTooClose = pointBelongsToOrIsClose(currentLogicalPosition, segment);
+
+                    if (areTooClose) {
+                        this.currentMiddlePosition = {
+                            annotationIndex: index,
+                            index: a,
+                            point: findMidpoint(segment),
+                            id: annotation.polygon.points.length,
+                        };
+                        return;
+                    }
+
+                    this.currentMiddlePosition = null;
+                }
+            });
         }
     };
 
@@ -157,6 +204,7 @@ export class EventHandler {
     }
 
     private createPointInfo() {
+        this.pointsInfo = [];
         this.annotations.forEach(annotation => {
             annotation.polygon.points.forEach((point, index) => {
                 this.pointsInfo.push({ id: annotation.id, index, point });

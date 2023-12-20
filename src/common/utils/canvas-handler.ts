@@ -70,6 +70,15 @@ export class CanvasHandler {
                 } else if (type === 'END') {
                     ctx.arc(x, y, 7 * scale, 0, Math.PI * 2);
                     ctx.stroke();
+                } else if (type === 'ADD_POINT') {
+                    const size = 5 * scale;
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x, y - size);
+                    ctx.lineTo(x, y + size);
+                    ctx.lineTo(x, y);
+                    ctx.lineTo(x - size, y);
+                    ctx.lineTo(x + size, y);
+                    ctx.stroke();
                 } else {
                     ctx.arc(x, y, 7 * scale, 0, Math.PI * 2);
                     ctx.stroke();
