@@ -6,25 +6,25 @@ import { Components, createTheme, ThemeProvider as MUIThemeProvider, ThemeOption
 import { customShadows, overrides, palette, shadows, ThemeProviderProps, typography } from '.';
 
 export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
-  const memoizedValue = useMemo(
-    () => ({
-      palette: palette(),
-      typography,
-      shadows: shadows(),
-      customShadows: customShadows(),
-      shape: { borderRadius: 8 },
-    }),
-    []
-  );
+    const memoizedValue = useMemo(
+        () => ({
+            palette: palette(),
+            typography,
+            shadows: shadows(),
+            customShadows: customShadows(),
+            shape: { borderRadius: 8 },
+        }),
+        []
+    );
 
-  const theme = createTheme(memoizedValue as any as ThemeOptions);
+    const theme = createTheme(memoizedValue as any as ThemeOptions);
 
-  theme.components = overrides(theme) as Components;
+    theme.components = overrides(theme) as Components;
 
-  return (
-    <MUIThemeProvider theme={theme}>
-      <CssBaseline />
-      {children}
-    </MUIThemeProvider>
-  );
+    return (
+        <MUIThemeProvider theme={theme}>
+            <CssBaseline />
+            {children}
+        </MUIThemeProvider>
+    );
 };

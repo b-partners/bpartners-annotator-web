@@ -8,54 +8,60 @@ import { useGetListPageTitle, useGetPrevRoute } from '../../hooks';
 import { BpButton } from '../basics';
 
 const Loading = () => {
-  const { isLoading, setLoading } = useListPageContext();
-  const { pathname } = useLocation();
+    const { isLoading, setLoading } = useListPageContext();
+    const { pathname } = useLocation();
 
-  useEffect(() => {
-    setLoading(false);
-  }, [setLoading, pathname]);
+    useEffect(() => {
+        setLoading(false);
+    }, [setLoading, pathname]);
 
-  return isLoading ? (
-    <Box textAlign='center' sx={{ color: 'text.secondary' }}>
-      <CircularProgress />
-    </Box>
-  ) : (
-    <Outlet />
-  );
+    return isLoading ? (
+        <Box textAlign='center' sx={{ color: 'text.secondary' }}>
+            <CircularProgress />
+        </Box>
+    ) : (
+        <Outlet />
+    );
 };
 
 export const ListPageLayout = () => {
-  const getPath = useGetPrevRoute();
-  const [isLoading, setLoading] = useState(false);
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
+    const getPath = useGetPrevRoute();
+    const [isLoading, setLoading] = useState(false);
+    const { pathname } = useLocation();
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    setLoading(false);
-  }, [pathname]);
+    useEffect(() => {
+        setLoading(false);
+    }, [pathname]);
 
-  const handleClick = () => {
-    setLoading(true);
-    navigate(getPath());
-  };
+    const handleClick = () => {
+        setLoading(true);
+        navigate(getPath());
+    };
 
-  const title = useGetListPageTitle();
+    const title = useGetListPageTitle();
 
-  return (
-    <ListPageProvider>
-      <Box sx={page_list_container}>
-        <Card>
-          <CardHeader title={title} />
-          <CardContent sx={page_list_card_content}>
-            <Loading />
-          </CardContent>
-          <CardActions sx={page_list_card_action}>
-            {getPath() !== '/teams' && (
-              <BpButton variant='text' startIcon={<NavigateBeforeIcon />} onClick={handleClick} isLoading={isLoading} label='Retour' />
-            )}
-          </CardActions>
-        </Card>
-      </Box>
-    </ListPageProvider>
-  );
+    return (
+        <ListPageProvider>
+            <Box sx={page_list_container}>
+                <Card>
+                    <CardHeader title={title} />
+                    <CardContent sx={page_list_card_content}>
+                        <Loading />
+                    </CardContent>
+                    <CardActions sx={page_list_card_action}>
+                        {getPath() !== '/teams' && (
+                            <BpButton
+                                variant='text'
+                                startIcon={<NavigateBeforeIcon />}
+                                onClick={handleClick}
+                                isLoading={isLoading}
+                                label='Retour'
+                            />
+                        )}
+                    </CardActions>
+                </Card>
+            </Box>
+        </ListPageProvider>
+    );
 };

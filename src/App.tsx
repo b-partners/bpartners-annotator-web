@@ -3,11 +3,11 @@ import { ThemeProvider } from './common/utils/theme';
 import AppRouter from './router/routes';
 
 function App() {
-  return (
-    <ThemeProvider>
-      <RouterProvider router={AppRouter} />
-    </ThemeProvider>
-  );
+    return (
+        <ThemeProvider>
+            <RouterProvider router={AppRouter} />
+        </ThemeProvider>
+    );
 }
 
 export default App;

@@ -4,12 +4,12 @@ import { IListPageState } from './type';
 const context = createContext<IListPageState>({ isLoading: false, setLoading: () => {} });
 
 export const useListPageContext = () => {
-  const currentContext = useContext(context);
+    const currentContext = useContext(context);
 
-  return currentContext;
+    return currentContext;
 };
 
 export const ListPageProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [isLoading, setLoading] = useState(false);
-  return <context.Provider value={{ isLoading, setLoading }}>{children}</context.Provider>;
+    const [isLoading, setLoading] = useState(false);
+    return <context.Provider value={{ isLoading, setLoading }}>{children}</context.Provider>;
 };

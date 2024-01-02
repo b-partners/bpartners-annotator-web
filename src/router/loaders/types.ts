@@ -1,18 +1,18 @@
 export interface JobsLoaderParams {
-  teamId?: string;
+    teamId?: string;
 }
 export interface TaskLoaderParams {
-  teamId?: string;
-  jobId?: string;
+    teamId?: string;
+    jobId?: string;
 }
 
 export interface BatchLoaderParams {
-  jobId?: string;
-  taskId?: string;
+    jobId?: string;
+    taskId?: string;
 }
 
 export interface LoaderArgs<Params> {
-  params: Params;
+    params: Params;
 }
 
 export type JobsLoaderArgs = LoaderArgs<JobsLoaderParams>;
