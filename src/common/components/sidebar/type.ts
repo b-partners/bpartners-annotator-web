@@ -1,6 +1,6 @@
 import { IAnnotation } from '../../context';
 
-export interface ILabelItemProps {
+export interface IAnnotationItemProps {
     annotation: IAnnotation;
 }
 

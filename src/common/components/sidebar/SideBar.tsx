@@ -1,63 +1,16 @@
-import { Label } from '@bpartners-annotator/typescript-client';
-import { Delete as DeleteIcon, ExpandMore } from '@mui/icons-material';
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Box,
-    Divider,
-    IconButton,
-    List,
-    ListItem,
-    ListSubheader,
-    MenuItem,
-    TextField,
-    Typography,
-} from '@mui/material';
+import { Box, List, ListSubheader } from '@mui/material';
 import { FC } from 'react';
-import { ILabelItemProps } from '.';
+import { IAnnotationItemProps } from '.';
 import { useCanvasAnnotationContext } from '../../context';
 import { BpEmptyList } from '../basics';
+import { AnnotationItem } from './AnnotationItem';
+import { AdminAnnotationItem } from './admin';
 
-const LabelItem: FC<ILabelItemProps> = ({ annotation }) => {
-    const { changeAnnotationLabel, removeAnnotation, labels, annotationsReviews } = useCanvasAnnotationContext();
-
-    const handleClick = (label: Label) => () => {
-        changeAnnotationLabel(annotation.id, label);
-    };
-
-    const currentReview = annotationsReviews.find(
-        review => review.annotationId && annotation.uuid && review.annotationId === annotation.uuid
-    );
-
+const LabelItem: FC<IAnnotationItemProps> = ({ annotation }) => {
     return (
         <>
-            <ListItem
-                secondaryAction={
-                    <IconButton edge='end' onClick={() => removeAnnotation(annotation.id)}>
-                        <DeleteIcon />
-                    </IconButton>
-                }
-            >
-                <TextField select value={annotation.label} size='small' sx={{ flexGrow: 2 }}>
-                    {labels.map(label => (
-                        <MenuItem onClick={handleClick(label)} key={label.id} value={label.name}>
-                            {label.name}
-                        </MenuItem>
-                    ))}
-                </TextField>
-            </ListItem>
-            {currentReview && (
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography>Commentaires</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Typography textAlign='justify'>{currentReview.comment}</Typography>
-                    </AccordionDetails>
-                </Accordion>
-            )}
-            <Divider />
+            <AnnotationItem annotation={annotation} />
+            <AdminAnnotationItem annotation={annotation} />
         </>
     );
 };
