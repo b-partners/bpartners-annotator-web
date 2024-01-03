@@ -1,4 +1,4 @@
-import { ReviewStatus } from '@bpartners-annotator/typescript-client';
+import { AnnotationReview, ReviewStatus } from '@bpartners-annotator/typescript-client';
 import { DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import { FC, useState } from 'react';
@@ -7,12 +7,14 @@ import { useNavigate, useParams } from 'react-router';
 import { v4 as uuidV4 } from 'uuid';
 import { annotationsProvider } from '../../../providers/admin/annotations-provider';
 import { useDialog } from '../../context';
-import { useEvaluationCommentContext } from '../../context/admin';
 import { useGetPrevRoute } from '../../hooks';
 import { rejectionCommentDefaultValues, rejectionCommentResolver } from '../../resolvers/rejection-comment-resolver';
 import { BpButton, BpTextField } from '../basics';
 
-export const RejectionDialog: FC<{ batchId: string }> = ({ batchId }) => {
+export const RejectionDialog: FC<{ batchId: string; comments: Record<string, AnnotationReview> }> = ({
+    batchId,
+    comments,
+}) => {
     const form = useForm({
         mode: 'all',
         resolver: rejectionCommentResolver,
@@ -23,7 +25,6 @@ export const RejectionDialog: FC<{ batchId: string }> = ({ batchId }) => {
     const { jobId, taskId } = useParams() as { jobId: string; taskId: string };
     const getPrevRoute = useGetPrevRoute();
     const navigate = useNavigate();
-    const { comments } = useEvaluationCommentContext();
 
     const handleReject = form.handleSubmit(() => {
         const reviewId = uuidV4();
