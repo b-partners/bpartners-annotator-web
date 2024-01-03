@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router';
 import { v4 as uuidV4 } from 'uuid';
 import { annotationsProvider } from '../../../providers/admin/annotations-provider';
 import { useDialog } from '../../context';
+import { useEvaluationCommentContext } from '../../context/admin';
 import { useGetPrevRoute } from '../../hooks';
 import { rejectionCommentDefaultValues, rejectionCommentResolver } from '../../resolvers/rejection-comment-resolver';
 import { BpButton, BpTextField } from '../basics';
@@ -22,6 +23,7 @@ export const RejectionDialog: FC<{ batchId: string }> = ({ batchId }) => {
     const { jobId, taskId } = useParams() as { jobId: string; taskId: string };
     const getPrevRoute = useGetPrevRoute();
     const navigate = useNavigate();
+    const { comments } = useEvaluationCommentContext();
 
     const handleReject = form.handleSubmit(() => {
         const reviewId = uuidV4();
@@ -36,6 +38,7 @@ export const RejectionDialog: FC<{ batchId: string }> = ({ batchId }) => {
                         comment,
                         id: uuidV4(),
                     },
+                    ...Object.values(comments),
                 ],
                 status: ReviewStatus.REJECTED,
             })
