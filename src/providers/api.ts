@@ -1,14 +1,14 @@
 import {
-  AdminApi,
-  AnnotationsApi,
-  JobsApi,
-  SecurityApi,
-  TasksApi,
-  TeamJobsApi,
-  TeamsApi,
-  UserAnnotationsApi,
-  UserTasksApi,
-  UsersApi,
+    AdminApi,
+    AnnotationsApi,
+    JobsApi,
+    SecurityApi,
+    TasksApi,
+    TeamJobsApi,
+    TeamsApi,
+    UserAnnotationsApi,
+    UserTasksApi,
+    UsersApi,
 } from '@bpartners-annotator/typescript-client';
 import { authProvider } from './general';
 

@@ -9,30 +9,32 @@ import { redirectionByRole, retryer } from '../common/utils';
 import { accountProvider } from '../providers/general/account-provider';
 
 export const Success = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    const getWhoami = async () => {
-      try {
-        const whoami = await retryer(async () => await accountProvider.whoami());
-        const redirectionUrl = redirectionByRole(whoami);
-        navigate(redirectionUrl);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getWhoami();
-  }, []);
+    useEffect(() => {
+        const getWhoami = async () => {
+            try {
+                const whoami = await retryer(async () => await accountProvider.whoami());
+                const redirectionUrl = redirectionByRole(whoami);
+                navigate(redirectionUrl);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getWhoami();
+    }, []);
 
-  return (
-    <Box sx={container_center_flex}>
-      <Stack>
-        <LazyLoadImage alt='bp_logo' width={300} src={bp_logo} />
-        <div className='circular-progress-container'>
-          <CircularProgress />
-        </div>
-      </Stack>
-      <Typography className='redirection-message'>Vous allez être redirigés vers votre espace personnel.</Typography>
-    </Box>
-  );
+    return (
+        <Box sx={container_center_flex}>
+            <Stack>
+                <LazyLoadImage alt='bp_logo' width={300} src={bp_logo} />
+                <div className='circular-progress-container'>
+                    <CircularProgress />
+                </div>
+            </Stack>
+            <Typography className='redirection-message'>
+                Vous allez être redirigés vers votre espace personnel.
+            </Typography>
+        </Box>
+    );
 };

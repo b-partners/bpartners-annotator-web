@@ -1,9 +1,9 @@
 import { IAnnotation } from '../../context';
 
-export interface ILabelItemProps {
-  annotation: IAnnotation;
+export interface IAnnotationItemProps {
+    annotation: IAnnotation;
 }
 
 export interface IInputPickerProps {
-  annotation: IAnnotation;
+    annotation: IAnnotation;
 }

@@ -6,6 +6,7 @@ export * from './use-get-prev-route';
 export * from './use-image-creation';
 export * from './use-image-offset';
 export * from './use-responsive';
+export * from './use-session';
 export * from './use-session-redirection';
 export * from './use-waiter';
 export * from './use-width';

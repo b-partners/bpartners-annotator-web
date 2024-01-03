@@ -25,6 +25,13 @@ export const TaskBoard = () => {
         annotationsReviews: annotationsReviewsLoaded,
         globalReviews: globalReviewsLoaded,
     } = useLoaderData() as UserTaskLoader;
+
+    useEffect(() => {
+        if (!task) {
+            navigate(`/teams/${params.teamId}/jobs`);
+        }
+    }, []);
+
     const [{ job, task }, setState] = useState<UseJobTaskState>({ job: jobLoaded, task: taskLoaded });
     const { data, fetcher, isLoading } = useFetch(
         async () =>

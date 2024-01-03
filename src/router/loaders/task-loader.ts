@@ -39,6 +39,10 @@ export const taskLoader = async ({ params }: TaskLoaderArgs) => {
 
     const [task, job] = await Promise.all([taskPromise, jobPromise]);
 
+    if (!task) {
+        return { task: null, job, annotationBatch: null, globalReviews: null, annotationsReviews: null };
+    }
+
     const annotationBatchs = await retryer(
         async () => await userAnnotationsProvider.getBatchs(user?.id || '', task?.id || '')
     );

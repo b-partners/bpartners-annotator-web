@@ -4,32 +4,32 @@ import { LoginLayoutProps } from '.';
 import { bgGradient } from '../utils/theme';
 
 export const LoginLayout: FC<LoginLayoutProps> = ({ children, title }) => {
-  const theme = useTheme();
+    const theme = useTheme();
 
-  return (
-    <Box
-      sx={{
-        ...bgGradient({
-          color: alpha(theme.palette.background.default, 0.9),
-          imgUrl: '/assets/background/overlay_4.jpg',
-        }),
-        height: 1,
-      }}
-    >
-      <Stack alignItems='center' justifyContent='center' sx={{ height: 1 }}>
-        <Card
-          sx={{
-            p: 5,
-            width: 1,
-            maxWidth: 420,
-          }}
+    return (
+        <Box
+            sx={{
+                ...bgGradient({
+                    color: alpha(theme.palette.background.default, 0.9),
+                    imgUrl: '/assets/background/overlay_4.jpg',
+                }),
+                height: 1,
+            }}
         >
-          <Typography variant='h4' mb={4}>
-            {title}
-          </Typography>
-          {children}
-        </Card>
-      </Stack>
-    </Box>
-  );
+            <Stack alignItems='center' justifyContent='center' sx={{ height: 1 }}>
+                <Card
+                    sx={{
+                        p: 5,
+                        width: 1,
+                        maxWidth: 420,
+                    }}
+                >
+                    <Typography variant='h4' mb={4}>
+                        {title}
+                    </Typography>
+                    {children}
+                </Card>
+            </Stack>
+        </Box>
+    );
 };

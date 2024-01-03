@@ -4,20 +4,24 @@ import { Link } from 'react-router-dom';
 import { IBpButton } from './types';
 
 export const BpButtonTemplate: FC<Omit<IBpButton, 'to'>> = ({ label, isLoading, icon, disabled, ...others }) => {
-  return (
-    <Button {...others} endIcon={isLoading ? <CircularProgress size='25px' /> : icon} disabled={isLoading || disabled}>
-      {label}
-    </Button>
-  );
+    return (
+        <Button
+            {...others}
+            endIcon={isLoading ? <CircularProgress size='25px' /> : icon}
+            disabled={isLoading || disabled}
+        >
+            {label}
+        </Button>
+    );
 };
 
 export const BpButton: FC<IBpButton> = ({ to, ...others }) => {
-  if (to) {
-    return (
-      <Link to={to}>
-        <BpButtonTemplate {...others} />
-      </Link>
-    );
-  }
-  return <BpButtonTemplate {...others} />;
+    if (to) {
+        return (
+            <Link to={to}>
+                <BpButtonTemplate {...others} />
+            </Link>
+        );
+    }
+    return <BpButtonTemplate {...others} />;
 };
