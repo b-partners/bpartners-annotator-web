@@ -21,6 +21,7 @@ export const getRestrictedValue = (value: number, min: number, max: number) =>
 
 export class EventHandler {
     private isAnnotating: boolean;
+    private isAdmin: boolean;
     private polygon: IPolygon;
     private annotations: IAnnotation[];
     private canvasHandler: CanvasHandler;
@@ -38,6 +39,7 @@ export class EventHandler {
         this.drawMouse = this.canvasHandler.drawMouseCursor();
         this.createPointInfo();
         this.scalingHandler = new ScalingHandler(props.canvas, props.image);
+        this.isAdmin = props.isAdmin || false;
     }
 
     public initEvent = (canvas: HTMLCanvasElement, addAnnotation: (annotation: IAnnotation) => void) => {
@@ -48,17 +50,21 @@ export class EventHandler {
 
         const mouseDownEventHandler = this.mouseDown(annotation => addAnnotation(annotation));
         canvas.addEventListener('mousemove', mouseMove);
-        canvas.addEventListener('mousedown', mouseDownEventHandler);
-        canvas.addEventListener('mouseup', mouseUp);
         canvas.addEventListener('mouseleave', mouseLeave);
-        window.addEventListener('keydown', escapeKeyDown);
+        if (!this.isAdmin) {
+            canvas.addEventListener('mousedown', mouseDownEventHandler);
+            canvas.addEventListener('mouseup', mouseUp);
+            window.addEventListener('keydown', escapeKeyDown);
+        }
 
         return () => {
             canvas.removeEventListener('mousemove', mouseMove);
-            canvas.removeEventListener('mousedown', mouseDownEventHandler);
-            canvas.removeEventListener('mouseup', mouseUp);
             canvas.removeEventListener('mouseleave', mouseLeave);
-            window.removeEventListener('keydown', escapeKeyDown);
+            if (!this.isAdmin) {
+                canvas.removeEventListener('mousedown', mouseDownEventHandler);
+                canvas.removeEventListener('mouseup', mouseUp);
+                window.removeEventListener('keydown', escapeKeyDown);
+            }
         };
     };
 

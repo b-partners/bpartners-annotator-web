@@ -52,4 +52,5 @@ export interface IEventHandlerProps {
     annotations: IAnnotation[];
     canvasHandler: CanvasHandler;
     imageOffset: IImageOffset;
+    isAdmin?: boolean;
 }

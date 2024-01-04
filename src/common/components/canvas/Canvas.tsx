@@ -23,6 +23,8 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
     );
     const imageOffset = useImageOffset(canvas, image);
 
+    const { isAdmin } = useSession();
+
     useEffect(() => {
         canvasHandler.init();
         canvasHandler.draw(annotations.map(annotation => annotation.polygon));
@@ -38,6 +40,7 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
                 imageOffset,
                 isAnnotating,
                 polygon,
+                isAdmin: isAdmin(),
             });
             return eventHandler.initEvent(currentCanvasCursor, addAnnotation);
         }
@@ -50,8 +53,6 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
     useEffect(() => {
         centerContent();
     }, [scaling]);
-
-    const { isAdmin } = useSession();
 
     return (
         <CanvasEditorProvider zoom={zoomActions}>
