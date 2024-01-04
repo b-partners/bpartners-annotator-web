@@ -2,10 +2,9 @@
 import { Job } from '@bpartners-annotator/typescript-client';
 import { Box, Chip, CircularProgress, Grid, Stack } from '@mui/material';
 import { FC, useEffect, useMemo, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
 import { CANVAS_CONTAINER, CanvasAction, EventHandler, MousePosition } from '.';
 import { CanvasEditorProvider, IPolygon, useCanvasAnnotationContext } from '../../context';
-import { useCanvasScale, useCanvasSize, useImageCreation, useImageOffset } from '../../hooks';
+import { useCanvasScale, useCanvasSize, useImageCreation, useImageOffset, useSession } from '../../hooks';
 import { CanvasHandler, getColorFromMain } from '../../utils';
 import './style.css';
 
@@ -24,6 +23,8 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
     );
     const imageOffset = useImageOffset(canvas, image);
 
+    const { isAdmin } = useSession();
+
     useEffect(() => {
         canvasHandler.init();
         canvasHandler.draw(annotations.map(annotation => annotation.polygon));
@@ -39,6 +40,7 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
                 imageOffset,
                 isAnnotating,
                 polygon,
+                isAdmin: isAdmin(),
             });
             return eventHandler.initEvent(currentCanvasCursor, addAnnotation);
         }
@@ -51,8 +53,6 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
     useEffect(() => {
         centerContent();
     }, [scaling]);
-
-    const { pathname } = useLocation();
 
     return (
         <CanvasEditorProvider zoom={zoomActions}>
@@ -81,7 +81,7 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
                     )}
                 </Box>
             </Box>
-            {pathname[1] !== 'j' && (
+            {isAdmin() && (
                 <Stack p={0.3} width='70vw' direction='row' spacing={1}>
                     <Stack direction='row' flexGrow={2} spacing={1}>
                         <Chip

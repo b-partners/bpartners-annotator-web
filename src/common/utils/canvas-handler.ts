@@ -57,21 +57,19 @@ export class CanvasHandler {
     public drawMouseCursor() {
         const ctx = this._cursorCtx;
         const clear = () => this.clear(ctx);
-        const getScale = () => this._scalingHandler.getScale();
         return ({ x, y }: IPoint, type: TMouseType) => {
-            const scale = getScale() > 1 ? getScale() / 2 : getScale();
             if (ctx) {
                 clear();
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 if (type === 'DEFAULT') {
-                    ctx.arc(x, y, 5 * scale, 0, Math.PI * 2);
+                    ctx.arc(x, y, 5, 0, Math.PI * 2);
                     ctx.fill();
                 } else if (type === 'END') {
-                    ctx.arc(x, y, 7 * scale, 0, Math.PI * 2);
+                    ctx.arc(x, y, 7, 0, Math.PI * 2);
                     ctx.stroke();
                 } else if (type === 'ADD_POINT') {
-                    const size = 5 * scale;
+                    const size = 5;
                     ctx.moveTo(x, y);
                     ctx.lineTo(x, y - size);
                     ctx.lineTo(x, y + size);
@@ -80,7 +78,7 @@ export class CanvasHandler {
                     ctx.lineTo(x + size, y);
                     ctx.stroke();
                 } else {
-                    ctx.arc(x, y, 7 * scale, 0, Math.PI * 2);
+                    ctx.arc(x, y, 7, 0, Math.PI * 2);
                     ctx.stroke();
                 }
                 ctx.closePath();
@@ -122,11 +120,10 @@ export class CanvasHandler {
     private drawPoint(point: IPoint, ctx: CanvasRenderingContext2D) {
         const sc = this._scalingHandler;
         const { x, y } = sc.getPhysicalPositionByPoint(point);
-        const scale = sc.getScale() > 1 ? sc.getScale() / 1.5 : sc.getScale();
 
         ctx.beginPath();
         ctx.fillStyle = 'black';
-        ctx.arc(x, y, 4 * scale, 0, 2 * Math.PI);
+        ctx.arc(x, y, 4, 0, 2 * Math.PI);
         ctx.fill();
         ctx.closePath();
     }

@@ -83,7 +83,7 @@ export const useCanvasAnnotationContext = () => {
     };
 
     const addAnnotation = (annotation: IAnnotation) => {
-        const annotations = [...context.annotations.slice(), { ...annotation, id: 1, label: 'Label 1' }];
+        const annotations = [...context.annotations.slice(), { ...annotation, id: 1, label: '' }];
         const len = context.annotations.length;
         if (len !== 0) {
             const id = annotations[len - 1].id + 1;

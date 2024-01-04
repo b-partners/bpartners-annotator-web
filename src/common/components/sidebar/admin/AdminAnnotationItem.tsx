@@ -4,7 +4,6 @@ import { Stack } from '@mui/system';
 import { ChangeEvent, FC, useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 import { useEvaluationCommentContext } from '../../../context/admin';
-import { useSession } from '../../../hooks';
 import { IAnnotationItemProps } from '../type';
 
 export const AdminAnnotationItem: FC<IAnnotationItemProps> = ({ annotation }) => {
@@ -16,8 +15,7 @@ export const AdminAnnotationItem: FC<IAnnotationItemProps> = ({ annotation }) =>
 
     const handleBlur = () => addOrUpdateComment({ annotationId: annotation.uuid, comment: commentText, id: uuidV4() });
 
-    const { isAdmin } = useSession();
-    return isAdmin() ? (
+    return (
         <>
             <ListItem
                 secondaryAction={
@@ -47,7 +45,5 @@ export const AdminAnnotationItem: FC<IAnnotationItemProps> = ({ annotation }) =>
             )}
             <Divider />
         </>
-    ) : (
-        <div style={{ display: 'none' }}></div>
     );
 };
