@@ -1,10 +1,11 @@
 import { Label } from '@bpartners-annotator/typescript-client';
 import { MenuItem } from '@mui/base';
-import { Delete as DeleteIcon, ExpandMore } from '@mui/icons-material';
+import { Delete as DeleteIcon, ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
+    Box,
     Divider,
     IconButton,
     ListItem,
@@ -13,7 +14,6 @@ import {
 } from '@mui/material';
 import { FC } from 'react';
 import { useCanvasAnnotationContext } from '../../context';
-import { useSession } from '../../hooks';
 import { IAnnotationItemProps } from './type';
 
 export const AnnotationItem: FC<IAnnotationItemProps> = ({ annotation }) => {
@@ -27,9 +27,8 @@ export const AnnotationItem: FC<IAnnotationItemProps> = ({ annotation }) => {
         review => review.annotationId && annotation.uuid && review.annotationId === annotation.uuid
     );
 
-    const { isUser } = useSession();
-    return isUser() ? (
-        <>
+    return (
+        <Box>
             <ListItem
                 secondaryAction={
                     <IconButton edge='end' onClick={() => removeAnnotation(annotation.id)}>
@@ -46,9 +45,8 @@ export const AnnotationItem: FC<IAnnotationItemProps> = ({ annotation }) => {
                 </TextField>
             </ListItem>
             {currentReview && (
-                // eslint-disable-next-line react/jsx-no-undef
                 <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography>Commentaires</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
@@ -57,8 +55,6 @@ export const AnnotationItem: FC<IAnnotationItemProps> = ({ annotation }) => {
                 </Accordion>
             )}
             <Divider />
-        </>
-    ) : (
-        <div style={{ display: 'none' }}></div>
+        </Box>
     );
 };
