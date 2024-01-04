@@ -4,7 +4,7 @@ import { cache, retryer } from '../../common/utils';
 import { teamJobsProvider, userTasksProvider } from '../../providers';
 import { userAnnotationsProvider } from '../../providers/annotator/user-annotations-provider';
 
-const getLastCreatedAnnotationBatch = (annotationBatchs: AnnotationBatch[]): AnnotationBatch | null => {
+export const getLastCreatedAnnotationBatch = (annotationBatchs: AnnotationBatch[]): AnnotationBatch | null => {
     if (annotationBatchs.length === 0) {
         return null;
     }
@@ -17,7 +17,7 @@ const getLastCreatedAnnotationBatch = (annotationBatchs: AnnotationBatch[]): Ann
     });
 };
 
-const getUsableReviews = (reviews: AnnotationBatchReview[] | null) => {
+export const getUsableReviews = (reviews: AnnotationBatchReview[] | null) => {
     const globalReviews = [];
     const annotationsReviews = [];
     if (!!reviews && reviews.length > 0) {

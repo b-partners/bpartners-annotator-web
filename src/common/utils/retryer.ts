@@ -2,12 +2,12 @@ import { AxiosError } from 'axios';
 
 type Fetcher<T> = () => Promise<T>;
 
-export const retryer = async <T>(fetcher: Fetcher<T>) => {
+export const retryer = async <T>(fetcher: Fetcher<T> | Promise<T>) => {
     let retryCount = 0;
 
     const retry = async (): Promise<T | null> => {
         try {
-            const data = await fetcher();
+            const data = await (typeof fetcher === 'function' ? fetcher() : fetcher);
             retryCount = 0;
             return data;
         } catch (err) {
