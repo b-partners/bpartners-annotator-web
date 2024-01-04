@@ -35,8 +35,6 @@ export const Sidebar = () => {
             review => review.annotationId && annotation.uuid && review.annotationId === annotation.uuid
         );
 
-    console.log(annotationsReviews);
-
     return (
         <List
             sx={{ maxHeight: window.innerHeight * 0.7, overflow: 'auto' }}

@@ -1,5 +1,5 @@
 import { AnnotationBatch, AnnotationReview, Label } from '@bpartners-annotator/typescript-client';
-import { FC, ReactNode, createContext, useContext, useState } from 'react';
+import { FC, ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { IAnnotation, IAnnotationContext } from '.';
 import { annotationsMapper } from '../mappers';
 import { getColorFromMain } from '../utils';
@@ -24,10 +24,15 @@ export const CanvasAnnotationProvider: FC<{
     globalReviews?: AnnotationReview[];
     annotationsReviews?: AnnotationReview[];
 }> = ({ children, labels, img, batch, annotationsReviews = [], globalReviews = [] }) => {
-    const annotation = batch?.annotations?.map((annotation, key) => annotationsMapper.toDomain(annotation, key + 1));
-
-    const [annotations, setAnnotations] = useState<IAnnotation[]>(annotation || []);
+    const [annotations, setAnnotations] = useState<IAnnotation[]>([]);
     const [isAnnotating, setIsAnnotating] = useState(false);
+
+    useEffect(() => {
+        const annotation = batch?.annotations?.map((annotation, key) =>
+            annotationsMapper.toDomain(annotation, key + 1)
+        );
+        setAnnotations(annotation || []);
+    }, [batch]);
 
     return (
         <CanvasAnnotationContext.Provider
