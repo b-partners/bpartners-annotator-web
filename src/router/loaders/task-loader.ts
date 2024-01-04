@@ -20,12 +20,13 @@ const getLastCreatedAnnotationBatch = (annotationBatchs: AnnotationBatch[]): Ann
 const getUsableReviews = (reviews: AnnotationBatchReview[] | null) => {
     const globalReviews = [];
     const annotationsReviews = [];
-    if (!!reviews) {
-        for (let a of reviews) {
-            if (!!a.reviews && a.reviews?.length !== 0 && !a.reviews[0].id) {
-                globalReviews.push(a.reviews[0]);
-            } else if (!!a.reviews && a.reviews?.length !== 0 && !!a.reviews[0].id) {
-                annotationsReviews.push(a.reviews[0]);
+    if (!!reviews && reviews.length > 0) {
+        const last = reviews.length - 1;
+        for (let a of reviews[last].reviews || []) {
+            if (!a.annotationId) {
+                globalReviews.push(a);
+            } else {
+                annotationsReviews.push(a);
             }
         }
     }
