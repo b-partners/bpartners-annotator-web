@@ -29,7 +29,7 @@ const NoAnnotationConfirm: FC<{ fetcher: () => Promise<void> }> = ({ fetcher }) 
             <DialogTitle>Rejet d'annotation</DialogTitle>
             <DialogContent>
                 <DialogContentText id='alert-dialog-slide-description'>
-                    Veuillez commenté ci dessous la raison du rejet de cette annotation.
+                    Aucune annotation ne sera faite sur cette image.
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
