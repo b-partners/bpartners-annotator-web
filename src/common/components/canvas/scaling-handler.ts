@@ -9,7 +9,11 @@ export class ScalingHandler {
         this.image = image;
     }
 
-    public getScale = () => this.canvas.width / (window.innerWidth * 0.7);
+    public getScale = () => {
+        const currentUrl = window.location.href;
+        const urlSearchParams = new URL(currentUrl);
+        return +(urlSearchParams.searchParams.get('scale') || '1');
+    };
 
     public getImageSize = () => {
         const scale = this.getScale();
