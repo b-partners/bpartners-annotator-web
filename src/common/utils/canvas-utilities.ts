@@ -1,6 +1,6 @@
 import { IPoint } from '../context';
 
-const OVERLAPPING_MARGIN = 2;
+const OVERLAPPING_MARGIN = 3;
 export const isBetween = (value: number, ref: number) =>
     value >= ref - OVERLAPPING_MARGIN && value <= ref + OVERLAPPING_MARGIN;
 
@@ -27,6 +27,7 @@ export const pointBelongsToOrIsClose = (currentPoint: IPoint, segment: [A: IPoin
     const d1 = distanceBetweenPoints(currentPoint, A);
     const d2 = distanceBetweenPoints(currentPoint, B);
     const segmentDistance = distanceBetweenPoints(A, B);
+
     return Math.abs(d1 + d2 - segmentDistance) <= 1;
 };
 
