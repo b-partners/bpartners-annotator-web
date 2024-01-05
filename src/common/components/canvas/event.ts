@@ -162,11 +162,11 @@ export class EventHandler {
         }
 
         if (!this.isAnnotating) {
-            this.annotations.forEach((annotation, index) => {
+            for (let index = 0; index < this.annotations.length; index++) {
+                const annotation = this.annotations[index];
                 for (let a = 1; a < annotation.polygon.points.length; a++) {
                     const segment = [annotation.polygon.points[a - 1], annotation.polygon.points[a]] as any;
                     const areTooClose = pointBelongsToOrIsClose(currentLogicalPosition, segment);
-
                     if (areTooClose) {
                         this.currentMiddlePosition = {
                             annotationIndex: index,
@@ -179,7 +179,7 @@ export class EventHandler {
 
                     this.currentMiddlePosition = null;
                 }
-            });
+            }
         }
     };
 
