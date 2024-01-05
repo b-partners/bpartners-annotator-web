@@ -15,8 +15,9 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
     const canvasCursor = useRef<HTMLCanvasElement>(null);
     const canvasContainer = useRef<HTMLDivElement>(null);
     const { image } = useImageCreation(img);
+    const { ch, cw } = useCanvasSize(image);
     const { scaling, centerContent, ...zoomActions } = useCanvasScale(canvasContainer, image);
-    const { ch, cw } = useCanvasSize();
+
     const canvasHandler = useMemo(
         () => new CanvasHandler(canvas, canvasImage, canvasCursor, image),
         [image, canvas, canvasImage, canvasCursor]
@@ -54,6 +55,20 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
         centerContent();
     }, [scaling]);
 
+    const getScaledCh = () => {
+        const scaled = ch * scaling;
+        const containerH = window.innerHeight * 0.8;
+        if (scaled < containerH) return containerH;
+        return scaled;
+    };
+
+    const getScaledCw = () => {
+        const scaled = cw * scaling;
+        const containerW = window.innerWidth * 0.7;
+        if (scaled < containerW) return containerW;
+        return scaled;
+    };
+
     return (
         <CanvasEditorProvider zoom={zoomActions}>
             <Grid container p={0.3} width='70vw' direction='row' spacing={1}>
@@ -67,14 +82,14 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
                 </Grid>
             </Grid>
             <Box ref={canvasContainer} sx={CANVAS_CONTAINER}>
-                <Box sx={{ height: ch * scaling, width: cw * scaling }}>
-                    <canvas ref={canvasImage} height={ch * scaling} width={cw * scaling} />
-                    <canvas ref={canvas} height={ch * scaling} width={cw * scaling} />
-                    <canvas ref={canvasCursor} height={ch * scaling} width={cw * scaling} />
+                <Box sx={{ height: getScaledCh(), width: getScaledCw() }}>
+                    <canvas ref={canvasImage} height={getScaledCh()} width={getScaledCw()} />
+                    <canvas ref={canvas} height={getScaledCh()} width={getScaledCw()} />
+                    <canvas ref={canvasCursor} height={getScaledCh()} width={getScaledCw()} />
                     {(isLoading || (image.src.length === 0 && imageOffset.iho === 0)) && (
                         <div
                             className='circular-progress-container'
-                            style={{ height: ch * scaling, width: cw * scaling }}
+                            style={{ height: getScaledCh(), width: getScaledCw() }}
                         >
                             <CircularProgress size='3rem' />
                         </div>

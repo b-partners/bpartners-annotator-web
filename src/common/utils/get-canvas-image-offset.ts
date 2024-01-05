@@ -1,5 +1,8 @@
 export const getCanvasImageOffset = (canvas: HTMLCanvasElement, image: HTMLImageElement) => {
-    const scale = canvas.width / (window.innerWidth * 0.7);
+    const currentUrl = window.location.href;
+    const urlSearchParams = new URL(currentUrl);
+
+    const scale = +(urlSearchParams.searchParams.get('scale') || '1');
 
     const iw = Math.floor(image.width * scale);
     const ih = Math.floor(image.height * scale);

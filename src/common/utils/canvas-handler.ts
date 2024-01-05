@@ -103,6 +103,7 @@ export class CanvasHandler {
         if (this._polygonCtx && this._image) {
             this.clear(this._polygonCtx);
             const scale = this._scalingHandler.getScale();
+            this.clear(this._imageCtx);
             this._imageCtx.drawImage(
                 this._image,
                 this._iwo,

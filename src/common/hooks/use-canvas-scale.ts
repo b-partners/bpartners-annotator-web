@@ -22,8 +22,20 @@ export const useCanvasScale = (container: RefObject<HTMLDivElement>, image: HTML
     }, [centerContent]);
 
     useEffect(() => {
+        if (!!window) {
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('scale', `${scaling}`);
+            window.history.replaceState({}, document.title, currentUrl);
+            return () => {};
+        }
+    }, [scaling]);
+
+    useEffect(() => {
         if (image.width !== 0) {
-            const newScale = (window.innerWidth * 0.15) / image.width;
+            const newScale =
+                image.width < window.innerWidth * 0.7 && image.height < window.innerHeight * 0.8
+                    ? (window.innerWidth * 0.15) / image.width
+                    : (window.innerHeight * 0.7) / image.height;
             setDefaultScale(newScale);
             setScale(newScale);
         }
@@ -36,7 +48,7 @@ export const useCanvasScale = (container: RefObject<HTMLDivElement>, image: HTML
         centerContent();
     };
     const zoomOut = () => {
-        if (scaling > 1) {
+        if (scaling > defaultScale) {
             setScale(e => e - SCALE_NUMBER);
         }
         centerContent();
