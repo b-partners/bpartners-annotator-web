@@ -19,7 +19,7 @@
         "@types/react": "^18.2.37",
         "@types/react-dom": "^18.2.15",
         "aws-amplify": "^5.3.12",
-        "axios": "^1.0.0",
+        "axios": "^1.6.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-hook-form": "^7.48.2",
