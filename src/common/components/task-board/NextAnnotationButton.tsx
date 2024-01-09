@@ -13,12 +13,11 @@ export const NextAnnotationButton: FC<{ fetcher: () => void; task: Task }> = ({ 
 
     const cancelAnnotation = async () => {
         await retryer(
-            async () =>
-                await userTasksProvider.updateOne(teamId || '', jobId || '', task.id || '', {
-                    ...task,
-                    userId: undefined,
-                    status: TaskStatus.PENDING,
-                })
+            userTasksProvider.updateOne(teamId || '', jobId || '', task.id || '', {
+                ...task,
+                userId: undefined,
+                status: task.status === TaskStatus.TO_CORRECT ? TaskStatus.TO_CORRECT : TaskStatus.PENDING,
+            })
         );
     };
 
