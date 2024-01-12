@@ -4,22 +4,30 @@ export const getUrlParams = () => {
     return { url, searchParams: url.searchParams };
 };
 
-export const paginationUrlHandler = (others: Record<string, any> = {}) => {
+type UrlParamResult<P extends Record<string, any>> = {
+    page: number;
+    perPage: number;
+    setParam: (name: string, value: string) => void;
+} & Record<keyof P, string>;
+
+export const urlParamsHandler = <P extends Record<string, any> = {}>(others: P = {} as any) => {
     const { searchParams } = getUrlParams();
 
     const page = +(searchParams.get('page') || '1');
     const perPage = +(searchParams.get('perPage') || '10');
 
-    const result: Record<keyof typeof others, any> = {
+    const setParam = (name: string, value: string) => {
+        const { searchParams, url } = getUrlParams();
+        searchParams.set(name, value);
+        window.history.replaceState({}, document.title, url);
+    };
+
+    const result: any = {
         page,
         perPage,
-        setParam: (name: string, value: string) => {
-            const { searchParams, url } = getUrlParams();
-            searchParams.set(name, value);
-            window.history.replaceState({}, document.title, url);
-        },
+        setParam,
     };
     Object.keys(others).forEach(key => (result[key] = searchParams.get(key) || others[key]));
 
-    return { ...result };
+    return result as UrlParamResult<P>;
 };

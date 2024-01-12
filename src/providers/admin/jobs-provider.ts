@@ -1,6 +1,6 @@
 import { CrupdateJob, JobStatus } from '@bpartners-annotator/typescript-client';
 import { DEFAULT_PAGE, DEFAULT_PER_PAGE, jobsApi } from '..';
-import { cache, paginationUrlHandler } from '../../common/utils';
+import { cache, urlParamsHandler } from '../../common/utils';
 
 const ADMIN_JOB_NAME = 'admin-job';
 
@@ -21,5 +21,5 @@ export const jobsProvider = {
         const { data } = await jobsApi().saveJob(jobId, job);
         return data;
     },
-    getLastPage: () => cache.getLastPage(ADMIN_JOB_NAME, paginationUrlHandler().perPage),
+    getLastPage: () => cache.getLastPage(ADMIN_JOB_NAME, urlParamsHandler().perPage),
 };

@@ -7,12 +7,12 @@ import { JobListItem, getJobStatusInfo } from '../../common/components/job&task'
 import { ListPageLayout } from '../../common/components/layout';
 import { Pagination } from '../../common/components/pagination';
 import { useFetch } from '../../common/hooks';
-import { paginationUrlHandler } from '../../common/utils';
+import { urlParamsHandler } from '../../common/utils';
 import { jobsProvider } from '../../providers';
 import { job_list_list_container } from '../style';
 
 export const AdminJobList = () => {
-    const { setParam } = paginationUrlHandler();
+    const { setParam } = urlParamsHandler();
     const fetcher = async ({ page, perPage, status }: any) => {
         return await jobsProvider.getList(page, perPage, status);
     };
@@ -76,7 +76,7 @@ export const AdminJobList = () => {
             {(currentJobs || []).length > 0 && !isLoading && (
                 <List sx={job_list_list_container}>
                     {(currentJobs || []).map(job => (
-                        <JobListItem link={`/jobs/${job.id}/tasks`} key={job.id} job={job} />
+                        <JobListItem link={`/jobs/${job.id}/tasks/review`} key={job.id} job={job} />
                     ))}
                 </List>
             )}

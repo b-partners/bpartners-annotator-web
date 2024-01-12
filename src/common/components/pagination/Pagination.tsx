@@ -5,15 +5,15 @@ import {
 import { IconButton, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { ChangeEvent, FC, useRef } from 'react';
 import { jobsProvider } from '../../../providers';
-import { paginationUrlHandler } from '../../utils';
+import { urlParamsHandler } from '../../utils';
 import { PaginationProps } from './types';
 
 export const Pagination: FC<PaginationProps> = ({ isLoading, onChange }) => {
-    const { page, setParam, perPage } = paginationUrlHandler();
+    const { page, setParam, perPage } = urlParamsHandler();
     const pageTypo = useRef<HTMLSpanElement>(null);
 
     const getPage = () => {
-        const { page: stringPage } = paginationUrlHandler();
+        const { page: stringPage } = urlParamsHandler();
         if (isNaN(stringPage)) return 1;
         return +stringPage;
     };
