@@ -63,13 +63,13 @@ export class CanvasHandler {
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 if (type === 'DEFAULT') {
-                    ctx.arc(x, y, 5, 0, Math.PI * 2);
+                    ctx.arc(x, y, 3, 0, Math.PI * 2);
                     ctx.fill();
                 } else if (type === 'END') {
-                    ctx.arc(x, y, 7, 0, Math.PI * 2);
+                    ctx.arc(x, y, 5, 0, Math.PI * 2);
                     ctx.stroke();
                 } else if (type === 'ADD_POINT') {
-                    const size = 5;
+                    const size = 3;
                     ctx.moveTo(x, y);
                     ctx.lineTo(x, y - size);
                     ctx.lineTo(x, y + size);
@@ -78,7 +78,7 @@ export class CanvasHandler {
                     ctx.lineTo(x + size, y);
                     ctx.stroke();
                 } else {
-                    ctx.arc(x, y, 7, 0, Math.PI * 2);
+                    ctx.arc(x, y, 5, 0, Math.PI * 2);
                     ctx.stroke();
                 }
                 ctx.closePath();
@@ -124,7 +124,7 @@ export class CanvasHandler {
 
         ctx.beginPath();
         ctx.fillStyle = 'black';
-        ctx.arc(x, y, 4, 0, 2 * Math.PI);
+        ctx.arc(x, y, 2, 0, 2 * Math.PI);
         ctx.fill();
         ctx.closePath();
     }
