@@ -8,7 +8,7 @@ import { Sidebar } from '../../common/components/sidebar';
 import { CanvasAnnotationProvider } from '../../common/context';
 import { EvaluationCommentProvider } from '../../common/context/admin';
 import { useFetch } from '../../common/hooks';
-import { cache, dateFormater, getTaskToValidate, retryer } from '../../common/utils';
+import { cache, dateFormater, getTaskToValidate, retryer, urlParamsHandler } from '../../common/utils';
 import { tasksProvider } from '../../providers';
 import { annotationsProvider } from '../../providers/admin/annotations-provider';
 import { canvas_loading } from '../style';
@@ -28,12 +28,14 @@ export const AdminTaskBoard = () => {
 
     const fetcher = async () => {
         cache.deleteCurrentTask();
+        const { setParam } = urlParamsHandler();
         const tasks = (await retryer(tasksProvider.getList(params?.jobId || ''))) || [];
         const task = getTaskToValidate(tasks);
         if (task === null) {
             navigate(`/jobs`);
         }
         const batchs = (await retryer(annotationsProvider.getBatchs(params?.jobId || '', task?.id || ''))) || [];
+        setParam('taskId', task?.id || '');
         setBatch(batchs[0] || {});
         return task;
     };

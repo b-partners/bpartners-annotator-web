@@ -25,7 +25,7 @@ export const getJobStatusInfo = (status: JobStatus): IJobStatusInfo => {
         case 'TO_REVIEW':
             return { icon: CheckCircleOutlineOutlinedIcon, label: 'À vérifier', color: '#00FF00' };
         default:
-            return { icon: CheckCircleOutlineOutlinedIcon, label: 'Inconnu', color: '#00FF00' };
+            return { icon: CheckCircleOutlineOutlinedIcon, label: 'Tout', color: '#00FF00' };
     }
 };
 
@@ -35,7 +35,11 @@ export const getTaskStatusInfo = (status: TaskStatus) => {
             return { icon: CheckCircleOutlineOutlinedIcon, label: 'Terminé', color: '#00FF00' };
         case TaskStatus.PENDING:
             return { icon: PendingActionsOutlinedIcon, label: 'En attente', color: '#A9A9A9' };
-        default:
+        case TaskStatus.TO_CORRECT:
+            return { icon: CheckCircleOutlineOutlinedIcon, label: 'À refaire', color: '#FFA500' };
+        case TaskStatus.UNDER_COMPLETION:
             return { icon: PlayCircleOutlineOutlinedIcon, label: 'Encours', color: '#FFA500' };
+        default:
+            return { icon: CheckCircleOutlineOutlinedIcon, label: 'À vérifier', color: '#00FF00' };
     }
 };
