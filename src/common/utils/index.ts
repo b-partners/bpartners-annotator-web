@@ -4,6 +4,8 @@ export * from './canvas-handler';
 export * from './canvas-utilities';
 export * from './date-formater';
 export * from './get-canvas-image-offset';
+export * from './get-task-to-validate';
+export * from './get-url-params';
 export * from './object-utilities';
 export * from './redirection-by-role';
 export * from './redirection-urls';

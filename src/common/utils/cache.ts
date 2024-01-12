@@ -5,6 +5,7 @@ const ACCESS_TOKEN = 'access-token-item';
 const USER_ID = 'user-id-item';
 const WHOAMI = 'whoami-item';
 const API_KEY = 'api-key-item';
+const LAST_PAGE = 'last-page';
 
 const getJsonFromString = (value: string | null) => {
     try {
@@ -50,5 +51,15 @@ export const cache = {
     },
     setApiKey(apiKey: any) {
         localStorage.setItem(API_KEY, toBase64(apiKey));
+    },
+    setLastPage(name: string, page: number, perPage: number) {
+        localStorage.setItem(`${name}-${perPage}-${LAST_PAGE}`, `${page}`);
+    },
+    getLastPage(name: string, prePage: number) {
+        const page = localStorage.getItem(`${name}-${prePage}-${LAST_PAGE}`) || '1';
+        if (isNaN(+page)) {
+            return 1;
+        }
+        return +page;
     },
 };

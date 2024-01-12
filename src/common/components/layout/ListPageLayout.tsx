@@ -1,13 +1,12 @@
-import { NavigateBefore as NavigateBeforeIcon } from '@mui/icons-material';
 import { Box, Card, CardActions, CardContent, CardHeader, CircularProgress } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { FC, ReactNode, useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import { page_list_card_action, page_list_card_content, page_list_container } from '.';
 import { ListPageProvider, useListPageContext } from '../../context';
-import { useGetListPageTitle, useGetPrevRoute } from '../../hooks';
-import { BpButton } from '../basics';
+import { useGetListPageTitle } from '../../hooks';
 
-const Loading = () => {
+const Loading: FC<{ children?: any }> = props => {
+    const { children } = props;
     const { isLoading, setLoading } = useListPageContext();
     const { pathname } = useLocation();
 
@@ -20,24 +19,24 @@ const Loading = () => {
             <CircularProgress />
         </Box>
     ) : (
-        <Outlet />
+        children || <Outlet />
     );
 };
 
-export const ListPageLayout = () => {
-    const getPath = useGetPrevRoute();
-    const [isLoading, setLoading] = useState(false);
-    const { pathname } = useLocation();
-    const navigate = useNavigate();
+export const ListPageLayout: FC<{ children?: ReactNode; actions?: ReactNode }> = ({ children, actions }) => {
+    // const getPath = useGetPrevRoute();
+    // const [isLoading, setLoading] = useState(false);
+    // const { pathname } = useLocation();
+    // const navigate = useNavigate();
 
-    useEffect(() => {
-        setLoading(false);
-    }, [pathname]);
+    // useEffect(() => {
+    //     setLoading(false);
+    // }, [pathname]);
 
-    const handleClick = () => {
-        setLoading(true);
-        navigate(getPath());
-    };
+    // const handleClick = () => {
+    //     setLoading(true);
+    //     navigate(getPath());
+    // };
 
     const title = useGetListPageTitle();
 
@@ -47,19 +46,9 @@ export const ListPageLayout = () => {
                 <Card>
                     <CardHeader title={title} />
                     <CardContent sx={page_list_card_content}>
-                        <Loading />
+                        <Loading>{children}</Loading>
                     </CardContent>
-                    <CardActions sx={page_list_card_action}>
-                        {getPath() !== '/teams' && (
-                            <BpButton
-                                variant='text'
-                                startIcon={<NavigateBeforeIcon />}
-                                onClick={handleClick}
-                                isLoading={isLoading}
-                                label='Retour'
-                            />
-                        )}
-                    </CardActions>
+                    <CardActions sx={page_list_card_action}>{actions}</CardActions>
                 </Card>
             </Box>
         </ListPageProvider>

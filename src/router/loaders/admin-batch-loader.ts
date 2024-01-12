@@ -1,18 +1,24 @@
-import { retryer } from '../../common/utils';
+import { getTaskToValidate, retryer, urlParamsHandler } from '../../common/utils';
 import { jobsProvider, tasksProvider } from '../../providers';
 import { annotationsProvider } from '../../providers/admin/annotations-provider';
 import { BatchLoaderArgs } from './types';
 
 export const adminBatchLoader = async ({ params }: BatchLoaderArgs) => {
-    const batchsPromise = await retryer(
-        async () => await annotationsProvider.getBatchs(params?.jobId || '', params?.taskId || '')
-    );
-    const taskPromise = await retryer(
-        async () => await tasksProvider.getOne(params?.jobId || '', params?.taskId || '')
-    );
-    const jobPromise = await retryer(async () => await jobsProvider.getOne(params?.jobId || ''));
+    const tasks = await retryer(tasksProvider.getList(params?.jobId || ''));
+    const toValidate = getTaskToValidate(tasks || []);
 
-    const [batchs, task, job] = await Promise.all([batchsPromise, taskPromise, jobPromise]);
+    console.log(toValidate);
 
-    return { batchs, task, job };
+    const taskId = toValidate?.id || '';
+    const { setParam } = urlParamsHandler({ taskId: toValidate?.id || '' });
+
+    setParam('taskId', taskId);
+
+    const batchsPromise = await retryer(annotationsProvider.getBatchs(params?.jobId || '', taskId));
+    // const taskPromise = await retryer(tasksProvider.getOne(params?.jobId || '', taskId));
+    const jobPromise = await retryer(jobsProvider.getOne(params?.jobId || ''));
+
+    const [batchs, job] = await Promise.all([batchsPromise, jobPromise]);
+
+    return { batchs, task: toValidate, job, tasks };
 };

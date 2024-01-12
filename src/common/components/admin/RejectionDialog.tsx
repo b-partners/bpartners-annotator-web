@@ -3,18 +3,21 @@ import { DialogActions, DialogContent, DialogContentText, DialogTitle, Typograph
 import { Stack } from '@mui/system';
 import { FC, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { v4 as uuidV4 } from 'uuid';
 import { annotationsProvider } from '../../../providers/admin/annotations-provider';
 import { useDialog } from '../../context';
-import { useGetPrevRoute } from '../../hooks';
 import { rejectionCommentDefaultValues, rejectionCommentResolver } from '../../resolvers/rejection-comment-resolver';
+import { urlParamsHandler } from '../../utils';
 import { BpButton, BpTextField } from '../basics';
 
-export const RejectionDialog: FC<{ batchId: string; comments: Record<string, AnnotationReview> }> = ({
-    batchId,
-    comments,
-}) => {
+type RejectionDialogProps = {
+    batchId: string;
+    comments: Record<string, AnnotationReview>;
+    changeCurrentTask: () => void;
+};
+
+export const RejectionDialog: FC<RejectionDialogProps> = ({ batchId, comments, changeCurrentTask }) => {
     const form = useForm({
         mode: 'all',
         resolver: rejectionCommentResolver,
@@ -22,9 +25,8 @@ export const RejectionDialog: FC<{ batchId: string; comments: Record<string, Ann
     });
     const { closeDialog } = useDialog();
     const [isLoading, setLoading] = useState(false);
-    const { jobId, taskId } = useParams() as { jobId: string; taskId: string };
-    const getPrevRoute = useGetPrevRoute();
-    const navigate = useNavigate();
+    const { jobId } = useParams() as { jobId: string };
+    const { taskId } = urlParamsHandler({ taskId: '' });
 
     const handleReject = form.handleSubmit(() => {
         const reviewId = uuidV4();
@@ -45,7 +47,7 @@ export const RejectionDialog: FC<{ batchId: string; comments: Record<string, Ann
             })
             .then(() => {
                 closeDialog();
-                navigate(getPrevRoute());
+                changeCurrentTask();
             })
             .finally(() => {
                 setLoading(false);

@@ -61,7 +61,7 @@ export const authProvider = {
         const apiKey = cache.getApiKey();
         const whoami = cache.getWhoami();
         if (!!apiKey) {
-            return '/jobs';
+            return '/jobs?page=1&perPage=10';
         } else if (!!whoami) {
             return `/teams/${whoami?.user?.team?.id}/jobs`;
         }

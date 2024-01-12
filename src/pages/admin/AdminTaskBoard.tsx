@@ -1,22 +1,60 @@
 import { AnnotationBatch, Job, Task } from '@bpartners-annotator/typescript-client';
 import { Box, CircularProgress, Grid, List, ListSubheader, MenuItem, Stack, TextField } from '@mui/material';
 import { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { CancelEvaluationButton, EvaluationRejectionButton, ValidateButton } from '../../common/components/admin';
 import { Canvas } from '../../common/components/canvas';
 import { Sidebar } from '../../common/components/sidebar';
 import { CanvasAnnotationProvider } from '../../common/context';
 import { EvaluationCommentProvider } from '../../common/context/admin';
-import { dateFormater } from '../../common/utils';
+import { useFetch } from '../../common/hooks';
+import { cache, dateFormater, getTaskToValidate, retryer, urlParamsHandler } from '../../common/utils';
+import { tasksProvider } from '../../providers';
+import { annotationsProvider } from '../../providers/admin/annotations-provider';
 import { canvas_loading } from '../style';
 
-export const AdminTaskBoard = () => {
-    const { batchs, job, task } = useLoaderData() as { batchs: AnnotationBatch[]; task: Task; job: Job };
-    const [batch, setBatch] = useState(batchs[0] || {});
+type AdminTaskJobLoaderReturn = {
+    batchs: AnnotationBatch[];
+    task: Task;
+    job: Job;
+    tasks: Task[];
+};
 
-    return task !== null ? (
+export const AdminTaskBoard = () => {
+    const { batchs, job, task, tasks } = useLoaderData() as AdminTaskJobLoaderReturn;
+    const [batch, setBatch] = useState(batchs[0] || {});
+    const params = useParams();
+    const navigate = useNavigate();
+
+    const fetcher = async () => {
+        cache.deleteCurrentTask();
+        const { setParam } = urlParamsHandler();
+        const tasks = (await retryer(tasksProvider.getList(params?.jobId || ''))) || [];
+        const task = getTaskToValidate(tasks);
+        if (task === null) {
+            navigate(`/jobs`);
+        }
+        const batchs = (await retryer(annotationsProvider.getBatchs(params?.jobId || '', task?.id || ''))) || [];
+        setParam('taskId', task?.id || '');
+        setBatch(batchs[0] || {});
+        return task;
+    };
+
+    const {
+        data: currenTask,
+        isLoading,
+        fetcher: changeCurrentTask,
+    } = useFetch({ fetcher, defaultData: task, onlyOnMutate: true });
+
+    return currenTask !== null && !isLoading ? (
         <EvaluationCommentProvider>
-            <CanvasAnnotationProvider batch={batch} img={task.imageUri || ''} labels={job?.labels || []}>
+            <CanvasAnnotationProvider
+                changeCurrentTask={changeCurrentTask}
+                tasks={tasks}
+                batch={batch}
+                img={currenTask.imageUri || ''}
+                labels={job?.labels || []}
+            >
                 <Grid container height='94%' pl={1}>
                     <Grid
                         container

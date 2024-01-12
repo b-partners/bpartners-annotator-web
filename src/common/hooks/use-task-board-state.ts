@@ -46,7 +46,7 @@ export const useTaskBoardState = (props: IUseTaskBoardState) => {
         setState({ task, job, annotationBatch: lastAnnotationBatch, globalReviews, annotationsReviews });
     };
 
-    const { isLoading, fetcher: refetch } = useFetch(fetcher);
+    const { isLoading, fetcher: refetch } = useFetch({ fetcher });
 
     return { ...data, changeState: refetch, isLoading };
 };
