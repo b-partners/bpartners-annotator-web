@@ -20,9 +20,9 @@ import { IConfirmButton } from './types';
 
 const NoAnnotationConfirm: FC<{ fetcher: () => Promise<void> }> = ({ fetcher }) => {
     const { closeDialog } = useDialog();
-    const { fetcher: fetch, isLoading } = useFetch(fetcher, true);
+    const { fetcher: fetch, isLoading } = useFetch({ fetcher, onlyOnMutate: true });
 
-    const handleClick = () => fetch(() => closeDialog());
+    const handleClick = () => fetch({}, () => closeDialog());
 
     return (
         <>
@@ -75,7 +75,7 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ labels, onEnd, tas
         }
     };
 
-    const { fetcher: fetch, isLoading } = useFetch(fetcher, true);
+    const { fetcher: fetch, isLoading } = useFetch({ fetcher, onlyOnMutate: true });
 
     const handleClick = () => {
         const areReady = areReadyForValidation(annotations);

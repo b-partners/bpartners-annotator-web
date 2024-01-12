@@ -45,16 +45,16 @@ const AppRouter = createBrowserRouter([
                         element: <JobList />,
                     },
                     {
-                        loader: adminJobsLoader,
-                        path: '/jobs',
-                        element: <AdminJobList />,
-                    },
-                    {
                         loader: adminTasksLoader,
                         path: '/jobs/:jobId/tasks',
                         element: <AdminTaskList />,
                     },
                 ],
+            },
+            {
+                loader: adminJobsLoader,
+                path: '/jobs',
+                element: <AdminJobList />,
             },
             {
                 path: '/teams/:teamId/jobs/:jobId',
