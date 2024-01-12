@@ -4,12 +4,14 @@ import { useParams } from 'react-router';
 import { v4 as uuidV4 } from 'uuid';
 import { annotationsProvider } from '../../../providers/admin/annotations-provider';
 import { useCanvasAnnotationContext } from '../../context';
+import { urlParamsHandler } from '../../utils';
 import { BpButton } from '../basics';
 
 export const ValidateButton = () => {
     const { batchId, changeCurrentTask } = useCanvasAnnotationContext();
     const [isLoading, setLoading] = useState(false);
-    const { jobId, taskId } = useParams() as { jobId: string; taskId: string };
+    const { jobId } = useParams() as { jobId: string };
+    const { taskId } = urlParamsHandler({ taskId: '' });
 
     const handleValidate = () => {
         const reviewId = uuidV4();

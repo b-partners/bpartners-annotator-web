@@ -8,6 +8,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { annotationsProvider } from '../../../providers/admin/annotations-provider';
 import { useDialog } from '../../context';
 import { rejectionCommentDefaultValues, rejectionCommentResolver } from '../../resolvers/rejection-comment-resolver';
+import { urlParamsHandler } from '../../utils';
 import { BpButton, BpTextField } from '../basics';
 
 type RejectionDialogProps = {
@@ -24,7 +25,8 @@ export const RejectionDialog: FC<RejectionDialogProps> = ({ batchId, comments, c
     });
     const { closeDialog } = useDialog();
     const [isLoading, setLoading] = useState(false);
-    const { jobId, taskId } = useParams() as { jobId: string; taskId: string };
+    const { jobId } = useParams() as { jobId: string };
+    const { taskId } = urlParamsHandler({ taskId: '' });
 
     const handleReject = form.handleSubmit(() => {
         const reviewId = uuidV4();
