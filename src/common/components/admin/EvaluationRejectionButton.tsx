@@ -5,10 +5,11 @@ import { RejectionDialog } from './RejectionDialog';
 
 export const EvaluationRejectionButton = () => {
     const { openDialog } = useDialog();
-    const { batchId } = useCanvasAnnotationContext();
+    const { batchId, changeCurrentTask } = useCanvasAnnotationContext();
     const { comments } = useEvaluationCommentContext();
 
-    const handleClick = () => openDialog(<RejectionDialog comments={comments} batchId={batchId} />);
+    const handleClick = () =>
+        openDialog(<RejectionDialog comments={comments} batchId={batchId} changeCurrentTask={changeCurrentTask} />);
 
     return <BpButton label='Rejeter' onClick={handleClick} />;
 };

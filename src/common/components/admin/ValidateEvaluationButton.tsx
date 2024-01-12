@@ -1,18 +1,15 @@
 import { ReviewStatus } from '@bpartners-annotator/typescript-client';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { v4 as uuidV4 } from 'uuid';
 import { annotationsProvider } from '../../../providers/admin/annotations-provider';
 import { useCanvasAnnotationContext } from '../../context';
-import { useGetPrevRoute } from '../../hooks';
 import { BpButton } from '../basics';
 
 export const ValidateButton = () => {
-    const { batchId } = useCanvasAnnotationContext();
+    const { batchId, changeCurrentTask } = useCanvasAnnotationContext();
     const [isLoading, setLoading] = useState(false);
     const { jobId, taskId } = useParams() as { jobId: string; taskId: string };
-    const getPrevRoute = useGetPrevRoute();
-    const navigate = useNavigate();
 
     const handleValidate = () => {
         const reviewId = uuidV4();
@@ -25,7 +22,7 @@ export const ValidateButton = () => {
                 status: ReviewStatus.ACCEPTED,
             })
             .then(() => {
-                navigate(getPrevRoute());
+                changeCurrentTask();
             })
             .finally(() => {
                 setLoading(false);

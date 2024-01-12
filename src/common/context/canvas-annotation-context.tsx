@@ -1,4 +1,4 @@
-import { AnnotationBatch, AnnotationReview, Label } from '@bpartners-annotator/typescript-client';
+import { AnnotationBatch, AnnotationReview, Label, Task } from '@bpartners-annotator/typescript-client';
 import { FC, ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { IAnnotation, IAnnotationContext } from '.';
 import { annotationsMapper } from '../mappers';
@@ -14,16 +14,33 @@ const CanvasAnnotationContext = createContext<IAnnotationContext>({
     batchId: '',
     annotationsReviews: [],
     globalReviews: [],
+    tasks: [],
+    changeCurrentTask: () => {},
 });
 
-export const CanvasAnnotationProvider: FC<{
+type CanvasAnnotationProviderProps = {
     children: ReactNode;
     labels: Label[];
     img: string;
     batch?: AnnotationBatch;
     globalReviews?: AnnotationReview[];
     annotationsReviews?: AnnotationReview[];
-}> = ({ children, labels, img, batch, annotationsReviews = [], globalReviews = [] }) => {
+    changeCurrentTask?: () => void;
+    tasks?: Task[];
+};
+
+export const CanvasAnnotationProvider: FC<CanvasAnnotationProviderProps> = props => {
+    const {
+        children,
+        labels,
+        img,
+        batch,
+        annotationsReviews = [],
+        globalReviews = [],
+        tasks = [],
+        changeCurrentTask = () => {},
+    } = props;
+
     const [annotations, setAnnotations] = useState<IAnnotation[]>([]);
     const [isAnnotating, setIsAnnotating] = useState(false);
 
@@ -46,6 +63,8 @@ export const CanvasAnnotationProvider: FC<{
                 batchId: batch?.id || '',
                 annotationsReviews,
                 globalReviews,
+                tasks,
+                changeCurrentTask,
             }}
         >
             {children}
