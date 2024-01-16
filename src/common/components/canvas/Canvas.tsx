@@ -66,7 +66,7 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
         const scaled = cw * scaling;
         const containerW = window.innerWidth * 0.7;
         if (scaled < containerW) return containerW;
-        return scaled;
+        return scaled * 1.2;
     };
 
     return (
