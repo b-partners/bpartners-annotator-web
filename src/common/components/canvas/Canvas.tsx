@@ -59,7 +59,7 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
         const scaled = ch * scaling;
         const containerH = window.innerHeight * 0.8;
         if (scaled < containerH) return containerH;
-        return scaled;
+        return scaled * 1.2;
     };
 
     const getScaledCw = () => {
