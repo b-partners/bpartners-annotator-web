@@ -1,24 +1,41 @@
+import { AnnotationBatch, Job, Task } from '@bpartners-annotator/typescript-client';
 import { getTaskToValidate, retryer, urlParamsHandler } from '../../common/utils';
 import { jobsProvider, tasksProvider } from '../../providers';
 import { annotationsProvider } from '../../providers/admin/annotations-provider';
 import { BatchLoaderArgs } from './types';
 
 export const adminBatchLoader = async ({ params }: BatchLoaderArgs) => {
-    const tasks = await retryer(tasksProvider.getList(params?.jobId || ''));
-    const toValidate = getTaskToValidate(tasks || []);
+    const result: {
+        task: Task | null;
+        tasks: Task[];
+        batchs: AnnotationBatch[];
+        job: Job[] | null;
+    } = {
+        task: null,
+        tasks: [],
+        batchs: [],
+        job: null,
+    };
 
-    console.log(toValidate);
+    const tasks = await retryer(tasksProvider.getList(params?.jobId || ''));
+
+    if (tasks?.length === 0) return result;
+    result.tasks = tasks || [];
+
+    const toValidate = getTaskToValidate(tasks || []);
+    if (!toValidate) return result;
+    result.task = toValidate;
 
     const taskId = toValidate?.id || '';
     const { setParam } = urlParamsHandler({ taskId: toValidate?.id || '' });
 
     setParam('taskId', taskId);
 
-    const batchsPromise = await retryer(annotationsProvider.getBatchs(params?.jobId || '', taskId));
-    // const taskPromise = await retryer(tasksProvider.getOne(params?.jobId || '', taskId));
-    const jobPromise = await retryer(jobsProvider.getOne(params?.jobId || ''));
+    const batchsPromise = retryer(annotationsProvider.getBatchs(params?.jobId || '', taskId), { ifNotFound: [] });
+
+    const jobPromise = retryer(jobsProvider.getOne(params?.jobId || ''));
 
     const [batchs, job] = await Promise.all([batchsPromise, jobPromise]);
 
-    return { batchs, task: toValidate, job, tasks };
+    return { ...result, batchs, job };
 };

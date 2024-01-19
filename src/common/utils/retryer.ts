@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 
 type Fetcher<T> = () => Promise<T>;
 
-export const retryer = async <T>(fetcher: Fetcher<T> | Promise<T>) => {
+export const retryer = async <T>(fetcher: Fetcher<T> | Promise<T>, options: Record<string, any> = {}) => {
     let retryCount = 0;
 
     const retry = async (): Promise<T | null> => {
@@ -12,7 +12,10 @@ export const retryer = async <T>(fetcher: Fetcher<T> | Promise<T>) => {
             return data;
         } catch (err) {
             const error = err as AxiosError;
-            console.log(error);
+            if (error.response?.status === 404) {
+                console.log('here');
+                return options.ifNotFound || null;
+            }
 
             if (error.response?.status === 403 || error.response?.status === 401 || retryCount === 2) {
                 retryCount = 0;
