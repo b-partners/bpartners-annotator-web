@@ -1,6 +1,6 @@
 import { AnnotationBatch, Job, Task } from '@bpartners-annotator/typescript-client';
 import { Box, CircularProgress, Grid, List, ListSubheader, MenuItem, Stack, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { CancelEvaluationButton, EvaluationRejectionButton, ValidateButton } from '../../common/components/admin';
 import { Canvas } from '../../common/components/canvas';
@@ -21,10 +21,17 @@ type AdminTaskJobLoaderReturn = {
 };
 
 export const AdminTaskBoard = () => {
-    const { batchs, job, task, tasks } = useLoaderData() as AdminTaskJobLoaderReturn;
+    const { task, tasks, batchs, job } = useLoaderData() as AdminTaskJobLoaderReturn;
+
     const [batch, setBatch] = useState(batchs[0] || {});
     const params = useParams();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (task === null) {
+            navigate(`/jobs`);
+        }
+    }, [task, navigate]);
 
     const fetcher = async () => {
         cache.deleteCurrentTask();
