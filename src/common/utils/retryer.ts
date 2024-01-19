@@ -13,7 +13,6 @@ export const retryer = async <T>(fetcher: Fetcher<T> | Promise<T>, options: Reco
         } catch (err) {
             const error = err as AxiosError;
             if (error.response?.status === 404) {
-                console.log('here');
                 return options.ifNotFound || null;
             }
 

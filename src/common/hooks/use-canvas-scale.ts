@@ -60,8 +60,6 @@ export const useCanvasScale = (container: RefObject<HTMLDivElement>, image: HTML
     };
     const setDefaultScaling = (newScale: number) => {
         if (newScale !== Infinity) {
-            console.log(newScale);
-
             setDefaultScale(newScale);
             setScale(newScale);
         }

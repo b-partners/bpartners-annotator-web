@@ -21,10 +21,7 @@ type AdminTaskJobLoaderReturn = {
 };
 
 export const AdminTaskBoard = () => {
-    const data = useLoaderData() as AdminTaskJobLoaderReturn;
-    console.log(data);
-
-    const { task, tasks, batchs, job } = data;
+    const { task, tasks, batchs, job } = useLoaderData() as AdminTaskJobLoaderReturn;
 
     const [batch, setBatch] = useState(batchs[0] || {});
     const params = useParams();
