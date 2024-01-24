@@ -65,7 +65,11 @@ export const AdminJobList = () => {
                         >
                             {[...Object.keys(JobStatus), ''].map(key => {
                                 const { label } = getJobStatusInfo(key as JobStatus);
-                                return <MenuItem value={key}>{label}</MenuItem>;
+                                return (
+                                    <MenuItem key={key} value={key}>
+                                        {label}
+                                    </MenuItem>
+                                );
                             })}
                         </TextField>
                     </Box>

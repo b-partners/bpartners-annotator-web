@@ -22,7 +22,6 @@ type AdminTaskJobLoaderReturn = {
 
 export const AdminTaskBoard = () => {
     const { task, tasks, batchs, job } = useLoaderData() as AdminTaskJobLoaderReturn;
-
     const [batch, setBatch] = useState(batchs[0] || {});
     const params = useParams();
     const navigate = useNavigate();
@@ -30,6 +29,9 @@ export const AdminTaskBoard = () => {
     useEffect(() => {
         if (task === null) {
             navigate(`/jobs`);
+        } else {
+            const { setParam } = urlParamsHandler({ taskId: task?.id || '' });
+            setParam('taskId', task.id || '');
         }
     }, [task, navigate]);
 
