@@ -1,6 +1,10 @@
 import { Label } from '@bpartners-annotator/typescript-client';
-import { MenuItem } from '@mui/base';
-import { Delete as DeleteIcon, ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
+import {
+    Delete as DeleteIcon,
+    ExpandMore as ExpandMoreIcon,
+    Visibility as VisibilityIcon,
+    VisibilityOff as VisibilityOffIcon,
+} from '@mui/icons-material';
 import {
     Accordion,
     AccordionDetails,
@@ -9,6 +13,8 @@ import {
     Divider,
     IconButton,
     ListItem,
+    MenuItem,
+    Stack,
     TextField,
     Typography,
 } from '@mui/material';
@@ -16,41 +22,56 @@ import { FC } from 'react';
 import { useCanvasAnnotationContext } from '../../context';
 import { IAnnotationItemProps } from './type';
 
-export const AnnotationItem: FC<IAnnotationItemProps> = ({ annotation }) => {
-    const { changeAnnotationLabel, removeAnnotation, labels, annotationsReviews } = useCanvasAnnotationContext();
+export const LabelSelector: FC<IAnnotationItemProps> = ({ annotation }) => {
+    const { changeAnnotationLabel, labels } = useCanvasAnnotationContext();
 
     const handleClick = (label: Label) => () => {
         changeAnnotationLabel(annotation.id, label);
     };
 
-    const currentReview = annotationsReviews.find(
+    return (
+        <TextField select value={annotation.label} size='small' sx={{ flexGrow: 2 }}>
+            {labels.map(label => (
+                <MenuItem onClick={handleClick(label)} key={label.id} value={label.name}>
+                    {label.name}
+                </MenuItem>
+            ))}
+        </TextField>
+    );
+};
+
+export const AnnotationItem: FC<IAnnotationItemProps> = ({ annotation, selectLabel }) => {
+    const { removeAnnotation, annotationsReviews } = useCanvasAnnotationContext();
+    const { toggleAnnotationVisibility } = useCanvasAnnotationContext();
+    const review = annotationsReviews.find(
         review => review.annotationId && annotation.uuid && review.annotationId === annotation.uuid
     );
+
+    const toggleVisibility = () => toggleAnnotationVisibility(annotation.id);
 
     return (
         <Box>
             <ListItem
                 secondaryAction={
-                    <IconButton edge='end' onClick={() => removeAnnotation(annotation.id)}>
-                        <DeleteIcon />
-                    </IconButton>
+                    <Stack direction='row'>
+                        <IconButton edge='end' onClick={() => removeAnnotation(annotation.id)}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Stack>
                 }
             >
-                <TextField select value={annotation.label} size='small' sx={{ flexGrow: 2 }}>
-                    {labels.map(label => (
-                        <MenuItem onClick={handleClick(label)} key={label.id} value={label.name}>
-                            {label.name}
-                        </MenuItem>
-                    ))}
-                </TextField>
+                <IconButton sx={{ mr: 1 }} onClick={toggleVisibility}>
+                    {annotation.isInvisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                </IconButton>
+                {selectLabel}
             </ListItem>
-            {currentReview && (
+            {review && (
                 <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography>Commentaires</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Typography textAlign='justify'>{currentReview.comment}</Typography>
+                        <Typography textAlign='justify'>{review.comment}</Typography>
                     </AccordionDetails>
                 </Accordion>
             )}

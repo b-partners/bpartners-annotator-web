@@ -164,20 +164,22 @@ export class EventHandler {
         if (!this.isAnnotating) {
             for (let index = 0; index < this.annotations.length; index++) {
                 const annotation = this.annotations[index];
-                for (let a = 1; a < annotation.polygon.points.length; a++) {
-                    const segment = [annotation.polygon.points[a - 1], annotation.polygon.points[a]] as any;
-                    const areTooClose = pointBelongsToOrIsClose(currentLogicalPosition, segment);
-                    if (areTooClose) {
-                        this.currentMiddlePosition = {
-                            annotationIndex: index,
-                            index: a,
-                            point: findMidpoint(segment),
-                            id: annotation.polygon.points.length,
-                        };
-                        return;
-                    }
+                if (!annotation.isInvisible) {
+                    for (let a = 1; a < annotation.polygon.points.length; a++) {
+                        const segment = [annotation.polygon.points[a - 1], annotation.polygon.points[a]] as any;
+                        const areTooClose = pointBelongsToOrIsClose(currentLogicalPosition, segment);
+                        if (areTooClose) {
+                            this.currentMiddlePosition = {
+                                annotationIndex: index,
+                                index: a,
+                                point: findMidpoint(segment),
+                                id: annotation.polygon.points.length,
+                            };
+                            return;
+                        }
 
-                    this.currentMiddlePosition = null;
+                        this.currentMiddlePosition = null;
+                    }
                 }
             }
         }
@@ -205,16 +207,21 @@ export class EventHandler {
     }
 
     private draw() {
-        const polygonsToDraw = [...(this.annotations.map(annotation => annotation.polygon) || []), this.polygon];
+        const polygonsToDraw = [
+            ...(this.annotations.filter(a => !a.isInvisible).map(annotation => annotation.polygon) || []),
+            this.polygon,
+        ];
         this.canvasHandler.draw(polygonsToDraw);
     }
 
     private createPointInfo() {
         this.pointsInfo = [];
-        this.annotations.forEach(annotation => {
-            annotation.polygon.points.forEach((point, index) => {
-                this.pointsInfo.push({ id: annotation.id, index, point });
+        this.annotations
+            .filter(a => !a.isInvisible)
+            .forEach(annotation => {
+                annotation.polygon.points.forEach((point, index) => {
+                    this.pointsInfo.push({ id: annotation.id, index, point });
+                });
             });
-        });
     }
 }

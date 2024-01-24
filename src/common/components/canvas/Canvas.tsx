@@ -28,7 +28,7 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
 
     useEffect(() => {
         canvasHandler.init();
-        canvasHandler.draw(annotations.map(annotation => annotation.polygon));
+        canvasHandler.draw(annotations.filter(a => !a.isInvisible).map(annotation => annotation.polygon));
         if (window && canvas.current && canvasCursor.current && isAnnotating !== undefined) {
             const currentCanvas = canvas.current;
             const currentCanvasCursor = canvasCursor.current;
