@@ -1,5 +1,5 @@
 import { AnnotationBatch, Job, Task } from '@bpartners-annotator/typescript-client';
-import { getTaskToValidate, retryer, urlParamsHandler } from '../../common/utils';
+import { getTaskToValidate, retryer } from '../../common/utils';
 import { jobsProvider, tasksProvider } from '../../providers';
 import { annotationsProvider } from '../../providers/admin/annotations-provider';
 import { BatchLoaderArgs } from './types';
@@ -27,9 +27,6 @@ export const adminBatchLoader = async ({ params }: BatchLoaderArgs) => {
     result.task = toValidate;
 
     const taskId = toValidate?.id || '';
-    const { setParam } = urlParamsHandler({ taskId: toValidate?.id || '' });
-
-    setParam('taskId', taskId);
 
     const batchsPromise = retryer(annotationsProvider.getBatchs(params?.jobId || '', taskId), { ifNotFound: [] });
 
