@@ -15,16 +15,19 @@ export const AdminAnnotationItem: FC<IAnnotationItemProps> = ({ annotation }) =>
     const [isComment, setComment] = useState(false);
     const [commentText, setCommentText] = useState('');
     const { addOrUpdateComment, comments } = useEvaluationCommentContext();
-    const { toggleAnnotationVisibility } = useCanvasAnnotationContext();
+    const { toggleAnnotationVisibility, toggleHighlightAnnotation } = useCanvasAnnotationContext();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => setCommentText(e.target.value);
 
     const handleBlur = () => addOrUpdateComment({ annotationId: annotation.uuid, comment: commentText, id: uuidV4() });
     const toggleVisibility = () => toggleAnnotationVisibility(annotation.id);
+    const toggleHighlight = () => toggleHighlightAnnotation(annotation.id);
 
     return (
         <>
             <ListItem
+                onMouseEnter={toggleHighlight}
+                onMouseLeave={toggleHighlight}
                 secondaryAction={
                     <Stack direction='row'>
                         <IconButton onClick={toggleVisibility}>

@@ -42,15 +42,16 @@ export const LabelSelector: FC<IAnnotationItemProps> = ({ annotation }) => {
 
 export const AnnotationItem: FC<IAnnotationItemProps> = ({ annotation, selectLabel }) => {
     const { removeAnnotation, annotationsReviews } = useCanvasAnnotationContext();
-    const { toggleAnnotationVisibility } = useCanvasAnnotationContext();
+    const { toggleAnnotationVisibility, toggleHighlightAnnotation } = useCanvasAnnotationContext();
     const review = annotationsReviews.find(
         review => review.annotationId && annotation.uuid && review.annotationId === annotation.uuid
     );
 
     const toggleVisibility = () => toggleAnnotationVisibility(annotation.id);
+    const toggleHighlight = () => toggleHighlightAnnotation(annotation.id);
 
     return (
-        <Box>
+        <Box onMouseEnter={toggleHighlight} onMouseLeave={toggleHighlight}>
             <ListItem
                 secondaryAction={
                     <Stack direction='row'>

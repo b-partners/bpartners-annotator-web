@@ -80,9 +80,19 @@ export const useCanvasAnnotationContext = () => {
         return currentAnnotations.findIndex(value => value.id === id);
     };
 
-    const changeAnnotationLabel = (id: number, label: Label) => {
+    const findColorByLabelName = (labelName: string) => {
+        const label = context.labels.find(l => l.name === labelName);
+        return label?.color || '#ffffff';
+    };
+
+    const getAnnotationsAndIndex = (id: number) => {
         const index = findAnnotationIndexById(id);
         const annotations = context.annotations.slice();
+        return { index, annotations };
+    };
+
+    const changeAnnotationLabel = (id: number, label: Label) => {
+        const { annotations, index } = getAnnotationsAndIndex(id);
         annotations[index].label = label.name || '';
         const color = getColorFromMain(label.color || '#00ff00');
         annotations[index].polygon.fillColor = color.fillColor;
@@ -91,24 +101,35 @@ export const useCanvasAnnotationContext = () => {
     };
 
     const changeAnnotationColor = (id: number, newColor: string) => {
-        const index = findAnnotationIndexById(id);
-        const annotations = context.annotations.slice();
+        const { annotations, index } = getAnnotationsAndIndex(id);
         const { fillColor, strokeColor } = getColorFromMain(newColor);
         annotations[index].polygon.fillColor = fillColor;
         annotations[index].polygon.strokeColor = strokeColor;
         context.setAnnotations(annotations as IAnnotation[]);
     };
 
-    const toggleAnnotationVisibility = (id: number) => {
+    const toggleHighlightAnnotation = (id: number) => {
         const index = findAnnotationIndexById(id);
-        const annotations = context.annotations.slice();
+        const currentAnnotation = context.annotations[index];
+        const notHighlightColor = findColorByLabelName(currentAnnotation.label);
+        const currentColor = currentAnnotation.polygon.strokeColor;
+        const highlightColor = '#ffffff';
+
+        if (notHighlightColor !== currentColor) {
+            changeAnnotationColor(id, notHighlightColor);
+            return;
+        }
+        changeAnnotationColor(id, highlightColor);
+    };
+
+    const toggleAnnotationVisibility = (id: number) => {
+        const { annotations, index } = getAnnotationsAndIndex(id);
         annotations[index].isInvisible = !annotations[index].isInvisible;
         context.setAnnotations(annotations as IAnnotation[]);
     };
 
     const removeAnnotation = (id: number) => {
-        const index = findAnnotationIndexById(id);
-        const annotations = context.annotations.slice();
+        const { annotations, index } = getAnnotationsAndIndex(id);
         annotations.splice(index, 1);
         context.setAnnotations(annotations as IAnnotation[]);
     };
@@ -127,9 +148,9 @@ export const useCanvasAnnotationContext = () => {
     return {
         ...context,
         changeAnnotationLabel,
-        changeAnnotationColor,
         removeAnnotation,
         addAnnotation,
         toggleAnnotationVisibility,
+        toggleHighlightAnnotation,
     };
 };
