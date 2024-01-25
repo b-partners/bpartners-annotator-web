@@ -14,7 +14,7 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import { dataCy } from './commands';
+import { dataCy, typeEnter } from './commands';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
@@ -30,11 +30,13 @@ declare global {
         interface Chainable {
             mount: typeof mount;
             dataCy: typeof dataCy;
+            typeEnter: typeof typeEnter;
         }
     }
 }
 
 Cypress.Commands.add('mount', mount);
 Cypress.Commands.add('dataCy', dataCy);
+Cypress.Commands.add('typeEnter', typeEnter);
 // Example use:
 // cy.mount(<MyComponent />)
