@@ -6,4 +6,5 @@ export const FieldErrorMessage = {
     badPassword:
         'Le mot de passe doit : \n - avoir au moins une majuscule \n - avoir au moins un caractère spécial !@#$%^&*()_+-= \n - avoir au moins un chiffre',
     notMatchingPassword: 'Les mots de passe ne correspondent pas !',
+    invalidKey: 'Veuillez verifier votre clé.',
 };
