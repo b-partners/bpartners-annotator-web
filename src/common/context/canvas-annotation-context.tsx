@@ -99,6 +99,13 @@ export const useCanvasAnnotationContext = () => {
         context.setAnnotations(annotations as IAnnotation[]);
     };
 
+    const toggleAnnotationVisibility = (id: number) => {
+        const index = findAnnotationIndexById(id);
+        const annotations = context.annotations.slice();
+        annotations[index].isInvisible = !annotations[index].isInvisible;
+        context.setAnnotations(annotations as IAnnotation[]);
+    };
+
     const removeAnnotation = (id: number) => {
         const index = findAnnotationIndexById(id);
         const annotations = context.annotations.slice();
@@ -117,5 +124,12 @@ export const useCanvasAnnotationContext = () => {
         context.setAnnotations(annotations);
     };
 
-    return { ...context, changeAnnotationLabel, changeAnnotationColor, removeAnnotation, addAnnotation };
+    return {
+        ...context,
+        changeAnnotationLabel,
+        changeAnnotationColor,
+        removeAnnotation,
+        addAnnotation,
+        toggleAnnotationVisibility,
+    };
 };

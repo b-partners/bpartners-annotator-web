@@ -20,6 +20,7 @@ export interface IAnnotation {
     polygon: IPolygon;
     id: number;
     uuid?: string;
+    isInvisible?: boolean;
 }
 
 export interface IZoomContext {
