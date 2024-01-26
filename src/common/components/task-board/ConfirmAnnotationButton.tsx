@@ -26,7 +26,7 @@ const NoAnnotationConfirm: FC<{ fetcher: () => Promise<void> }> = ({ fetcher }) 
 
     return (
         <>
-            <DialogTitle>Rejet d'annotation</DialogTitle>
+            <DialogTitle>Valider l'annotation</DialogTitle>
             <DialogContent>
                 <DialogContentText id='alert-dialog-slide-description'>
                     Aucune annotation ne sera faite sur cette image.
@@ -91,6 +91,7 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ labels, onEnd, tas
     return (
         <Stack>
             <BpButton
+                data-cy='validate-annotation-button'
                 label='Valider l’annotation'
                 onClick={handleClick}
                 disabled={!noAnnotation && annotations.length === 0}
@@ -99,7 +100,12 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ labels, onEnd, tas
             <FormControlLabel
                 label='Rien à labelliser'
                 control={
-                    <Checkbox value={noAnnotation} checked={noAnnotation} onClick={() => setNoAnnotation(e => !e)} />
+                    <Checkbox
+                        data-cy='validate-annotation-without-polygone'
+                        value={noAnnotation}
+                        checked={noAnnotation}
+                        onClick={() => setNoAnnotation(e => !e)}
+                    />
                 }
             />
         </Stack>

@@ -1,0 +1,6 @@
+{
+    "imageUri": "http://dummy-url.com/image2",
+    "id": "task-id-1",
+    "userId": "user-id-1",
+    "status": "UNDER_COMPLETION"
+}

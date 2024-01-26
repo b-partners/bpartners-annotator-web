@@ -23,3 +23,12 @@ export const SELECT_LABEL_1 = 'select-label-1';
 
 export const ANNOTATION_ITEM_2 = 'annotation-item-2';
 export const SELECT_LABEL_2 = 'select-label-2';
+
+export const USER_CANCEL_ANNOTATION_BUTTON = 'cancel-annotation-button';
+export const USER_VALIDATE_ANNOTATION_BUTTON = 'validate-annotation-button';
+export const USER_VALIDATE_ANNOTATION_BUTTON_WITHOUT_POLYGONE = 'validate-annotation-without-polygone';
+
+export const VALIDATE_BUTTON = '[name="Valider"]';
+export const CANCEL_BUTTON = '[name="Annuler"]';
+
+export const CHANGE_IMAGE_BUTTON = 'change-image-button';

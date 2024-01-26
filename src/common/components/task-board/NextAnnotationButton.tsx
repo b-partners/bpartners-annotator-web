@@ -31,5 +31,7 @@ export const NextAnnotationButton: FC<{ fetcher: () => void; task: Task }> = ({ 
             .finally(() => setIsLoading(false));
     };
 
-    return <BpButton isLoading={isLoading} onClick={changeImage} label="Changer d'image" />;
+    return (
+        <BpButton data-cy='change-image-button' isLoading={isLoading} onClick={changeImage} label="Changer d'image" />
+    );
 };
