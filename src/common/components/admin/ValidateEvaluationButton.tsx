@@ -21,7 +21,7 @@ export const ValidateButton = () => {
                 id: reviewId,
                 annotationBatchId: batchId,
                 reviews: [],
-                status: ReviewStatus.ACCEPTED,
+                status: ReviewStatus.ACCEPTED
             })
             .then(() => {
                 changeCurrentTask();

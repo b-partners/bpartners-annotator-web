@@ -6,5 +6,5 @@ export const accountProvider = {
         const { data } = await securityApi().whoami();
         cache.setWhoami(data);
         return data;
-    },
+    }
 };

@@ -9,17 +9,17 @@ export const JOB_ITEM: SxProps = {
     width: 400,
     justifyContent: 'space-between',
     '&:hover': {
-        boxShadow: '1px 1px 5px rgba(0,0,0,0.2)',
+        boxShadow: '1px 1px 5px rgba(0,0,0,0.2)'
     },
     '&:active': {
-        boxShadow: 'none',
+        boxShadow: 'none'
     },
     '& a': {
         position: 'absolute',
-        right: 0,
+        right: 0
     },
     '& .job-title-container': {
         position: 'relative',
-        width: 380,
-    },
+        width: 380
+    }
 };

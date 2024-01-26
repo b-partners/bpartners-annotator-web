@@ -1,6 +1,6 @@
 import {
     ChevronLeftRounded as ChevronLeftRoundedIcon,
-    ChevronRightRounded as ChevronRightRoundedIcon,
+    ChevronRightRounded as ChevronRightRoundedIcon
 } from '@mui/icons-material';
 import { IconButton, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { ChangeEvent, FC, useRef } from 'react';

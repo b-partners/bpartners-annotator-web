@@ -8,5 +8,5 @@ export const tasksProvider = {
     async getList(jobId: string) {
         const { data } = await tasksApi().getJobTasks(jobId, 1, 500, 'TO_REVIEW' as any);
         return data;
-    },
+    }
 };

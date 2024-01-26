@@ -9,27 +9,27 @@ const AppRouter = createBrowserRouter([
     {
         path: '/',
         element: <Home />,
-        errorElement: <Error />,
+        errorElement: <Error />
     },
     {
         path: '/login/success',
         element: <Success />,
-        errorElement: <Error />,
+        errorElement: <Error />
     },
     {
         path: '/login',
         element: <Login />,
-        errorElement: <Error />,
+        errorElement: <Error />
     },
     {
         path: '/login/api-key',
         element: <LoginByApiKey />,
-        errorElement: <Error />,
+        errorElement: <Error />
     },
     {
         path: '/login/complete-password',
         element: <NewPassword />,
-        errorElement: <Error />,
+        errorElement: <Error />
     },
     {
         path: '/',
@@ -42,27 +42,27 @@ const AppRouter = createBrowserRouter([
                     {
                         loader: jobsLoader,
                         path: '/teams/:teamId/jobs',
-                        element: <JobList />,
-                    },
-                ],
+                        element: <JobList />
+                    }
+                ]
             },
             {
                 loader: adminJobsLoader,
                 path: '/jobs',
-                element: <AdminJobList />,
+                element: <AdminJobList />
             },
             {
                 path: '/teams/:teamId/jobs/:jobId',
                 loader: taskLoader,
-                element: <TaskBoard />,
+                element: <TaskBoard />
             },
             {
                 loader: adminBatchLoader,
                 path: '/jobs/:jobId/tasks/review',
-                element: <AdminTaskBoard />,
-            },
-        ],
-    },
+                element: <AdminTaskBoard />
+            }
+        ]
+    }
 ]);
 
 export default AppRouter;

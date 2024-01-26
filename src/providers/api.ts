@@ -8,7 +8,7 @@ import {
     TeamsApi,
     UserAnnotationsApi,
     UserTasksApi,
-    UsersApi,
+    UsersApi
 } from '@bpartners-annotator/typescript-client';
 import { authProvider } from './general';
 

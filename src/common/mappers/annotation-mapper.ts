@@ -13,8 +13,8 @@ export const annotationsMapper = {
             polygon: {
                 fillColor,
                 strokeColor,
-                points: annotation.polygon?.points as any,
-            },
+                points: annotation.polygon?.points as any
+            }
         };
     },
     toRest(annotation: IAnnotation, labels: Label[], taskId?: string): Annotation {
@@ -24,7 +24,7 @@ export const annotationsMapper = {
             label: labels.find(e => e.name === annotation.label),
             taskId,
             polygon: { points: annotation.polygon.points },
-            userId: user?.id,
+            userId: user?.id
         };
-    },
+    }
 };

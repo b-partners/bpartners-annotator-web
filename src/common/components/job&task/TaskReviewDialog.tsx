@@ -8,7 +8,7 @@ import {
     List,
     ListItem,
     Stack,
-    Typography,
+    Typography
 } from '@mui/material';
 import { FC } from 'react';
 import { useDialog } from '../../context';

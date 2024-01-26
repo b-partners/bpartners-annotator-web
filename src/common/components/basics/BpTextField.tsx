@@ -6,7 +6,7 @@ import { IBpTextField } from './types';
 export const BpTextField: FC<IBpTextField> = ({ name, icon, onClickOnIcon, type, ...others }) => {
     const {
         register,
-        formState: { errors },
+        formState: { errors }
     } = useFormContext();
     const value = useWatch({ name });
 

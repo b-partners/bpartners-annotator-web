@@ -27,14 +27,14 @@ export const AdminJobList = () => {
     const {
         data: currentJobs,
         isLoading,
-        fetcher: jobsFetcher,
+        fetcher: jobsFetcher
     } = useFetch({ fetcher, defaultData: jobs, defaultParams: { page, perPage, status } });
 
     const handlePaginationChange = (newPage: number, newPerPage?: number) => {
         jobsFetcher({
             page: newPage,
             perPage: newPerPage || perPage,
-            status,
+            status
         });
     };
 
@@ -44,7 +44,7 @@ export const AdminJobList = () => {
         jobsFetcher({
             page,
             perPage,
-            status: value,
+            status: value
         });
         setParam('status', value);
     };

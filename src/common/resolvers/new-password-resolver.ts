@@ -24,13 +24,13 @@ const newPasswordSchema = zod
             .string({ required_error: FieldErrorMessage.required })
             .min(8, { message: FieldErrorMessage.minPassword })
             .refine(matchCognitoPassword, { message: FieldErrorMessage.badPassword }),
-        confirmedPassword: zod.string({ required_error: FieldErrorMessage.required }),
+        confirmedPassword: zod.string({ required_error: FieldErrorMessage.required })
     })
     .refine(comparePasswords, { message: FieldErrorMessage.notMatchingPassword, path: ['confirmedPassword'] });
 
 export const newPasswordDefaultValues = {
     password: '',
-    confirmedPassword: '',
+    confirmedPassword: ''
 };
 
 export const newPasswordResolver = zodResolver(newPasswordSchema);

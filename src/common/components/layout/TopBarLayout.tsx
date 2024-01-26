@@ -45,7 +45,7 @@ export const TopBarLayout = () => {
                     height: 'calc(100vh - 68px)',
                     width: '100vw',
                     margin: 0,
-                    padding: 0,
+                    padding: 0
                 }}
             >
                 <Outlet />

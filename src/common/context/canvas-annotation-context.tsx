@@ -15,7 +15,7 @@ const CanvasAnnotationContext = createContext<IAnnotationContext>({
     annotationsReviews: [],
     globalReviews: [],
     tasks: [],
-    changeCurrentTask: () => {},
+    changeCurrentTask: () => {}
 });
 
 type CanvasAnnotationProviderProps = {
@@ -38,7 +38,7 @@ export const CanvasAnnotationProvider: FC<CanvasAnnotationProviderProps> = props
         annotationsReviews = [],
         globalReviews = [],
         tasks = [],
-        changeCurrentTask = () => {},
+        changeCurrentTask = () => {}
     } = props;
 
     const [annotations, setAnnotations] = useState<IAnnotation[]>([]);
@@ -64,7 +64,7 @@ export const CanvasAnnotationProvider: FC<CanvasAnnotationProviderProps> = props
                 annotationsReviews,
                 globalReviews,
                 tasks,
-                changeCurrentTask,
+                changeCurrentTask
             }}
         >
             {children}
@@ -151,6 +151,6 @@ export const useCanvasAnnotationContext = () => {
         removeAnnotation,
         addAnnotation,
         toggleAnnotationVisibility,
-        toggleHighlightAnnotation,
+        toggleHighlightAnnotation
     };
 };

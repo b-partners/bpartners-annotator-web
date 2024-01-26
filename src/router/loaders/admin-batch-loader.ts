@@ -14,7 +14,7 @@ export const adminBatchLoader = async ({ params }: BatchLoaderArgs) => {
         task: null,
         tasks: [],
         batchs: [],
-        job: null,
+        job: null
     };
 
     const tasks = await retryer(tasksProvider.getList(params?.jobId || ''));

@@ -1,7 +1,7 @@
 import {
     Comment as CommentIcon,
     Visibility as VisibilityIcon,
-    VisibilityOff as VisibilityOffIcon,
+    VisibilityOff as VisibilityOffIcon
 } from '@mui/icons-material';
 import { Divider, IconButton, ListItem, ListItemText, TextField } from '@mui/material';
 import { Stack } from '@mui/system';

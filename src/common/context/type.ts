@@ -3,7 +3,7 @@ import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 export enum ECanvasAction {
     NO_ACTION = 'NO_ACTION',
-    POLYGONE = 'POLYGONE',
+    POLYGONE = 'POLYGONE'
 }
 
 export interface IPoint {

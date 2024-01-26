@@ -4,7 +4,7 @@ import { useCanvasEditorContext } from '../../context';
 
 export const CanvasAction = () => {
     const {
-        zoom: { resetZoom, zoomIn, zoomOut },
+        zoom: { resetZoom, zoomIn, zoomOut }
     } = useCanvasEditorContext();
 
     return (

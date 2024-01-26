@@ -12,7 +12,7 @@ import {
     SELECT_LABEL_1,
     SELECT_LABEL_2,
     VISIBILITY_BUTTON_1,
-    ZOOM_IN_BUTTON,
+    ZOOM_IN_BUTTON
 } from './selectors';
 
 const expected_text_no_annotation_yet = "Pas encore d'annotation effectuée.";

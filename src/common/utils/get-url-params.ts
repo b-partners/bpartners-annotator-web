@@ -25,7 +25,7 @@ export const urlParamsHandler = <P extends Record<string, any> = {}>(others: P =
     const result: any = {
         page,
         perPage,
-        setParam,
+        setParam
     };
     Object.keys(others).forEach(key => (result[key] = searchParams.get(key) || others[key]));
 

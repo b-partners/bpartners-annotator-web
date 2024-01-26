@@ -20,8 +20,8 @@ export const TaskReviewComment = () => {
                 background: theme => theme.palette.primary.main,
                 color: '#fff',
                 ':hover': {
-                    background: theme => theme.palette.primary.light,
-                },
+                    background: theme => theme.palette.primary.light
+                }
             }}
         >
             {globalReviews.length !== 0 && (

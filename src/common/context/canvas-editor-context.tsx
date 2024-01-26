@@ -5,15 +5,15 @@ const CanvasEditorContext = createContext<ICanvasContext>({
     zoom: {
         resetZoom: () => {},
         zoomIn: () => {},
-        zoomOut: () => {},
-    },
+        zoomOut: () => {}
+    }
 });
 
 export const CanvasEditorProvider: FC<ICanvasEditorProviderProps> = ({ children, zoom }) => {
     return (
         <CanvasEditorContext.Provider
             value={{
-                zoom,
+                zoom
             }}
         >
             {children}

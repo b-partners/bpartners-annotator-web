@@ -21,7 +21,7 @@ export const RejectionDialog: FC<RejectionDialogProps> = ({ batchId, comments, c
     const form = useForm({
         mode: 'all',
         resolver: rejectionCommentResolver,
-        defaultValues: rejectionCommentDefaultValues,
+        defaultValues: rejectionCommentDefaultValues
     });
     const { closeDialog } = useDialog();
     const [isLoading, setLoading] = useState(false);
@@ -39,11 +39,11 @@ export const RejectionDialog: FC<RejectionDialogProps> = ({ batchId, comments, c
                 reviews: [
                     {
                         comment,
-                        id: uuidV4(),
+                        id: uuidV4()
                     },
-                    ...Object.values(comments),
+                    ...Object.values(comments)
                 ],
-                status: ReviewStatus.REJECTED,
+                status: ReviewStatus.REJECTED
             })
             .then(() => {
                 closeDialog();

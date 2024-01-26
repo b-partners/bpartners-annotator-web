@@ -9,8 +9,8 @@ export const login_container: SxProps = {
     '& .login-card-container': {
         position: 'relative',
         '& .MuiCardContent-root': {
-            paddingTop: '5rem',
-        },
+            paddingTop: '5rem'
+        }
     },
     '& .login-card-header-container': {
         position: 'absolute',
@@ -24,10 +24,10 @@ export const login_container: SxProps = {
             boxShadow: '1px 1px 10px #00000010',
             '& .MuiSvgIcon-root': {
                 color: 'rgb(148, 51, 99)',
-                fontSize: '5rem',
-            },
-        },
-    },
+                fontSize: '5rem'
+            }
+        }
+    }
 };
 
 export const login_card_content: SxProps = {
@@ -35,6 +35,6 @@ export const login_card_content: SxProps = {
     height: 350,
     padding: 3,
     '& form': {
-        marginTop: 13,
-    },
+        marginTop: 13
+    }
 };

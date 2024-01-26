@@ -21,5 +21,5 @@ export const jobsProvider = {
         const { data } = await jobsApi().saveJob(jobId, job);
         return data;
     },
-    getLastPage: () => cache.getLastPage(ADMIN_JOB_NAME, urlParamsHandler().perPage),
+    getLastPage: () => cache.getLastPage(ADMIN_JOB_NAME, urlParamsHandler().perPage)
 };

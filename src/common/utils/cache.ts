@@ -61,5 +61,5 @@ export const cache = {
             return 1;
         }
         return +page;
-    },
+    }
 };

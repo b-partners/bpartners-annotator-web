@@ -4,7 +4,7 @@ import {
     ErrorOutlineOutlined as ErrorOutlineOutlinedIcon,
     FlagCircleOutlined as FlagCircleOutlinedIcon,
     PendingActionsOutlined as PendingActionsOutlinedIcon,
-    PlayCircleOutlineOutlined as PlayCircleOutlineOutlinedIcon,
+    PlayCircleOutlineOutlined as PlayCircleOutlineOutlinedIcon
 } from '@mui/icons-material';
 import { IJobStatusInfo } from '.';
 

@@ -7,14 +7,12 @@ const loginSchema = zod.object({
         .string({ required_error: FieldErrorMessage.required })
         .min(1, { message: FieldErrorMessage.required })
         .email({ message: FieldErrorMessage.invalidEmail }),
-    password: zod
-        .string({ required_error: FieldErrorMessage.required })
-        .min(1, { message: FieldErrorMessage.required }),
+    password: zod.string({ required_error: FieldErrorMessage.required }).min(1, { message: FieldErrorMessage.required })
 });
 
 export const loginDefaultValues = {
     username: '',
-    password: '',
+    password: ''
 };
 
 export const loginResolver = zodResolver(loginSchema);

@@ -9,5 +9,5 @@ export const teamJobsProvider = {
     async getList(teamId: string) {
         const res = await teamJobsApi().getAnnotatorReadableTeamJobs(teamId);
         return res.data;
-    },
+    }
 };

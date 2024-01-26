@@ -24,7 +24,7 @@ export const useFetch = <T = unknown, P extends { page?: number; perPage?: numbe
     const [state, setState] = useState<UseFetchState<T>>({
         data: defaultData || null,
         error: null,
-        isLoading: false,
+        isLoading: false
     });
 
     const localFetcher = (params?: P, onDone?: () => void) => {
@@ -50,6 +50,6 @@ export const useFetch = <T = unknown, P extends { page?: number; perPage?: numbe
 
     return {
         ...state,
-        fetcher: localFetcher,
+        fetcher: localFetcher
     };
 };

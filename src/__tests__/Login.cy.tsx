@@ -8,7 +8,7 @@ import {
     NEW_PASSWORD_INPUT,
     PASSWORD_INPUT,
     SUBMIT,
-    USERNAME_INPUT,
+    USERNAME_INPUT
 } from './selectors';
 
 const EXPECTED_HOME_TEXT = `Notre application de labellisation est conçue pour simplifier le processus d'annotation d'images.`;

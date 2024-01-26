@@ -7,7 +7,7 @@ export interface ICanvasProps {
 export enum ECanvasAction {
     NONE = 'NONE',
     POLYGONE = 'POLYGONE',
-    MOVE = 'MOVE',
+    MOVE = 'MOVE'
 }
 
 export interface IImageOffset {

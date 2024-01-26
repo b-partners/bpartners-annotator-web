@@ -10,8 +10,8 @@ export const home_container: SxProps = {
     justifyContent: 'center',
     '& img': {
         position: 'relative',
-        right: '3rem',
-    },
+        right: '3rem'
+    }
 };
 
 export const job_list_container = {
@@ -19,7 +19,7 @@ export const job_list_container = {
     height: '90%',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
 };
 export const job_list_card_action = { display: 'flex', justifyContent: 'flex-start', alignItems: 'center' };
 export const job_list_circular_progress = { position: 'relative', bottom: '100' };
@@ -29,14 +29,14 @@ export const job_list_card_content = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBlock: 4,
+    paddingBlock: 4
 };
 export const job_list_list_container = {
     paddingBlock: 2,
     overflowY: 'auto',
     overflowX: 'hidden',
     maxHeight: 400,
-    paddingX: 1,
+    paddingX: 1
 };
 
 export const login_container: SxProps = {
@@ -45,8 +45,8 @@ export const login_container: SxProps = {
     '& .login-card-container': {
         position: 'relative',
         '& .MuiCardContent-root': {
-            paddingTop: '5rem',
-        },
+            paddingTop: '5rem'
+        }
     },
     '& .login-card-header-container': {
         position: 'absolute',
@@ -60,18 +60,18 @@ export const login_container: SxProps = {
             boxShadow: '1px 1px 10px #00000010',
             '& .MuiSvgIcon-root': {
                 color: 'rgb(148, 51, 99)',
-                fontSize: '5rem',
-            },
-        },
-    },
+                fontSize: '5rem'
+            }
+        }
+    }
 };
 export const login_card_content: SxProps = {
     width: { xs: 300, sm: 350, md: 400 },
     height: 350,
     padding: 3,
     '& form': {
-        marginTop: 13,
-    },
+        marginTop: 13
+    }
 };
 export const login_button_container: CSSProperties = { textAlign: 'center', marginTop: '3rem', marginBottom: '1rem' };
 
@@ -84,14 +84,14 @@ export const container_center_flex: SxProps = {
     '& .circular-progress-container': {
         textAlign: 'center',
         paddingBottom: 5,
-        paddingTop: 2,
+        paddingTop: 2
     },
     '& .redirection-message': {
         position: 'absolute',
         bottom: 5,
         left: '50%',
-        transform: 'translate(-50%)',
-    },
+        transform: 'translate(-50%)'
+    }
 };
 export const error_card_container: SxProps = {
     padding: 1,
@@ -101,16 +101,16 @@ export const error_card_container: SxProps = {
         bgcolor: 'transparent',
         '& .MuiTypography-root': {
             fontSize: '3rem',
-            color: '#000000aa',
-        },
+            color: '#000000aa'
+        }
     },
     '& .MuiDivider-root': {
-        border: '2px solid #000000aa',
+        border: '2px solid #000000aa'
     },
     '& .error-message-container': {
         paddingLeft: 2,
-        width: 398,
-    },
+        width: 398
+    }
 };
 
 export const canvas_loading: SxProps = {
@@ -118,5 +118,5 @@ export const canvas_loading: SxProps = {
     height: '80vh',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
 };

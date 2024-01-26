@@ -6,7 +6,7 @@ import {
     DialogContentText,
     DialogTitle,
     FormControlLabel,
-    Stack,
+    Stack
 } from '@mui/material';
 import { FC, useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';

@@ -18,5 +18,5 @@ export const userTasksProvider = {
         const { data } = await userTasksApi().updateTask(teamId, jobId, taskId, resource);
         cache.deleteCurrentTask();
         return data;
-    },
+    }
 };

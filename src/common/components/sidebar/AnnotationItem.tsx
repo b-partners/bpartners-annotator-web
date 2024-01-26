@@ -3,7 +3,7 @@ import {
     Delete as DeleteIcon,
     ExpandMore as ExpandMoreIcon,
     Visibility as VisibilityIcon,
-    VisibilityOff as VisibilityOffIcon,
+    VisibilityOff as VisibilityOffIcon
 } from '@mui/icons-material';
 import {
     Accordion,
@@ -16,7 +16,7 @@ import {
     MenuItem,
     Stack,
     TextField,
-    Typography,
+    Typography
 } from '@mui/material';
 import { FC } from 'react';
 import { useCanvasAnnotationContext } from '../../context';

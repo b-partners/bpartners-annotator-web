@@ -7,7 +7,7 @@ export const CANVAS_CONTAINER: SxProps = {
     position: 'relative',
     background: 'rgba(0,0,0,0.05)',
     '&::-webkit-scrollbar': {
-        display: 'none',
+        display: 'none'
     },
     zIndex: 999,
     height: '80vh',
@@ -18,6 +18,6 @@ export const CANVAS_CONTAINER: SxProps = {
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        background: 'rgba(0,0,0,0.1)',
-    },
+        background: 'rgba(0,0,0,0.1)'
+    }
 };

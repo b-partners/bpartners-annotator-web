@@ -41,7 +41,7 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
                 imageOffset,
                 isAnnotating,
                 polygon,
-                isAdmin: isAdmin(),
+                isAdmin: isAdmin()
             });
             return eventHandler.initEvent(currentCanvasCursor, addAnnotation);
         }

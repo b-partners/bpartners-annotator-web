@@ -38,5 +38,5 @@ export const annotationsProvider = {
     async getBatchReviews(jobId: string, taskId: string, annotationBatchId: string) {
         const { data } = await annotationsApi().getJobTaskAnnotationBatchReviews(jobId, taskId, annotationBatchId);
         return data;
-    },
+    }
 };

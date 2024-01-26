@@ -16,7 +16,7 @@ export const NextAnnotationButton: FC<{ fetcher: () => void; task: Task }> = ({ 
             userTasksProvider.updateOne(teamId || '', jobId || '', task.id || '', {
                 ...task,
                 userId: undefined,
-                status: task.status === TaskStatus.TO_CORRECT ? TaskStatus.TO_CORRECT : TaskStatus.PENDING,
+                status: task.status === TaskStatus.TO_CORRECT ? TaskStatus.TO_CORRECT : TaskStatus.PENDING
             })
         );
     };

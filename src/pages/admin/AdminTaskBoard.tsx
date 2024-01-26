@@ -52,7 +52,7 @@ export const AdminTaskBoard = () => {
     const {
         data: currenTask,
         isLoading,
-        fetcher: changeCurrentTask,
+        fetcher: changeCurrentTask
     } = useFetch({ fetcher, defaultData: task, onlyOnMutate: true });
 
     return currenTask !== null && !isLoading ? (

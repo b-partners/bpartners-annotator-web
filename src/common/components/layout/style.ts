@@ -3,7 +3,7 @@ export const page_list_container = {
     height: '90%',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
 };
 export const page_list_card_content = {
     width: 500,
@@ -11,6 +11,6 @@ export const page_list_card_content = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBlock: 4,
+    paddingBlock: 4
 };
 export const page_list_card_action = { display: 'flex', justifyContent: 'flex-start', alignItems: 'center' };

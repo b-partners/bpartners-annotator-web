@@ -6,7 +6,7 @@ import {
     areOverlappingPoints,
     findMidpoint,
     getColorFromMain,
-    pointBelongsToOrIsClose,
+    pointBelongsToOrIsClose
 } from '../../utils';
 
 export const getMousePositionInCanvas = (event: MouseEvent, canvas: HTMLCanvasElement) => {
@@ -173,7 +173,7 @@ export class EventHandler {
                                 annotationIndex: index,
                                 index: a,
                                 point: findMidpoint(segment),
-                                id: annotation.polygon.points.length,
+                                id: annotation.polygon.points.length
                             };
                             return;
                         }
@@ -209,7 +209,7 @@ export class EventHandler {
     private draw() {
         const polygonsToDraw = [
             ...(this.annotations.filter(a => !a.isInvisible).map(annotation => annotation.polygon) || []),
-            this.polygon,
+            this.polygon
         ];
         this.canvasHandler.draw(polygonsToDraw);
     }

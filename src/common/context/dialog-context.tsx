@@ -6,7 +6,7 @@ import { IDialogState } from './type';
 const context = createContext<IDialogState>({
     isOpen: false,
     content: <div></div>,
-    setState: () => {},
+    setState: () => {}
 });
 
 export const useDialog = () => {
@@ -30,7 +30,7 @@ const Transition = forwardRef(function Transition(
 export const DialogProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [state, setState] = useState<Omit<IDialogState, 'setState'>>({
         isOpen: false,
-        content: <div></div>,
+        content: <div></div>
     });
 
     return (

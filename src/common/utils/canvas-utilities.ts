@@ -14,7 +14,7 @@ export const areOverlappingPoints = (under: IPoint, upper: IPoint) => {
 export const getColorFromMain = (main: string) => {
     return {
         fillColor: `${main}40`,
-        strokeColor: main,
+        strokeColor: main
     };
 };
 
@@ -36,6 +36,6 @@ export const findMidpoint = (segment: [A: IPoint, B: IPoint]) => {
 
     return {
         x: (A.x + B.x) / 2,
-        y: (A.y + B.y) / 2,
+        y: (A.y + B.y) / 2
     } as IPoint;
 };

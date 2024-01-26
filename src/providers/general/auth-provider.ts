@@ -66,5 +66,5 @@ export const authProvider = {
             return `/teams/${whoami?.user?.team?.id}/jobs`;
         }
         return '/login';
-    },
+    }
 };
