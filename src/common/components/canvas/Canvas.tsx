@@ -83,9 +83,14 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
             </Grid>
             <Box ref={canvasContainer} sx={CANVAS_CONTAINER}>
                 <Box sx={{ height: getScaledCh(), width: getScaledCw() }}>
-                    <canvas ref={canvasImage} height={getScaledCh()} width={getScaledCw()} />
-                    <canvas ref={canvas} height={getScaledCh()} width={getScaledCw()} />
-                    <canvas ref={canvasCursor} height={getScaledCh()} width={getScaledCw()} />
+                    <canvas data-cy='canvas-for-image' ref={canvasImage} height={getScaledCh()} width={getScaledCw()} />
+                    <canvas data-cy='canvas-for-polygone' ref={canvas} height={getScaledCh()} width={getScaledCw()} />
+                    <canvas
+                        data-cy='canvas-for-cursor'
+                        ref={canvasCursor}
+                        height={getScaledCh()}
+                        width={getScaledCw()}
+                    />
                     {(isLoading || (image.src.length === 0 && imageOffset.iho === 0)) && (
                         <div
                             className='circular-progress-container'

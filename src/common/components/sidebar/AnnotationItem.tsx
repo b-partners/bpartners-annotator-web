@@ -30,7 +30,13 @@ export const LabelSelector: FC<IAnnotationItemProps> = ({ annotation }) => {
     };
 
     return (
-        <TextField select value={annotation.label} size='small' sx={{ flexGrow: 2 }}>
+        <TextField
+            data-cy={`select-label-${annotation.id}`}
+            select
+            value={annotation.label}
+            size='small'
+            sx={{ flexGrow: 2 }}
+        >
             {labels.map(label => (
                 <MenuItem onClick={handleClick(label)} key={label.id} value={label.name}>
                     {label.name}
@@ -51,7 +57,7 @@ export const AnnotationItem: FC<IAnnotationItemProps> = ({ annotation, selectLab
     const toggleHighlight = () => toggleHighlightAnnotation(annotation.id);
 
     return (
-        <Box onMouseEnter={toggleHighlight} onMouseLeave={toggleHighlight}>
+        <Box data-cy={`annotation-item-${annotation.id}`} onMouseEnter={toggleHighlight} onMouseLeave={toggleHighlight}>
             <ListItem
                 secondaryAction={
                     <Stack direction='row'>
@@ -61,7 +67,7 @@ export const AnnotationItem: FC<IAnnotationItemProps> = ({ annotation, selectLab
                     </Stack>
                 }
             >
-                <IconButton sx={{ mr: 1 }} onClick={toggleVisibility}>
+                <IconButton data-cy={`visibility-button-${annotation.id}`} sx={{ mr: 1 }} onClick={toggleVisibility}>
                     {annotation.isInvisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
                 </IconButton>
                 {selectLabel}

@@ -16,7 +16,7 @@ export const JobListItem: FC<IJobListItem> = ({ job, link }) => {
                 <Stack direction='row' className='job-title-container'>
                     <ListItemText primary={job.name || job.id} />
                     <Link to={link}>
-                        <IconButton size='small' onClick={() => setLoading(true)}>
+                        <IconButton size='small' data-cy={`job-item-${job.id}`} onClick={() => setLoading(true)}>
                             <OpenInNewIcon />
                         </IconButton>
                     </Link>
