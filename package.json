@@ -36,17 +36,19 @@
         "@types/react-lazy-load-image-component": "^1.6.3",
         "@types/uuid": "^9.0.6",
         "cypress": "^13.6.3",
+        "cypress-multi-reporters": "^1.6.4",
+        "cypress-sonarqube-reporter": "^1.13.0",
         "prettier": "^3.0.3"
     },
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test",
         "eject": "react-scripts eject",
         "prettier:check": "prettier --check \"src/**/*.{js,ts,tsx}\" \"./**/*.{json,yml,yaml}\"",
         "prettier:write": "prettier --write \"src/**/*.{js,ts,tsx}\" \"./**/*.{json,yml,yaml}\"",
         "cy:open": "cypress open",
-        "cy:open-component": "cypress open --component"
+        "cy:open-component": "cypress open --component",
+        "test": "cypress run --component --spec './**/!(*.it).cy.tsx'"
     },
     "eslintConfig": {
         "extends": [

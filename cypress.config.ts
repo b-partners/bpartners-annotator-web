@@ -15,4 +15,11 @@ export default defineConfig({
             bundler: 'webpack',
         },
     },
+    reporterOptions: {
+        reporterEnabled: 'cypress-sonarqube-reporter',
+        mergeFileName: 'test-reports.xml',
+        cypressSonarqubeReporterReporterOptions: {
+            overwrite: true,
+        },
+    },
 });
