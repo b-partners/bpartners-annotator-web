@@ -2,17 +2,20 @@ import { Auth } from 'aws-amplify';
 import App from '../App';
 import { FieldErrorMessage } from '../common/resolvers';
 import { authProvider } from '../providers';
-
-const HOME_BEGIN_BUTTON = 'start-button';
-const USERNAME_INPUT = 'username-input';
-const PASSWORD_INPUT = 'password-input';
-const SUBMIT = "button[type='submit']";
-const NEW_PASSWORD_INPUT = PASSWORD_INPUT;
-const NEW_PASSWORD_CONFIRMATION_INPUT = 'confirmedPassword-input';
+import {
+    HOME_BEGIN_BUTTON,
+    NEW_PASSWORD_CONFIRMATION_INPUT,
+    NEW_PASSWORD_INPUT,
+    PASSWORD_INPUT,
+    SUBMIT,
+    USERNAME_INPUT,
+} from './selectors';
 
 const EXPECTED_HOME_TEXT = `Notre application de labellisation est conçue pour simplifier le processus d'annotation d'images.`;
 const EXPECTED_TEXT_ON_LOGIN = 'Connection';
 const EXPECTED_TEXT_AFTER_LOGIN = 'Nouveau mot de passe';
+
+const LOGIN_SUCCESS_PATH = '/login/success';
 
 describe('Test Login component', () => {
     it('Should test login', () => {
@@ -63,9 +66,11 @@ describe('Test Login component', () => {
         cy.typeEnter(NEW_PASSWORD_CONFIRMATION_INPUT, invalidPassword);
         cy.contains(FieldErrorMessage.notMatchingPassword);
 
-        cy.typeEnter(NEW_PASSWORD_CONFIRMATION_INPUT, validPassword);
-        cy.should('not.contain', FieldErrorMessage.notMatchingPassword);
+        cy.intercept('GET', '/whoami**', { fixture: '/auth/whoami.json' });
+        cy.intercept('GET', '/teams/team-id-1/jobs', []);
 
-        cy.stub(authProvider, 'updatePassword').callsFake(() => '');
+        cy.typeEnter(NEW_PASSWORD_CONFIRMATION_INPUT, validPassword);
+
+        cy.stub(authProvider, 'updatePassword').callsFake(() => LOGIN_SUCCESS_PATH);
     });
 });

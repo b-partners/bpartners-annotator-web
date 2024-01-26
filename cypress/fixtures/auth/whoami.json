@@ -1,1 +1,11 @@
-{}
+{
+    "user": {
+        "id": "user-id-1",
+        "role": "ANNOTATOR",
+        "team": {
+            "id": "team-id-1",
+            "name": "dev-group-one"
+        },
+        "email": "dummy@gmail.com"
+    }
+}
