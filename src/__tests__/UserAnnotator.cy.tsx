@@ -126,12 +126,15 @@ describe('Test UserAnnotator', () => {
         cy.dataCy(USER_VALIDATE_ANNOTATION_BUTTON).should('not.be.disabled');
         cy.dataCy(USER_VALIDATE_ANNOTATION_BUTTON).click();
 
-        cy.intercept('PUT', '/users/user-id-1/tasks/task-id-1/annotations/**', {});
+        cy.intercept('PUT', '/users/user-id-1/tasks/task-id-2/annotations/**', {});
         cy.intercept('GET', '/teams/team-id-1/jobs/job-id-1/task', { fixture: '/data/task-3.json' });
         cy.intercept('GET', 'http://dummy-url.com/image3', { fixture: '/assets/annotation-image-3.png' });
+        cy.intercept('GET', '/users/user-id-1/tasks/task-id-3/annotations**', { fixture: '/data/annotations.json' });
 
         cy.get(CANCEL_BUTTON).click();
         cy.dataCy(USER_VALIDATE_ANNOTATION_BUTTON).click();
         cy.get(VALIDATE_BUTTON).click();
+
+        for (let a = 0; a < 10; a++) cy.dataCy(ZOOM_IN_BUTTON).click();
     });
 });
