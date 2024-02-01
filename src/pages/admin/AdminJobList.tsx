@@ -13,6 +13,7 @@ import { job_list_list_container } from '../style';
 
 export const AdminJobList = () => {
     const { setParam } = urlParamsHandler();
+
     const fetcher = useCallback(async ({ page, perPage, status }: any) => {
         return await jobsProvider.getList(page, perPage, status);
     }, []);

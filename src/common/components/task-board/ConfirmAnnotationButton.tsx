@@ -17,6 +17,8 @@ import { annotationsMapper } from '../../mappers';
 import { cache } from '../../utils';
 import { BpButton } from '../basics';
 import { IConfirmButton } from './types';
+import { useSnackbar } from 'notistack';
+import { palette } from '../../utils/theme';
 
 const NoAnnotationConfirm: FC<{ fetcher: () => Promise<void> }> = ({ fetcher }) => {
     const { closeDialog } = useDialog();
@@ -53,6 +55,7 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ labels, onEnd, tas
     const { annotations, setAnnotations } = useCanvasAnnotationContext();
     const [noAnnotation, setNoAnnotation] = useState(false);
     const { openDialog } = useDialog();
+    const { enqueueSnackbar } = useSnackbar();
 
     const fetcher = async () => {
         const whoami = cache.getWhoami() as Whoami;
@@ -69,7 +72,7 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ labels, onEnd, tas
             onEnd();
             setNoAnnotation(false);
         } catch (err) {
-            alert((err as Error).message);
+            enqueueSnackbar((err as Error).message, { style: { background: palette().error.dark } });
         } finally {
             return;
         }
@@ -84,7 +87,9 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ labels, onEnd, tas
         } else if (areReady) {
             openDialog(<NoAnnotationConfirm fetcher={fetcher} />);
         } else {
-            alert('Veuillez donner un label pour chaque annotation.');
+            enqueueSnackbar('Veuillez donner un label pour chaque annotation.', {
+                style: { background: palette().error.dark },
+            });
         }
     };
 
