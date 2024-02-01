@@ -18,7 +18,7 @@ export const urlParamsHandler = <P extends Record<string, any> = {}>(others: P =
 
     const setParam = (name: string, value: string) => {
         const { searchParams, url } = getUrlParams();
-        searchParams.set(name, value);
+        searchParams.set(name, value || '');
         window.history.replaceState({}, document.title, url);
     };
 

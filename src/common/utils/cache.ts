@@ -52,14 +52,12 @@ export const cache = {
     setApiKey(apiKey: any) {
         localStorage.setItem(API_KEY, toBase64(apiKey));
     },
-    setLastPage(name: string, page: number, perPage: number) {
-        localStorage.setItem(`${name}-${perPage}-${LAST_PAGE}`, `${page}`);
+    setLastPage(name: string, page: number) {
+        localStorage.setItem(`${name}-${LAST_PAGE}`, `${page}`);
     },
-    getLastPage(name: string, prePage: number) {
-        const page = localStorage.getItem(`${name}-${prePage}-${LAST_PAGE}`) || '1';
-        if (isNaN(+page)) {
-            return 1;
-        }
+    getLastPage(name: string) {
+        const page = localStorage.getItem(`${name}-${LAST_PAGE}`);
+        if (!page) return 1;
         return +page;
     },
 };
