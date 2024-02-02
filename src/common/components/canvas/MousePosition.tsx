@@ -13,7 +13,7 @@ interface IMousePositionProps {
 
 const Position: FC<IPositionProps> = ({ label, value }) => {
     return (
-        <Stack data-cy={`mouse-${label}-position`} direction='row' py={0.3} width={100} px={1} spacing={1}>
+        <Stack data-cy={`mouse-${label}-position`} direction='row' width={100} px={1} spacing={1}>
             <Typography color='text.secondary'>{label} :</Typography>
             <Typography>{value}</Typography>
         </Stack>
@@ -39,9 +39,9 @@ export const MousePosition: FC<IMousePositionProps> = ({ canvas, image }) => {
     }, [canvas, image]);
 
     return (
-        <>
+        <Stack direction='row'>
             <Position label='x' value={x} />
             <Position label='y' value={y} />
-        </>
+        </Stack>
     );
 };
