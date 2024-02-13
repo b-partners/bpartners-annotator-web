@@ -38,7 +38,7 @@ jobs:
             - name: Connect to private CodeArtifact repository
               run: |
                   sh ./.shell/initAWS.sh bpartners ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_KEY }} ${{ env.AWS_REGION }}
-                  sh ./.shell/initNpmrc.sh bpartners ${{ secrets.NPM_REPOSITORY }} ${{ secrets.NPM_DOMAIN }} ${{ secrets.NPM_DOMAIN_OWNER }}
+                  sh ./.shell/initNpmrc.sh bpartners annotator-imagery-store npm-bpartners-imagery-app 205205101409
 
             - name: Install required dependencies
               run: npm install --legacy-peer-deps
