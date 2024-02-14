@@ -39,6 +39,7 @@ jobs:
               uses: cypress-io/github-action@v6
               with:
                   install-command: npm install --legacy-peer-deps
+                  command: 'npm run test -- -b firefox'
                   component: true
 
     style:
