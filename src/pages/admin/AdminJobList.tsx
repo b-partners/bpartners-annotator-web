@@ -1,21 +1,22 @@
 import { Job, JobStatus } from '@bpartners-annotator/typescript-client';
 import { Inbox as InboxIcon } from '@mui/icons-material';
 import { Box, CircularProgress, List, MenuItem, Stack, TextField, Typography } from '@mui/material';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { JobListItem, getJobStatusInfo } from '../../common/components/job&task';
 import { ListPageLayout } from '../../common/components/layout';
 import { Pagination } from '../../common/components/pagination';
 import { useFetch } from '../../common/hooks';
-import { urlParamsHandler } from '../../common/utils';
+import { getUrlParams, urlParamsHandler } from '../../common/utils';
 import { jobsProvider } from '../../providers';
 import { job_list_list_container } from '../style';
 
 export const AdminJobList = () => {
     const { setParam } = urlParamsHandler();
-    const fetcher = async ({ page, perPage, status }: any) => {
+
+    const fetcher = useCallback(async ({ page, perPage, status }: any) => {
         return await jobsProvider.getList(page, perPage, status);
-    };
+    }, []);
 
     const { jobs, page, perPage, status } = useLoaderData() as {
         jobs: Job[];
@@ -28,12 +29,15 @@ export const AdminJobList = () => {
         data: currentJobs,
         isLoading,
         fetcher: jobsFetcher,
-    } = useFetch({ fetcher, defaultData: jobs, defaultParams: { page, perPage, status } });
+    } = useFetch({ fetcher, defaultData: jobs, defaultParams: { page, perPage, status }, onlyOnMutate: true });
 
     const handlePaginationChange = (newPage: number, newPerPage?: number) => {
+        const { searchParams } = getUrlParams();
+        const status = searchParams.get('status') as JobStatus;
+
         jobsFetcher({
             page: newPage,
-            perPage: newPerPage || perPage,
+            perPage: newPerPage || +(searchParams.get('perPage') as string),
             status,
         });
     };
@@ -41,12 +45,14 @@ export const AdminJobList = () => {
     const handleChangeStatus = (e: ChangeEvent<HTMLInputElement>) => {
         let value: any = e.target.value;
         if (value.length === 0) value = undefined;
+        const { searchParams } = getUrlParams();
         jobsFetcher({
-            page,
-            perPage,
+            page: 1,
+            perPage: +(searchParams.get('perPage') as string),
             status: value,
         });
         setParam('status', value);
+        setParam('page', '1');
     };
 
     return (
@@ -84,7 +90,7 @@ export const AdminJobList = () => {
                     ))}
                 </List>
             )}
-            {(currentJobs || []).length === 0 && (
+            {(currentJobs || []).length === 0 && !isLoading && (
                 <Box textAlign='center' sx={{ color: 'text.secondary' }}>
                     <InboxIcon sx={{ fontSize: '15rem' }} />
                     <Typography>Pas de jobs</Typography>

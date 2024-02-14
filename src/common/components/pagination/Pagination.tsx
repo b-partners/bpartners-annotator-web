@@ -8,7 +8,7 @@ import { jobsProvider } from '../../../providers';
 import { urlParamsHandler } from '../../utils';
 import { PaginationProps } from './types';
 
-export const Pagination: FC<PaginationProps> = ({ isLoading, onChange }) => {
+export const Pagination: FC<PaginationProps> = ({ isLoading, onChange, dependencies = [] }) => {
     const { page, setParam, perPage } = urlParamsHandler();
     const pageTypo = useRef<HTMLSpanElement>(null);
 
@@ -27,11 +27,11 @@ export const Pagination: FC<PaginationProps> = ({ isLoading, onChange }) => {
             currentPage !== 1 && setParam('page', `${prevPage}`);
         }
     };
+
     const nextPage = () => {
         const currentPage = getPage();
-        const lastPage = jobsProvider.getLastPage();
         const nextPage = getPage() + 1;
-
+        const lastPage = jobsProvider.getLastPage();
         if (currentPage < lastPage) {
             onChange(nextPage);
             setParam('page', `${nextPage}`);
@@ -39,8 +39,9 @@ export const Pagination: FC<PaginationProps> = ({ isLoading, onChange }) => {
     };
 
     const handleChangePerPage = (e: ChangeEvent<HTMLInputElement>) => {
-        onChange(page, +e.target.value);
         setParam('perPage', e.target.value);
+        setParam('page', '1');
+        onChange(1, +e.target.value);
     };
 
     return (

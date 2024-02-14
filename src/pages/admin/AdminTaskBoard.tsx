@@ -1,6 +1,6 @@
 import { AnnotationBatch, Job, Task } from '@bpartners-annotator/typescript-client';
 import { Box, CircularProgress, Grid, List, ListSubheader, MenuItem, Stack, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { CancelEvaluationButton, EvaluationRejectionButton, ValidateButton } from '../../common/components/admin';
 import { Canvas } from '../../common/components/canvas';
@@ -9,9 +9,12 @@ import { CanvasAnnotationProvider } from '../../common/context';
 import { EvaluationCommentProvider } from '../../common/context/admin';
 import { useFetch } from '../../common/hooks';
 import { cache, dateFormater, getTaskToValidate, retryer, urlParamsHandler } from '../../common/utils';
-import { tasksProvider } from '../../providers';
+import { EMPTY_ANNOTATIONS_TO_VALIDATE, tasksProvider } from '../../providers';
 import { annotationsProvider } from '../../providers/admin/annotations-provider';
 import { canvas_loading } from '../style';
+import { useSnackbar } from 'notistack';
+import debounce from 'debounce';
+import { palette } from '../../common/utils/theme';
 
 type AdminTaskJobLoaderReturn = {
     batchs: AnnotationBatch[];
@@ -25,15 +28,29 @@ export const AdminTaskBoard = () => {
     const [batch, setBatch] = useState(batchs[0] || {});
     const params = useParams();
     const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
+
+    const notify = useMemo(
+        () =>
+            debounce(
+                () =>
+                    enqueueSnackbar("Il n'y a pas encore d'annotation à valider dans ce job.", {
+                        style: { background: palette().info.dark },
+                    }),
+                100
+            ),
+        [enqueueSnackbar]
+    );
 
     useEffect(() => {
         if (task === null) {
-            navigate(`/jobs`);
+            navigate(`/jobs?${EMPTY_ANNOTATIONS_TO_VALIDATE}=true`);
+            notify();
         } else {
             const { setParam } = urlParamsHandler({ taskId: task?.id || '' });
             setParam('taskId', task.id || '');
         }
-    }, [task, navigate]);
+    }, [task, navigate, notify]);
 
     const fetcher = async () => {
         cache.deleteCurrentTask();

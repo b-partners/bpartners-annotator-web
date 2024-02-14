@@ -25,6 +25,7 @@ export const Home = () => {
                     </Typography>
 
                     <BpButton
+                        data-cy='start-button'
                         label='Commencer'
                         isLoading={isLoading}
                         onClick={() => setLoading(true)}

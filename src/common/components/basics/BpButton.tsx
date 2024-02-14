@@ -7,6 +7,7 @@ export const BpButtonTemplate: FC<Omit<IBpButton, 'to'>> = ({ label, isLoading, 
     return (
         <Button
             {...others}
+            name={others.name || label}
             endIcon={isLoading ? <CircularProgress size='25px' /> : icon}
             disabled={isLoading || disabled}
         >

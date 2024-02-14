@@ -18,7 +18,7 @@ export const BpTextField: FC<IBpTextField> = ({ name, icon, onClickOnIcon, type,
             value={value}
             type={type}
             error={!!errors[name]}
-            inputProps={{ icon }}
+            inputProps={{ icon, 'data-cy': `${name}-input` }}
             helperText={(errors[name]?.message as string) || ''}
             InputProps={{ endAdornment }}
             {...others}

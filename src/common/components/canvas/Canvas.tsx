@@ -1,11 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Job } from '@bpartners-annotator/typescript-client';
-import { Box, Chip, CircularProgress, Grid, Stack } from '@mui/material';
+import { Job, Task } from '@bpartners-annotator/typescript-client';
+import { CopyAll as CopyAllIcon } from '@mui/icons-material';
+import { Box, Chip, CircularProgress, IconButton, Stack, Typography } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import { FC, useEffect, useMemo, useRef } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import { CANVAS_CONTAINER, CanvasAction, EventHandler, MousePosition } from '.';
 import { CanvasEditorProvider, IPolygon, useCanvasAnnotationContext } from '../../context';
 import { useCanvasScale, useCanvasSize, useImageCreation, useImageOffset, useSession } from '../../hooks';
 import { CanvasHandler, getColorFromMain } from '../../utils';
+import { palette } from '../../utils/theme';
 import './style.css';
 
 export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job }) => {
@@ -17,6 +21,8 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
     const { image } = useImageCreation(img);
     const { ch, cw } = useCanvasSize(image);
     const { scaling, centerContent, ...zoomActions } = useCanvasScale(canvasContainer, image);
+    const { task } = useLoaderData() as { task: Task };
+    const { enqueueSnackbar } = useSnackbar();
 
     const canvasHandler = useMemo(
         () => new CanvasHandler(canvas, canvasImage, canvasCursor, image),
@@ -69,23 +75,43 @@ export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job })
         return scaled * 1.2;
     };
 
+    const handleCopyToClipBoard = () => {
+        navigator.clipboard.writeText(task.filename || '').then(() => {
+            enqueueSnackbar("Le nom de l'image a été copié.", { style: { background: palette().success.main } });
+        });
+    };
+
     return (
         <CanvasEditorProvider zoom={zoomActions}>
-            <Grid container p={0.3} width='70vw' direction='row' spacing={1}>
-                <Grid container item xs={10} direction='row' flexGrow={2} spacing={1}>
-                    <Stack direction='row'>
-                        {canvas.current && <MousePosition image={image} canvas={canvasCursor.current} />}
+            <Stack width='70vw' direction='row' marginBottom={1} justifyContent='space-between' alignItems='center'>
+                {canvas.current && <MousePosition image={image} canvas={canvasCursor.current} />}
+                <Stack flexGrow={2} justifyContent='center' alignItems='center'>
+                    <Stack
+                        justifyContent='center'
+                        alignItems='center'
+                        direction='row'
+                        bgcolor='rgba(0,0,0,0.1)'
+                        px={1}
+                        borderRadius={1}
+                    >
+                        <Typography>{task.filename}</Typography>
+                        <IconButton onClick={handleCopyToClipBoard}>
+                            <CopyAllIcon />
+                        </IconButton>
                     </Stack>
-                </Grid>
-                <Grid container item sx={{ textAlign: 'end' }} xs={2}>
-                    <CanvasAction />
-                </Grid>
-            </Grid>
+                </Stack>
+                <CanvasAction />
+            </Stack>
             <Box ref={canvasContainer} sx={CANVAS_CONTAINER}>
                 <Box sx={{ height: getScaledCh(), width: getScaledCw() }}>
-                    <canvas ref={canvasImage} height={getScaledCh()} width={getScaledCw()} />
-                    <canvas ref={canvas} height={getScaledCh()} width={getScaledCw()} />
-                    <canvas ref={canvasCursor} height={getScaledCh()} width={getScaledCw()} />
+                    <canvas data-cy='canvas-for-image' ref={canvasImage} height={getScaledCh()} width={getScaledCw()} />
+                    <canvas data-cy='canvas-for-polygone' ref={canvas} height={getScaledCh()} width={getScaledCw()} />
+                    <canvas
+                        data-cy='canvas-for-cursor'
+                        ref={canvasCursor}
+                        height={getScaledCh()}
+                        width={getScaledCw()}
+                    />
                     {(isLoading || (image.src.length === 0 && imageOffset.iho === 0)) && (
                         <div
                             className='circular-progress-container'

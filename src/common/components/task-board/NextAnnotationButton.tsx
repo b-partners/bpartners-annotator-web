@@ -15,7 +15,7 @@ export const NextAnnotationButton: FC<{ fetcher: () => void; task: Task }> = ({ 
         await retryer(
             userTasksProvider.updateOne(teamId || '', jobId || '', task.id || '', {
                 ...task,
-                userId: undefined,
+                userId: task.status === TaskStatus.TO_CORRECT ? task.userId : undefined,
                 status: task.status === TaskStatus.TO_CORRECT ? TaskStatus.TO_CORRECT : TaskStatus.PENDING,
             })
         );
@@ -31,5 +31,7 @@ export const NextAnnotationButton: FC<{ fetcher: () => void; task: Task }> = ({ 
             .finally(() => setIsLoading(false));
     };
 
-    return <BpButton isLoading={isLoading} onClick={changeImage} label="Changer d'image" />;
+    return (
+        <BpButton data-cy='change-image-button' isLoading={isLoading} onClick={changeImage} label="Changer d'image" />
+    );
 };

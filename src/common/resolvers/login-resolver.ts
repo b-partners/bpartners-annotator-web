@@ -5,7 +5,8 @@ import { FieldErrorMessage } from './errors-message';
 const loginSchema = zod.object({
     username: zod
         .string({ required_error: FieldErrorMessage.required })
-        .min(1, { message: FieldErrorMessage.required }),
+        .min(1, { message: FieldErrorMessage.required })
+        .email({ message: FieldErrorMessage.invalidEmail }),
     password: zod
         .string({ required_error: FieldErrorMessage.required })
         .min(1, { message: FieldErrorMessage.required }),

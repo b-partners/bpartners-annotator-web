@@ -1,0 +1,83 @@
+[
+    {
+        "taskStatistics": {
+            "remainingTasksForUserId": 100,
+            "remainingTasks": 95,
+            "completedTasksByUserId": 5,
+            "totalTasks": 100
+        },
+        "id": "job-id-1",
+        "name": "Test Task 1",
+        "bucketName": "dummy",
+        "folderPath": "dummy/",
+        "ownerEmail": "email.1@gmail.com",
+        "status": "TO_CORRECT",
+        "teamId": "team-id-1",
+        "labels": [
+            {
+                "id": "roof-label-id",
+                "name": "ROOF",
+                "color": "#D61E18"
+            },
+            {
+                "id": "velux-label-id",
+                "name": "VELUX",
+                "color": "#7171BB"
+            }
+        ]
+    },
+    {
+        "taskStatistics": {
+            "remainingTasksForUserId": 100,
+            "remainingTasks": 95,
+            "completedTasksByUserId": 5,
+            "totalTasks": 100
+        },
+        "id": "job-id-2",
+        "name": "Test Task 2",
+        "bucketName": "dummy",
+        "folderPath": "dummy/",
+        "ownerEmail": "email.1@gmail.com",
+        "status": "TO_CORRECT",
+        "teamId": "team-id-1",
+        "labels": [
+            {
+                "id": "roof-label-id",
+                "name": "ROOF",
+                "color": "#D61E18"
+            },
+            {
+                "id": "velux-label-id",
+                "name": "VELUX",
+                "color": "#7171BB"
+            }
+        ]
+    },
+    {
+        "taskStatistics": {
+            "remainingTasksForUserId": 100,
+            "remainingTasks": 95,
+            "completedTasksByUserId": 5,
+            "totalTasks": 100
+        },
+        "id": "job-id-3",
+        "name": "Test Task 3",
+        "bucketName": "dummy",
+        "folderPath": "dummy/",
+        "ownerEmail": "email.1@gmail.com",
+        "status": "TO_CORRECT",
+        "teamId": "team-id-1",
+        "labels": [
+            {
+                "id": "roof-label-id",
+                "name": "ROOF",
+                "color": "#D61E18"
+            },
+            {
+                "id": "velux-label-id",
+                "name": "VELUX",
+                "color": "#7171BB"
+            }
+        ]
+    }
+]
