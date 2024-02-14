@@ -15,16 +15,11 @@ on:
 jobs:
     quality-check:
         runs-on: ubuntu-latest
-        timeout-minutes: 15
+        timeout-minutes: 20
         steps:
             - uses: actions/checkout@v2
               with:
                   fetch-depth: 0
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v2
-              with:
-                  node-version: 17.x
 
             - id: install-aws-cli
               uses: unfor19/install-aws-cli-action@v1.0.3
@@ -38,17 +33,13 @@ jobs:
             - name: Connect to private CodeArtifact repository
               run: |
                   sh ./.shell/initAWS.sh bpartners ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_KEY }} ${{ env.AWS_REGION }}
-                  sh ./.shell/initNpmrc.sh bpartners ${{ secrets.NPM_REPOSITORY }} ${{ secrets.NPM_DOMAIN }} ${{ secrets.NPM_DOMAIN_OWNER }}
+                  sh ./.shell/initNpmrc.sh bpartners annotator-imagery-store npm-bpartners-imagery-app 205205101409
 
-            - name: Install required dependencies
-              run: npm install --legacy-peer-deps
-
-            - name: Install Cypress dependencies
-              run: |
-                  sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-
-            - name: Run tests
-              run: npm test -- -b electron
+            - name: Run test
+              uses: cypress-io/github-action@v6
+              with:
+                  install-command: npm install --legacy-peer-deps
+                  component: true
 
     style:
         runs-on: ubuntu-latest

@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Job, Task } from '@bpartners-annotator/typescript-client';
-import { Box, Chip, CircularProgress, Grid, IconButton, Stack, Typography } from '@mui/material';
+import { CopyAll as CopyAllIcon } from '@mui/icons-material';
+import { Box, Chip, CircularProgress, IconButton, Stack, Typography } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import { FC, useEffect, useMemo, useRef } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import { CANVAS_CONTAINER, CanvasAction, EventHandler, MousePosition } from '.';
 import { CanvasEditorProvider, IPolygon, useCanvasAnnotationContext } from '../../context';
 import { useCanvasScale, useCanvasSize, useImageCreation, useImageOffset, useSession } from '../../hooks';
 import { CanvasHandler, getColorFromMain } from '../../utils';
-import './style.css';
-import { useLoaderData } from 'react-router-dom';
-import { CopyAll as CopyAllIcon } from '@mui/icons-material';
-import { useSnackbar } from 'notistack';
 import { palette } from '../../utils/theme';
+import './style.css';
 
 export const Canvas: FC<{ isLoading: boolean; job: Job }> = ({ isLoading, job }) => {
     const { annotations, isAnnotating, setIsAnnotating, addAnnotation, img } = useCanvasAnnotationContext();
