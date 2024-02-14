@@ -14,12 +14,6 @@ export default defineConfig({
             framework: 'create-react-app',
             bundler: 'webpack',
         },
-    },
-    reporterOptions: {
-        reporterEnabled: 'cypress-sonarqube-reporter',
-        mergeFileName: 'test-reports.xml',
-        cypressSonarqubeReporterReporterOptions: {
-            overwrite: true,
-        },
+        specPattern: 'src/**/*.cy.{ts,tsx}',
     },
 });
