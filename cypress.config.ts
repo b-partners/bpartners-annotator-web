@@ -3,7 +3,7 @@ import { defineConfig } from 'cypress';
 export default defineConfig({
     video: false,
     retries: {
-        runMode: 3,
+        runMode: 2,
         openMode: 0,
     },
     viewportHeight: 1080,
