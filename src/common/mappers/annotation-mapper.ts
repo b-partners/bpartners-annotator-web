@@ -1,7 +1,8 @@
 import { Annotation, Label } from '@bpartners-annotator/typescript-client';
 import { v4 as uuidV4 } from 'uuid';
 import { IAnnotation } from '../context';
-import { cache, getColorFromMain } from '../utils';
+import { cache } from '../utils';
+import { getColorFromMain } from '@bpartners/annotator-component';
 
 export const annotationsMapper = {
     toDomain(annotation: Annotation, id: number): IAnnotation {

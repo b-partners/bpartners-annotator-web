@@ -1,10 +1,6 @@
 import { AnnotationReview, Label, Task } from '@bpartners-annotator/typescript-client';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 
-export enum ECanvasAction {
-    NO_ACTION = 'NO_ACTION',
-    POLYGONE = 'POLYGONE',
-}
 
 export interface IPoint {
     x: number;
