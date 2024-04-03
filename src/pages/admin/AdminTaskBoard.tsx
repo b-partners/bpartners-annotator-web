@@ -22,6 +22,7 @@ import { EMPTY_ANNOTATIONS_TO_VALIDATE, tasksProvider } from '../../providers';
 import { annotationsProvider } from '../../providers/admin/annotations-provider';
 import { canvas_loading } from '../style';
 import { CANVAS_CONTAINER, GRID_ITEM_CONTAINER, GRID_ITEM_SIDEBAR_CONTAINER, IMAGE_NAME_COPY } from './styles';
+import { ZoomButtons } from '../../common/components/task-board';
 
 type AdminTaskJobLoaderReturn = {
     batchs: AnnotationBatch[];
@@ -113,6 +114,7 @@ export const AdminTaskBoard = () => {
                         <div style={CANVAS_CONTAINER}>
                             {job && (
                                 <AnnotatorCanvas
+                                    buttonsComponent={ZoomButtons}
                                     allowAnnotation={isUser()}
                                     height='80vh'
                                     width='70vw'
