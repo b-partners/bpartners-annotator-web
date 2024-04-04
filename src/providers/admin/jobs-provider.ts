@@ -1,4 +1,4 @@
-import { CrupdateJob, JobStatus } from '@bpartners-annotator/typescript-client';
+import { CrupdateJob, JobStatus, ExportFormat } from '@bpartners-annotator/typescript-client';
 import { DEFAULT_PAGE, DEFAULT_PER_PAGE, jobsApi } from '..';
 import { cache, paginationNameByDependencies } from '../../common/utils';
 
@@ -26,6 +26,10 @@ export const jobsProvider = {
     },
     async createOne(jobId: string, job: CrupdateJob) {
         const { data } = await jobsApi().saveJob(jobId, job);
+        return data;
+    },
+    async exportOne(jobId: string, format: ExportFormat, emailCC: string) {
+        const { data } = await jobsApi().exportJob(jobId, format, emailCC);
         return data;
     },
 };
