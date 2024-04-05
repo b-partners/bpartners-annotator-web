@@ -1,12 +1,13 @@
 import { AnnotationBatch, Job, Task } from '@bpartners-annotator/typescript-client';
 import { Box, CircularProgress, Grid, List, ListSubheader, MenuItem, Stack, TextField } from '@mui/material';
+import debounce from 'debounce';
+import { useSnackbar } from 'notistack';
 import { useEffect, useMemo, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import {
     CancelEvaluationButton,
     EvaluationRejectionButton,
-    ExportButton,
-    ValidateButton,
+    ValidateButton
 } from '../../common/components/admin';
 import { Canvas } from '../../common/components/canvas';
 import { Sidebar } from '../../common/components/sidebar';
@@ -14,12 +15,10 @@ import { CanvasAnnotationProvider } from '../../common/context';
 import { EvaluationCommentProvider } from '../../common/context/admin';
 import { useFetch } from '../../common/hooks';
 import { cache, dateFormater, getTaskToValidate, retryer, urlParamsHandler } from '../../common/utils';
+import { palette } from '../../common/utils/theme';
 import { EMPTY_ANNOTATIONS_TO_VALIDATE, tasksProvider } from '../../providers';
 import { annotationsProvider } from '../../providers/admin/annotations-provider';
 import { canvas_loading } from '../style';
-import { useSnackbar } from 'notistack';
-import debounce from 'debounce';
-import { palette } from '../../common/utils/theme';
 
 type AdminTaskJobLoaderReturn = {
     batchs: AnnotationBatch[];
@@ -99,7 +98,6 @@ export const AdminTaskBoard = () => {
                         <div>{job && <Canvas isLoading={false} job={job} />}</div>
                         <Stack justifyContent='space-between' direction='row' width='70vh' mt={1}>
                             <EvaluationRejectionButton />
-                            <ExportButton />
                             <ValidateButton />
                         </Stack>
                     </Grid>

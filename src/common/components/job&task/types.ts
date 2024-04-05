@@ -4,6 +4,7 @@ import { SvgIconComponent } from '@mui/icons-material';
 export interface IJobListItem {
     job: Job;
     link: string;
+    onExport?: (jobId: string) => void;
 }
 
 export interface ITaskListItem {

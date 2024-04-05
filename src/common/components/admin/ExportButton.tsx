@@ -24,7 +24,7 @@ export const FormatField = () => {
     );
 };
 
-const ExportDialog: FC<ExportDialogProps> = ({ jobId }) => {
+export const ExportJobDialog: FC<ExportDialogProps> = ({ jobId }) => {
     const { closeDialog } = useDialog();
     const { enqueueSnackbar } = useSnackbar();
     const form = useForm({ resolver: jobsExportResolver, mode: 'all', defaultValues: jobsExportDefaultValues });
@@ -77,6 +77,6 @@ export const ExportButton = () => {
     const { openDialog } = useDialog();
     const { jobId } = useParams() as { jobId: string };
 
-    const handleOpenDialog = () => openDialog(<ExportDialog jobId={jobId} />);
+    const handleOpenDialog = () => openDialog(<ExportJobDialog jobId={jobId} />);
     return <BpButton label='Exporter' onClick={handleOpenDialog} />;
 };
