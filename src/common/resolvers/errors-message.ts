@@ -1,5 +1,5 @@
 export const FieldErrorMessage = {
-    required: 'Ce champs est requis',
+    required: 'Ce champ est requis',
     incorrectPassword: 'Veuillez vérifier vos identifiants',
     minPassword: 'Le mot de passe doit contenir au moins 8 caractères.',
     phoneLength: 'Le numéro de téléphone doit contenir exactement dix (10) chiffres.',

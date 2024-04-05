@@ -35,11 +35,15 @@ jobs:
                   sh ./.shell/initAWS.sh bpartners ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_KEY }} ${{ env.AWS_REGION }}
                   sh ./.shell/initNpmrc.sh bpartners annotator-imagery-store npm-bpartners-imagery-app 205205101409
 
+            - name: Setup environnement variable
+              run: 'CYPRESS_INTERNAL_BROWSER_CONNECT_TIMEOUT=300000'
+
             - name: Run test
               uses: cypress-io/github-action@v6
               with:
                   install-command: npm install --legacy-peer-deps
                   component: true
+                  browser: chrome
 
     style:
         runs-on: ubuntu-latest

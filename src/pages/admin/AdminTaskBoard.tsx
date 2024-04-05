@@ -2,7 +2,12 @@ import { AnnotationBatch, Job, Task } from '@bpartners-annotator/typescript-clie
 import { Box, CircularProgress, Grid, List, ListSubheader, MenuItem, Stack, TextField } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
-import { CancelEvaluationButton, EvaluationRejectionButton, ValidateButton } from '../../common/components/admin';
+import {
+    CancelEvaluationButton,
+    EvaluationRejectionButton,
+    ExportButton,
+    ValidateButton,
+} from '../../common/components/admin';
 import { Canvas } from '../../common/components/canvas';
 import { Sidebar } from '../../common/components/sidebar';
 import { CanvasAnnotationProvider } from '../../common/context';
@@ -94,6 +99,7 @@ export const AdminTaskBoard = () => {
                         <div>{job && <Canvas isLoading={false} job={job} />}</div>
                         <Stack justifyContent='space-between' direction='row' width='70vh' mt={1}>
                             <EvaluationRejectionButton />
+                            <ExportButton />
                             <ValidateButton />
                         </Stack>
                     </Grid>
