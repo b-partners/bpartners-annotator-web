@@ -4,11 +4,7 @@ import debounce from 'debounce';
 import { useSnackbar } from 'notistack';
 import { useEffect, useMemo, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
-import {
-    CancelEvaluationButton,
-    EvaluationRejectionButton,
-    ValidateButton
-} from '../../common/components/admin';
+import { CancelEvaluationButton, EvaluationRejectionButton, ValidateButton } from '../../common/components/admin';
 import { Canvas } from '../../common/components/canvas';
 import { Sidebar } from '../../common/components/sidebar';
 import { CanvasAnnotationProvider } from '../../common/context';
