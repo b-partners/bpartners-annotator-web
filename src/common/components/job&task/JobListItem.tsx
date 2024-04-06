@@ -1,20 +1,40 @@
 import { JobStatus } from '@bpartners-annotator/typescript-client';
-import { OpenInNew as OpenInNewIcon } from '@mui/icons-material';
-import { Avatar, Chip, IconButton, ListItem, ListItemText, Stack } from '@mui/material';
+import { Download as DownloadIcon, OpenInNew as OpenInNewIcon } from '@mui/icons-material';
+import { Avatar, Chip, IconButton, ListItem, ListItemText, Stack, Tooltip } from '@mui/material';
 import { blue } from '@mui/material/colors';
 import { FC, createElement } from 'react';
 import { Link } from 'react-router-dom';
 import { IJobListItem, JOB_ITEM, getJobStatusInfo } from '.';
 import { useListPageContext } from '../../context';
-export const JobListItem: FC<IJobListItem> = ({ job, link }) => {
+import { useSession } from '../../hooks';
+import { stringCutter } from '../../utils';
+export const JobListItem: FC<IJobListItem> = ({ job, link, onExport }) => {
     const { icon, label, color } = getJobStatusInfo(job.status || JobStatus.PENDING);
     const { setLoading } = useListPageContext();
+    const { isAdmin } = useSession();
+
+    const handleExport = () => {
+        onExport && onExport(job.id || '');
+    };
 
     return (
         <ListItem sx={JOB_ITEM} alignItems='flex-start'>
             <Stack>
                 <Stack direction='row' className='job-title-container'>
-                    <ListItemText primary={job.name || job.id} />
+                    <ListItemText
+                        primary={
+                            <Tooltip title={job.name || job.id || ''}>
+                                <span>{stringCutter(job.name || job.id || '', 30)}</span>
+                            </Tooltip>
+                        }
+                    />
+                    {isAdmin() && [JobStatus.COMPLETED, JobStatus.TO_REVIEW].includes(job.status as JobStatus) && (
+                        <Tooltip title='Exporter'>
+                            <IconButton size='small' data-cy={`job-export-${job.id}`} onClick={handleExport}>
+                                <DownloadIcon />
+                            </IconButton>
+                        </Tooltip>
+                    )}
                     <Link to={link}>
                         <IconButton size='small' data-cy={`job-item-${job.id}`} onClick={() => setLoading(true)}>
                             <OpenInNewIcon />

@@ -1,16 +1,15 @@
 import { ExportFormat } from '@bpartners-annotator/typescript-client';
 import { DialogActions, DialogContent, DialogTitle, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import { FC } from 'react';
 import { FormProvider, useForm, useFormContext, useWatch } from 'react-hook-form';
-import { useParams } from 'react-router';
 import { jobsProvider } from '../../../providers';
 import { useDialog } from '../../context';
 import { useFetch } from '../../hooks';
 import { jobsExportDefaultValues, jobsExportResolver } from '../../resolvers';
+import { palette } from '../../utils/theme';
 import { BpButton, BpTextField } from '../basics';
 import { ExportDialogProps, ExportJobFetcherParams } from './types';
-import { useSnackbar } from 'notistack';
-import { palette } from '../../utils/theme';
 
 export const FormatField = () => {
     const { format } = useWatch();
@@ -24,7 +23,7 @@ export const FormatField = () => {
     );
 };
 
-const ExportDialog: FC<ExportDialogProps> = ({ jobId }) => {
+export const ExportJobDialog: FC<ExportDialogProps> = ({ jobId }) => {
     const { closeDialog } = useDialog();
     const { enqueueSnackbar } = useSnackbar();
     const form = useForm({ resolver: jobsExportResolver, mode: 'all', defaultValues: jobsExportDefaultValues });
@@ -71,12 +70,4 @@ const ExportDialog: FC<ExportDialogProps> = ({ jobId }) => {
             </FormProvider>
         </div>
     );
-};
-
-export const ExportButton = () => {
-    const { openDialog } = useDialog();
-    const { jobId } = useParams() as { jobId: string };
-
-    const handleOpenDialog = () => openDialog(<ExportDialog jobId={jobId} />);
-    return <BpButton label='Exporter' onClick={handleOpenDialog} />;
 };

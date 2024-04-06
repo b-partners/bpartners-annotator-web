@@ -10,9 +10,14 @@ import { useFetch } from '../../common/hooks';
 import { getUrlParams, urlParamsHandler } from '../../common/utils';
 import { jobsProvider } from '../../providers';
 import { job_list_list_container } from '../style';
+import { useDialog } from '../../common/context';
+import { ExportJobDialog } from '../../common/components/admin';
 
 export const AdminJobList = () => {
     const { setParam } = urlParamsHandler();
+    const { openDialog } = useDialog();
+
+    const handleOpenDialog = (jobId: string) => openDialog(<ExportJobDialog jobId={jobId} />);
 
     const fetcher = useCallback(async ({ page, perPage, status }: any) => {
         return await jobsProvider.getList(page, perPage, status);
@@ -86,7 +91,12 @@ export const AdminJobList = () => {
             {(currentJobs || []).length > 0 && !isLoading && (
                 <List sx={job_list_list_container}>
                     {(currentJobs || []).map(job => (
-                        <JobListItem link={`/jobs/${job.id}/tasks/review`} key={job.id} job={job} />
+                        <JobListItem
+                            onExport={handleOpenDialog}
+                            link={`/jobs/${job.id}/tasks/review`}
+                            key={job.id}
+                            job={job}
+                        />
                     ))}
                 </List>
             )}
