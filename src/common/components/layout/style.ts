@@ -1,13 +1,13 @@
 export const page_list_container = {
     width: '100%',
-    height: '90%',
+    height: '95%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
 };
 export const page_list_card_content = {
     width: 500,
-    height: 400,
+    height: 550,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

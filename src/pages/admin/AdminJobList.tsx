@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Job, JobStatus } from '@bpartners-annotator/typescript-client';
 import { Inbox as InboxIcon } from '@mui/icons-material';
 import { Box, CircularProgress, List, MenuItem, Stack, TextField, Typography } from '@mui/material';
-import { ChangeEvent, useCallback } from 'react';
+import { ChangeEvent, useCallback, useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { JobListItem, getJobStatusInfo } from '../../common/components/job&task';
 import { ListPageLayout } from '../../common/components/layout';
@@ -12,6 +13,7 @@ import { jobsProvider } from '../../providers';
 import { job_list_list_container } from '../style';
 import { useDialog } from '../../common/context';
 import { ExportJobDialog } from '../../common/components/admin';
+import debounce from 'debounce';
 
 export const AdminJobList = () => {
     const { setParam } = urlParamsHandler();
@@ -19,8 +21,8 @@ export const AdminJobList = () => {
 
     const handleOpenDialog = (jobId: string) => openDialog(<ExportJobDialog jobId={jobId} />);
 
-    const fetcher = useCallback(async ({ page, perPage, status }: any) => {
-        return await jobsProvider.getList(page, perPage, status);
+    const fetcher = useCallback(async ({ page, perPage, status, name, type }: any) => {
+        return await jobsProvider.getList(page, perPage, status, name, type);
     }, []);
 
     const { jobs, page, perPage, status } = useLoaderData() as {
@@ -46,6 +48,17 @@ export const AdminJobList = () => {
             status,
         });
     };
+
+    const handleSearch = useMemo(
+        () =>
+            debounce((e: ChangeEvent<HTMLInputElement>) => {
+                jobsFetcher({
+                    name: e.target.value,
+                } as any);
+                setParam('q', e.target.value);
+            }, 500),
+        []
+    );
 
     const handleChangeStatus = (e: ChangeEvent<HTMLInputElement>) => {
         let value: any = e.target.value;
@@ -88,29 +101,41 @@ export const AdminJobList = () => {
                 </Stack>
             }
         >
-            {(currentJobs || []).length > 0 && !isLoading && (
-                <List sx={job_list_list_container}>
-                    {(currentJobs || []).map(job => (
-                        <JobListItem
-                            onExport={handleOpenDialog}
-                            link={`/jobs/${job.id}/tasks/review`}
-                            key={job.id}
-                            job={job}
-                        />
-                    ))}
-                </List>
-            )}
-            {(currentJobs || []).length === 0 && !isLoading && (
-                <Box textAlign='center' sx={{ color: 'text.secondary' }}>
-                    <InboxIcon sx={{ fontSize: '15rem' }} />
-                    <Typography>Pas de jobs</Typography>
+            <div>
+                <Box width={400}>
+                    <TextField
+                        type='text'
+                        size='small'
+                        onChange={handleSearch}
+                        placeholder='Rechercher'
+                        sx={{ mx: 1, my: 1 }}
+                        fullWidth
+                    />
                 </Box>
-            )}
-            {isLoading && (
-                <Box textAlign='center' sx={{ color: 'text.secondary' }}>
-                    <CircularProgress color='primary' />
-                </Box>
-            )}
+                {(currentJobs || []).length > 0 && !isLoading && (
+                    <List sx={job_list_list_container}>
+                        {(currentJobs || []).map(job => (
+                            <JobListItem
+                                onExport={handleOpenDialog}
+                                link={`/jobs/${job.id}/tasks/review`}
+                                key={job.id}
+                                job={job}
+                            />
+                        ))}
+                    </List>
+                )}
+                {(currentJobs || []).length === 0 && !isLoading && (
+                    <Box textAlign='center' sx={{ color: 'text.secondary', height: 500 }}>
+                        <InboxIcon sx={{ fontSize: '15rem' }} />
+                        <Typography>Pas de jobs</Typography>
+                    </Box>
+                )}
+                {isLoading && (
+                    <Box textAlign='center' sx={{ color: 'text.secondary', height: 500 }}>
+                        <CircularProgress color='primary' />
+                    </Box>
+                )}
+            </div>
         </ListPageLayout>
     );
 };
