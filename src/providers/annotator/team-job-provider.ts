@@ -6,8 +6,8 @@ export const teamJobsProvider = {
 
         return data;
     },
-    async getList(teamId: string) {
-        const res = await teamJobsApi().getAnnotatorReadableTeamJobs(teamId);
+    async getList(teamId: string, page?: number, pageSize?: number, name?: string) {
+        const res = await teamJobsApi().getAnnotatorReadableTeamJobs(teamId, page, pageSize, name);
         return res.data;
     },
 };

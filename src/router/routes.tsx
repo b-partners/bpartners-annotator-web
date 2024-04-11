@@ -37,14 +37,9 @@ const AppRouter = createBrowserRouter([
         errorElement: <Error />,
         children: [
             {
-                element: <ListPageLayout />,
-                children: [
-                    {
-                        loader: jobsLoader,
-                        path: '/teams/:teamId/jobs',
-                        element: <JobList />,
-                    },
-                ],
+                loader: jobsLoader,
+                path: '/teams/:teamId/jobs',
+                element: <JobList />,
             },
             {
                 loader: adminJobsLoader,
