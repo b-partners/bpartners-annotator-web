@@ -14,7 +14,6 @@ export const teamJobsProvider = {
     },
     async getList(teamId: string, page?: number, pageSize?: number, name?: string) {
         const { data } = await teamJobsApi().getAnnotatorReadableTeamJobs(teamId, page, pageSize, name);
-        console.log(this.getLastPage());
         if (page === this.getLastPage()) {
             const { data: nextJob } = await teamJobsApi().getAnnotatorReadableTeamJobs(
                 teamId,
