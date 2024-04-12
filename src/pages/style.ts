@@ -35,7 +35,7 @@ export const job_list_list_container = {
     paddingBlock: 2,
     overflowY: 'auto',
     overflowX: 'hidden',
-    maxHeight: 400,
+    height: 500,
     paddingX: 1,
 };
 

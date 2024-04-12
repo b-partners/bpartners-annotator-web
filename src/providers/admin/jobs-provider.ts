@@ -1,4 +1,4 @@
-import { CrupdateJob, JobStatus, ExportFormat } from '@bpartners-annotator/typescript-client';
+import { CrupdateJob, JobStatus, ExportFormat, JobType } from '@bpartners-annotator/typescript-client';
 import { DEFAULT_PAGE, DEFAULT_PER_PAGE, jobsApi } from '..';
 import { cache, paginationNameByDependencies } from '../../common/utils';
 
@@ -13,9 +13,8 @@ export const jobsProvider = {
         const { data } = await jobsApi().getJob(jobId);
         return data;
     },
-    async getList(page = DEFAULT_PAGE, perPage = DEFAULT_PER_PAGE, status?: JobStatus) {
-        const { data: currentJob } = await jobsApi().getJobs(page, perPage, status || undefined);
-        console.log(page, this.getLastPage());
+    async getList(page = DEFAULT_PAGE, perPage = DEFAULT_PER_PAGE, status?: JobStatus, name?: string, type?: JobType) {
+        const { data: currentJob } = await jobsApi().getJobs(page, perPage, status, name, type);
         if (page === this.getLastPage()) {
             const { data: nextJob } = await jobsApi().getJobs(page + 1, perPage, status || undefined);
             if (nextJob.length > 0) {
