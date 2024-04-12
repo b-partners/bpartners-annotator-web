@@ -5,7 +5,7 @@ export const paginationNameByDependencies = (deps: string[]) => {
     let name = '-';
 
     for (let dependency of deps) {
-        name += `${dependency}=${searchParams.get(dependency)}`;
+        name += `${dependency}=${searchParams.get(dependency) || ''}`;
     }
 
     return name;

@@ -23,7 +23,7 @@ export const JobList = () => {
         data: currentJobs,
         isLoading,
         fetcher: jobsFetcher,
-    } = useFetch({ fetcher, defaultData: jobs, defaultParams: { teamId }, onlyOnMutate: true });
+    } = useFetch({ fetcher, defaultData: jobs, defaultParams: { teamId } as any, onlyOnMutate: true });
 
     useEffect(() => {
         cache.deleteCurrentTask();
@@ -52,7 +52,7 @@ export const JobList = () => {
         <ListPageLayout
             actions={
                 <Stack direction='row' alignItems='center' width='100%'>
-                    <Pagination onChange={handlePaginationChange} isLoading={isLoading} />
+                    <Pagination getLastPage={teamJobsProvider.getLastPage.bind(teamJobsProvider)} onChange={handlePaginationChange} isLoading={isLoading} />
                 </Stack>
             }
         >

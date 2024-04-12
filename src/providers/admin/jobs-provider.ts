@@ -15,7 +15,6 @@ export const jobsProvider = {
     },
     async getList(page = DEFAULT_PAGE, perPage = DEFAULT_PER_PAGE, status?: JobStatus, name?: string, type?: JobType) {
         const { data: currentJob } = await jobsApi().getJobs(page, perPage, status, name, type);
-        console.log(page, this.getLastPage());
         if (page === this.getLastPage()) {
             const { data: nextJob } = await jobsApi().getJobs(page + 1, perPage, status || undefined);
             if (nextJob.length > 0) {

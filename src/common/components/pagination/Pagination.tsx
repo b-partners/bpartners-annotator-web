@@ -4,11 +4,10 @@ import {
 } from '@mui/icons-material';
 import { IconButton, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { ChangeEvent, FC, useRef } from 'react';
-import { jobsProvider } from '../../../providers';
 import { urlParamsHandler } from '../../utils';
 import { PaginationProps } from './types';
 
-export const Pagination: FC<PaginationProps> = ({ isLoading, onChange, dependencies = [] }) => {
+export const Pagination: FC<PaginationProps> = ({ isLoading, onChange, getLastPage }) => {
     const { page, setParam, perPage } = urlParamsHandler();
     const pageTypo = useRef<HTMLSpanElement>(null);
 
@@ -31,7 +30,7 @@ export const Pagination: FC<PaginationProps> = ({ isLoading, onChange, dependenc
     const nextPage = () => {
         const currentPage = getPage();
         const nextPage = getPage() + 1;
-        const lastPage = jobsProvider.getLastPage();
+        const lastPage = getLastPage();
         if (currentPage < lastPage) {
             onChange(nextPage);
             setParam('page', `${nextPage}`);
@@ -65,7 +64,7 @@ export const Pagination: FC<PaginationProps> = ({ isLoading, onChange, dependenc
             <Typography ref={pageTypo} color='text.secondary'>
                 {page}
             </Typography>
-            <IconButton onClick={nextPage} disabled={isLoading || page === jobsProvider.getLastPage()} color='primary'>
+            <IconButton onClick={nextPage} disabled={isLoading || page === getLastPage()} color='primary'>
                 <ChevronRightRoundedIcon />
             </IconButton>
         </Stack>
