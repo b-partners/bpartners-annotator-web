@@ -52,7 +52,11 @@ export const JobList = () => {
         <ListPageLayout
             actions={
                 <Stack direction='row' alignItems='center' width='100%'>
-                    <Pagination getLastPage={teamJobsProvider.getLastPage.bind(teamJobsProvider)} onChange={handlePaginationChange} isLoading={isLoading} />
+                    <Pagination
+                        getLastPage={teamJobsProvider.getLastPage.bind(teamJobsProvider)}
+                        onChange={handlePaginationChange}
+                        isLoading={isLoading}
+                    />
                 </Stack>
             }
         >

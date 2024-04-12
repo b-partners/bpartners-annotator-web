@@ -97,7 +97,11 @@ export const AdminJobList = () => {
                             })}
                         </TextField>
                     </Box>
-                    <Pagination getLastPage={jobsProvider.getLastPage.bind(jobsProvider)} onChange={handlePaginationChange} isLoading={isLoading} />
+                    <Pagination
+                        getLastPage={jobsProvider.getLastPage.bind(jobsProvider)}
+                        onChange={handlePaginationChange}
+                        isLoading={isLoading}
+                    />
                 </Stack>
             }
         >
