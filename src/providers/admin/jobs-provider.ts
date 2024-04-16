@@ -31,4 +31,8 @@ export const jobsProvider = {
         const { data } = await jobsApi().exportJob(jobId, format, emailCC);
         return data;
     },
+    async getStatistics(jobId: string) {
+        const { data } = await jobsApi().getJobLatestAnnotationStatistics(jobId);
+        return data;
+    },
 };
