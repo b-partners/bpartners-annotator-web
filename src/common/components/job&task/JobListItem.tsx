@@ -1,5 +1,9 @@
 import { JobStatus } from '@bpartners-annotator/typescript-client';
-import { Download as DownloadIcon, OpenInNew as OpenInNewIcon } from '@mui/icons-material';
+import {
+    AnalyticsOutlined as AnalyticsOutlinedIcon,
+    Download as DownloadIcon,
+    OpenInNew as OpenInNewIcon,
+} from '@mui/icons-material';
 import { Avatar, Chip, IconButton, ListItem, ListItemText, Stack, Tooltip } from '@mui/material';
 import { blue } from '@mui/material/colors';
 import { FC, createElement } from 'react';
@@ -17,6 +21,8 @@ export const JobListItem: FC<IJobListItem> = ({ job, link, onExport }) => {
         onExport && onExport(job.id || '');
     };
 
+    const statisticsLink = `/jobs/${job.id}/statistics`;
+
     return (
         <ListItem sx={JOB_ITEM} alignItems='flex-start'>
             <Stack>
@@ -28,6 +34,15 @@ export const JobListItem: FC<IJobListItem> = ({ job, link, onExport }) => {
                             </Tooltip>
                         }
                     />
+                    {isAdmin() && (
+                        <Link to={statisticsLink}>
+                            <Tooltip title='Statistique'>
+                                <IconButton size='small' data-cy={`job-analytics-${job.id}`}>
+                                    <AnalyticsOutlinedIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Link>
+                    )}
                     {isAdmin() && [JobStatus.COMPLETED, JobStatus.TO_REVIEW].includes(job.status as JobStatus) && (
                         <Tooltip title='Exporter'>
                             <IconButton size='small' data-cy={`job-export-${job.id}`} onClick={handleExport}>
