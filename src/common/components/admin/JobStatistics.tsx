@@ -11,7 +11,7 @@ export const JobStatistics = () => {
         defaultData: [],
         defaultParams: jobId,
     });
-    
+
     return (
         <Box>
             <Box
