@@ -114,6 +114,7 @@ export const AdminJobList = () => {
                         placeholder='Rechercher'
                         sx={{ mx: 1, my: 1 }}
                         fullWidth
+                        data-cy='job-list-input'
                     />
                 </Box>
                 {(currentJobs || []).length > 0 && !isLoading && (

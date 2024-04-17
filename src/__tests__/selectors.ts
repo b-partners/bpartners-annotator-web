@@ -32,3 +32,5 @@ export const VALIDATE_BUTTON = '[name="Valider"]';
 export const CANCEL_BUTTON = '[name="Annuler"]';
 
 export const CHANGE_IMAGE_BUTTON = 'change-image-button';
+
+export const SEARCH_JOB = "job-list-input"
