@@ -62,21 +62,21 @@ describe('Test UserAnnotator', () => {
         cy.dataCy(MOUSE_Y_POSITION).contains('0');
 
         cy.dataCy(CANVAS_FOR_CURSOR).click(3710, 0, { force: true });
-        cy.dataCy(MOUSE_X_POSITION).contains('1314');
+        cy.dataCy(MOUSE_X_POSITION).contains('1180');
         cy.dataCy(MOUSE_Y_POSITION).contains('0');
 
         cy.dataCy(CANVAS_FOR_CURSOR).click(0, 2389, { force: true });
         cy.dataCy(MOUSE_X_POSITION).contains('0');
-        cy.dataCy(MOUSE_Y_POSITION).contains('1212');
+        cy.dataCy(MOUSE_Y_POSITION).contains('1089');
 
         cy.dataCy(CANVAS_FOR_CURSOR).click(3710, 2389, { force: true });
-        cy.dataCy(MOUSE_X_POSITION).contains('1314');
-        cy.dataCy(MOUSE_Y_POSITION).contains('1212');
+        cy.dataCy(MOUSE_X_POSITION).contains('1180');
+        cy.dataCy(MOUSE_Y_POSITION).contains('1089');
 
-        cy.dataCy(CANVAS_FOR_CURSOR).click(2000, 1000, { force: true });
-        cy.dataCy(CANVAS_FOR_CURSOR).click(2500, 1500, { force: true });
-        cy.dataCy(CANVAS_FOR_CURSOR).click(3000, 1000, { force: true });
-        cy.dataCy(CANVAS_FOR_CURSOR).click(2000, 1000, { force: true });
+        cy.dataCy(CANVAS_FOR_CURSOR).click(400, 400, { force: true });
+        cy.dataCy(CANVAS_FOR_CURSOR).click(450, 450, { force: true });
+        cy.dataCy(CANVAS_FOR_CURSOR).click(500, 400, { force: true });
+        cy.dataCy(CANVAS_FOR_CURSOR).click(400, 400, { force: true });
 
         let expectedFirstSelectValue = '';
         cy.dataCy(ANNOTATION_ITEM_1).should('exist');
@@ -89,11 +89,10 @@ describe('Test UserAnnotator', () => {
         cy.contains(optionToSelect).click();
         cy.dataCy(SELECT_LABEL_1).get('input').should('have.value', expectedFirstSelectValue);
 
-        cy.dataCy(CANVAS_FOR_CURSOR).click(1500, 900, { force: true });
-        cy.dataCy(CANVAS_FOR_CURSOR).click(1600, 1200, { force: true });
-        cy.dataCy(CANVAS_FOR_CURSOR).click(1700, 900, { force: true });
-        cy.dataCy(CANVAS_FOR_CURSOR).click(1500, 900, { force: true });
-        cy.dataCy(CANVAS_FOR_CURSOR).click(1600, 1200, { force: true });
+        cy.dataCy(CANVAS_FOR_CURSOR).click(400, 600, { force: true });
+        cy.dataCy(CANVAS_FOR_CURSOR).click(450, 650, { force: true });
+        cy.dataCy(CANVAS_FOR_CURSOR).click(500, 600, { force: true });
+        cy.dataCy(CANVAS_FOR_CURSOR).click(400, 600, { force: true });
 
         cy.dataCy(ANNOTATION_ITEM_2).should('exist');
         cy.dataCy(SELECT_LABEL_2).get('input').should('have.value', expectedFirstSelectValue);
