@@ -1,12 +1,12 @@
 import { AnnotationNumberPerLabel } from '@bpartners-annotator/typescript-client';
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, CircularProgress, Paper, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { jobsProvider } from '../../../providers';
 import { useFetch } from '../../hooks';
 
 export const JobStatistics = () => {
     const { jobId } = useParams();
-    const { data } = useFetch<AnnotationNumberPerLabel[], any>({
+    const { data, isLoading } = useFetch<AnnotationNumberPerLabel[], any>({
         fetcher: jobsProvider.getStatistics,
         defaultData: [],
         defaultParams: jobId,
@@ -41,6 +41,22 @@ export const JobStatistics = () => {
                         <Typography sx={{ fontSize: '5rem' }}>{stat.numberOfAnnotations}</Typography>
                     </Paper>
                 ))}
+                {isLoading && (
+                    <Box
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <CircularProgress />
+                    </Box>
+                )}
             </Box>
         </Box>
     );
