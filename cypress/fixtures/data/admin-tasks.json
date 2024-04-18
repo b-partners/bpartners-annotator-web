@@ -1,0 +1,16 @@
+[
+    {
+        "imageUri": "http://dummy-url.com/image",
+        "filename": "image-name-1.jpg",
+        "id": "task-id-1",
+        "userId": "0e658700-7bfa-21o2-a107-29c2260f2691",
+        "status": "TO_REVIEW"
+    },
+    {
+        "imageUri": "http://dummy-url.com/image",
+        "filename": "image-name-2.jpg",
+        "id": "task-id-2",
+        "userId": "0e658700-7bfa-21o2-a107-29c2260f2691",
+        "status": "TO_REVIEW"
+    }
+]

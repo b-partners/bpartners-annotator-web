@@ -9,10 +9,10 @@ describe('Test UserAnnotator', () => {
         cy.fixture('/auth/api-key.txt').then(cache.setApiKey);
         cy.intercept('GET', '/jobs?**', { fixture: '/data/jobs.json' });
         cy.intercept('GET', '/jobs/job-id-1**', { fixture: '/data/job.json' });
-        cy.intercept('GET', '/jobs/job-id-1/task', { fixture: '/data/task.json' });
-        // cy.intercept('GET', '/users/user-id-1/tasks/task-id-1/annotations**', []);
-        // cy.intercept('GET', 'http://dummy-url.com/image', { fixture: '/assets/annotation-image-1' });
-
+        cy.intercept('GET', '/jobs/job-id-1/task?**', { fixture: '/data/admin-tasks.json' });
+        cy.intercept('GET', 'http://dummy-url.com/image', { fixture: '/assets/annotation-image-1' });
+        cy.intercept('GET', 'jobs/job-id-1/tasks/task-id-1/annotations?**', { fixture: '/data/admin-task-1.json' });
+        
         cy.fixture('/data/jobs.json').then(jobs => {
             cy.stub({ useLoaderData }, 'useLoaderData').callsFake(() => jobs);
             cy.stub({ useParams }, 'useParams').callsFake(() => ({ teamId: jobs[0].teamId }));
@@ -41,5 +41,8 @@ describe('Test UserAnnotator', () => {
         cy.contains("Test Task 3").should("not.exist")
 
         cy.dataCy(JOB_ITEM_1).click()
+
+        cy.contains("ROOF")
+        cy.contains("image-name-1")
     });
 });
