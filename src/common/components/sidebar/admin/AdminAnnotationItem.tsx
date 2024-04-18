@@ -36,7 +36,7 @@ export const AdminAnnotationItem: FC<IAnnotationItemProps> = ({ annotation }) =>
                         <IconButton
                             color={!!comments[annotation.uuid || ''] ? 'primary' : 'default'}
                             edge='end'
-                            data-cy={`comment-button-${annotation.id}`} 
+                            data-cy={`comment-button-${annotation.id}`}
                             onClick={() => setComment(e => !e)}
                         >
                             <CommentIcon />

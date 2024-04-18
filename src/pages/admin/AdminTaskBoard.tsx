@@ -2,10 +2,7 @@ import { AnnotationBatch, Job, Task } from '@bpartners-annotator/typescript-clie
 import { Box, CircularProgress, Grid, List, ListSubheader, MenuItem, Stack, TextField } from '@mui/material';
 import { AnnotatorCanvas, Polygon } from '@bpartners/annotator-component';
 import { CopyAll as CopyAllIcon } from '@mui/icons-material';
-import {
-    IconButton,
-    Typography,
-} from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import debounce from 'debounce';
 import { useSnackbar } from 'notistack';
 import { useEffect, useMemo, useState } from 'react';

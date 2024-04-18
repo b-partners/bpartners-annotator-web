@@ -5,7 +5,12 @@ import { useEffect, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { TaskReviewComment } from '../common/components/job&task';
 import { Sidebar } from '../common/components/sidebar';
-import { CancelAnnotationButton, ConfirmAnnotationButton, NextAnnotationButton, ZoomButtons } from '../common/components/task-board';
+import {
+    CancelAnnotationButton,
+    ConfirmAnnotationButton,
+    NextAnnotationButton,
+    ZoomButtons,
+} from '../common/components/task-board';
 import { CanvasAnnotationProvider, IAnnotation } from '../common/context';
 import { useGetPrevRoute, useSession, useTaskBoardState } from '../common/hooks';
 import { PolygonAnnotationMapper, annotationsMapper } from '../common/mappers';

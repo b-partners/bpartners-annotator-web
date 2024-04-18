@@ -1,7 +1,6 @@
 import { AnnotationReview, Label, Task } from '@bpartners-annotator/typescript-client';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 
-
 export interface IPoint {
     x: number;
     y: number;
