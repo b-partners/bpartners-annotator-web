@@ -33,4 +33,18 @@ export const CANCEL_BUTTON = '[name="Annuler"]';
 
 export const CHANGE_IMAGE_BUTTON = 'change-image-button';
 
-export const SEARCH_JOB = "job-list-input"
+export const SEARCH_JOB = 'job-list-input';
+export const EXPORT_JOB = 'job-export-job-id-3';
+export const EXPORT_EMAIL_INPUT = 'emailCC-input';
+export const EXPORT_FORMAT_INPUT = 'format-input';
+
+export const REJECT_COMMENT = 'comment-input';
+
+export const EXPORT_DIALOG_CANCEL_BUTTON = 'export-dialog-cancel-button';
+export const EXPORT_DIALOG_EXPORT_BUTTON = 'export-dialog-export-button';
+
+export const REJECT_DIALOG_CANCEL_BUTTON = 'reject-dialog-cancel-button';
+export const REJECT_DIALOG_REJECT_BUTTON = 'reject-dialog-reject-button';
+
+export const ANNOTATION_COMMENT_BUTTON = "comment-button-1"
+export const ANNOTATION_COMMENT_INPUT = "comment-input-1"
