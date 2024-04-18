@@ -65,7 +65,7 @@
         "bucketName": "dummy",
         "folderPath": "dummy/",
         "ownerEmail": "email.1@gmail.com",
-        "status": "TO_CORRECT",
+        "status": "COMPLETED",
         "teamId": "team-id-1",
         "labels": [
             {

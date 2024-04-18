@@ -24,20 +24,6 @@ const Loading: FC<{ children?: any }> = props => {
 };
 
 export const ListPageLayout: FC<{ children?: ReactNode; actions?: ReactNode }> = ({ children, actions }) => {
-    // const getPath = useGetPrevRoute();
-    // const [isLoading, setLoading] = useState(false);
-    // const { pathname } = useLocation();
-    // const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     setLoading(false);
-    // }, [pathname]);
-
-    // const handleClick = () => {
-    //     setLoading(true);
-    //     navigate(getPath());
-    // };
-
     const title = useGetListPageTitle();
 
     return (

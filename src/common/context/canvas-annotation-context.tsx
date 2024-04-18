@@ -1,8 +1,7 @@
 import { AnnotationBatch, AnnotationReview, Label, Task } from '@bpartners-annotator/typescript-client';
-import { FC, ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import { Dispatch, FC, ReactNode, SetStateAction, createContext, useContext, useState } from 'react';
 import { IAnnotation, IAnnotationContext } from '.';
-import { annotationsMapper } from '../mappers';
-import { getColorFromMain } from '../utils';
+import { getColorFromMain } from '@bpartners/annotator-component';
 
 const CanvasAnnotationContext = createContext<IAnnotationContext>({
     annotations: [],
@@ -23,6 +22,8 @@ type CanvasAnnotationProviderProps = {
     labels: Label[];
     img: string;
     batch?: AnnotationBatch;
+    annotations: IAnnotation[];
+    setAnnotations: Dispatch<SetStateAction<IAnnotation[]>>;
     globalReviews?: AnnotationReview[];
     annotationsReviews?: AnnotationReview[];
     changeCurrentTask?: () => void;
@@ -39,17 +40,11 @@ export const CanvasAnnotationProvider: FC<CanvasAnnotationProviderProps> = props
         globalReviews = [],
         tasks = [],
         changeCurrentTask = () => {},
+        annotations,
+        setAnnotations,
     } = props;
 
-    const [annotations, setAnnotations] = useState<IAnnotation[]>([]);
     const [isAnnotating, setIsAnnotating] = useState(false);
-
-    useEffect(() => {
-        const annotation = batch?.annotations?.map((annotation, key) =>
-            annotationsMapper.toDomain(annotation, key + 1)
-        );
-        setAnnotations(annotation || []);
-    }, [batch]);
 
     return (
         <CanvasAnnotationContext.Provider

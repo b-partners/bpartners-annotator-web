@@ -1,20 +1,25 @@
 import { AnnotationBatch, Job, Task } from '@bpartners-annotator/typescript-client';
 import { Box, CircularProgress, Grid, List, ListSubheader, MenuItem, Stack, TextField } from '@mui/material';
+import { AnnotatorCanvas, Polygon } from '@bpartners/annotator-component';
+import { CopyAll as CopyAllIcon } from '@mui/icons-material';
+import { IconButton, Typography } from '@mui/material';
 import debounce from 'debounce';
 import { useSnackbar } from 'notistack';
 import { useEffect, useMemo, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { CancelEvaluationButton, EvaluationRejectionButton, ValidateButton } from '../../common/components/admin';
-import { Canvas } from '../../common/components/canvas';
 import { Sidebar } from '../../common/components/sidebar';
-import { CanvasAnnotationProvider } from '../../common/context';
+import { CanvasAnnotationProvider, IAnnotation } from '../../common/context';
 import { EvaluationCommentProvider } from '../../common/context/admin';
-import { useFetch } from '../../common/hooks';
+import { useFetch, useSession } from '../../common/hooks';
+import { PolygonAnnotationMapper, annotationsMapper } from '../../common/mappers';
 import { cache, dateFormater, getTaskToValidate, retryer, urlParamsHandler } from '../../common/utils';
 import { palette } from '../../common/utils/theme';
 import { EMPTY_ANNOTATIONS_TO_VALIDATE, tasksProvider } from '../../providers';
 import { annotationsProvider } from '../../providers/admin/annotations-provider';
 import { canvas_loading } from '../style';
+import { CANVAS_CONTAINER, GRID_ITEM_CONTAINER, GRID_ITEM_SIDEBAR_CONTAINER, IMAGE_NAME_COPY } from './styles';
+import { ZoomButtons } from '../../common/components/task-board';
 
 type AdminTaskJobLoaderReturn = {
     batchs: AnnotationBatch[];
@@ -29,6 +34,18 @@ export const AdminTaskBoard = () => {
     const params = useParams();
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
+    const { isUser } = useSession();
+    const [annotations, setAnnotations] = useState<IAnnotation[]>([]);
+    useEffect(() => {
+        const annotation = batch?.annotations?.map((annotation, key) =>
+            annotationsMapper.toDomain(annotation, key + 1)
+        );
+        setAnnotations(annotation || []);
+    }, [batch]);
+
+    const setPolygons = (polygons: Polygon[]) => {
+        setAnnotations(prev => PolygonAnnotationMapper.polygonsToAnnotations(prev, polygons));
+    };
 
     const notify = useMemo(
         () =>
@@ -72,6 +89,12 @@ export const AdminTaskBoard = () => {
         fetcher: changeCurrentTask,
     } = useFetch({ fetcher, defaultData: task, onlyOnMutate: true });
 
+    const handleCopyToClipBoard = () => {
+        navigator.clipboard.writeText(task.filename || '').then(() => {
+            enqueueSnackbar("Le nom de l'image a été copié.", { style: { background: palette().success.main } });
+        });
+    };
+
     return currenTask !== null && !isLoading ? (
         <EvaluationCommentProvider>
             <CanvasAnnotationProvider
@@ -80,24 +103,36 @@ export const AdminTaskBoard = () => {
                 batch={batch}
                 img={currenTask.imageUri || ''}
                 labels={job?.labels || []}
+                annotations={annotations}
+                setAnnotations={setAnnotations}
             >
                 <Grid container height='94%' pl={1}>
-                    <Grid
-                        container
-                        item
-                        xs={10}
-                        display='flex'
-                        direction='column'
-                        justifyContent='center'
-                        alignItems='center'
-                    >
-                        <div>{job && <Canvas isLoading={false} job={job} />}</div>
+                    <Grid container item sx={GRID_ITEM_CONTAINER} xs={10}>
+                        <div style={CANVAS_CONTAINER}>
+                            {job && (
+                                <AnnotatorCanvas
+                                    buttonsComponent={ZoomButtons}
+                                    allowAnnotation={isUser()}
+                                    height='80vh'
+                                    width='70vw'
+                                    image={task.imageUri || ''}
+                                    setPolygons={setPolygons}
+                                    polygonList={annotations.map(PolygonAnnotationMapper.annotationToPolygon)}
+                                />
+                            )}
+                        </div>
                         <Stack justifyContent='space-between' direction='row' width='70vh' mt={1}>
                             <EvaluationRejectionButton />
                             <ValidateButton />
                         </Stack>
+                        <Stack direction='row' sx={IMAGE_NAME_COPY}>
+                            <Typography>{task.filename}</Typography>
+                            <IconButton onClick={handleCopyToClipBoard}>
+                                <CopyAllIcon />
+                            </IconButton>
+                        </Stack>
                     </Grid>
-                    <Grid sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }} item xs={2}>
+                    <Grid sx={GRID_ITEM_SIDEBAR_CONTAINER} item xs={2}>
                         <Stack flexGrow={2}>
                             <List subheader={<ListSubheader>Versions de l'annotation</ListSubheader>}>
                                 <Stack pt={2} pb={3} px={2}>

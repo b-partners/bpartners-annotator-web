@@ -16,7 +16,7 @@ export const FormatField = () => {
     const { register } = useFormContext();
 
     return (
-        <TextField select label='Format' {...register('format')} value={format}>
+        <TextField data-cy='format-input' select label='Format' {...register('format')} value={format}>
             <MenuItem value={ExportFormat.VGG}>VGG</MenuItem>
             <MenuItem value={ExportFormat.COCO}>COCO</MenuItem>
         </TextField>
@@ -63,8 +63,18 @@ export const ExportJobDialog: FC<ExportDialogProps> = ({ jobId }) => {
                 </DialogContent>
                 <DialogActions>
                     <Stack width='100%' justifyContent='space-between' direction='row'>
-                        <BpButton label='Annuler' isLoading={isLoading} onClick={closeDialog} />
-                        <BpButton label='Exporter' isLoading={isLoading} onClick={handleExport} />
+                        <BpButton
+                            data-cy='export-dialog-cancel-button'
+                            label='Annuler'
+                            isLoading={isLoading}
+                            onClick={closeDialog}
+                        />
+                        <BpButton
+                            data-cy='export-dialog-export-button'
+                            label='Exporter'
+                            isLoading={isLoading}
+                            onClick={handleExport}
+                        />
                     </Stack>
                 </DialogActions>
             </FormProvider>
