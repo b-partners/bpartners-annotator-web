@@ -36,6 +36,7 @@ export const AdminAnnotationItem: FC<IAnnotationItemProps> = ({ annotation }) =>
                         <IconButton
                             color={!!comments[annotation.uuid || ''] ? 'primary' : 'default'}
                             edge='end'
+                            data-cy={`comment-button-${annotation.id}`}
                             onClick={() => setComment(e => !e)}
                         >
                             <CommentIcon />
@@ -48,6 +49,7 @@ export const AdminAnnotationItem: FC<IAnnotationItemProps> = ({ annotation }) =>
             {isComment && (
                 <Stack padding={1}>
                     <TextField
+                        data-cy={`comment-input-${annotation.id}`}
                         value={commentText}
                         name={`comment-${annotation.id}`}
                         fullWidth

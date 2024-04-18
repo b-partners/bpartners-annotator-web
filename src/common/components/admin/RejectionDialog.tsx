@@ -70,8 +70,18 @@ export const RejectionDialog: FC<RejectionDialogProps> = ({ batchId, comments, c
             </DialogContent>
             <DialogActions>
                 <Stack width='100%' justifyContent='space-between' direction='row'>
-                    <BpButton label='Annuler' isLoading={isLoading} onClick={closeDialog} />
-                    <BpButton label='Rejeter' isLoading={isLoading} onClick={handleReject} />
+                    <BpButton
+                        data-cy='reject-dialog-cancel-button'
+                        label='Annuler'
+                        isLoading={isLoading}
+                        onClick={closeDialog}
+                    />
+                    <BpButton
+                        data-cy='reject-dialog-reject-button'
+                        label='Rejeter'
+                        isLoading={isLoading}
+                        onClick={handleReject}
+                    />
                 </Stack>
             </DialogActions>
         </FormProvider>
