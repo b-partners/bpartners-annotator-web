@@ -2,7 +2,7 @@ import { AnnotationBatch, Job, Task } from '@bpartners-annotator/typescript-clie
 import { Box, CircularProgress, Grid, List, ListSubheader, MenuItem, Stack, TextField } from '@mui/material';
 import { AnnotatorCanvas, Polygon } from '@bpartners/annotator-component';
 import { CopyAll as CopyAllIcon } from '@mui/icons-material';
-import { IconButton, Typography } from '@mui/material';
+import { IconButton, Typography, Chip } from '@mui/material';
 import debounce from 'debounce';
 import { useSnackbar } from 'notistack';
 import { useEffect, useMemo, useState } from 'react';
@@ -121,6 +121,22 @@ export const AdminTaskBoard = () => {
                                 />
                             )}
                         </div>
+                        <Stack p={0.3} width='70vw' direction='row' spacing={1}>
+                            <Stack direction='row' flexGrow={2} spacing={1}>
+                                <Chip
+                                    color='info'
+                                    label={`Taches restantes: ${job.taskStatistics?.remainingTasks} / ${job.taskStatistics?.totalTasks}`}
+                                    size='small'
+                                    variant='outlined'
+                                />
+                                <Chip
+                                    color='success'
+                                    label={`Taches accomplies par l'utilisateur: ${job.taskStatistics?.completedTasksByUserId}`}
+                                    size='small'
+                                    variant='outlined'
+                                />
+                            </Stack>
+                        </Stack>
                         <Stack justifyContent='space-between' direction='row' width='70vh' mt={1}>
                             <EvaluationRejectionButton />
                             <ValidateButton />
