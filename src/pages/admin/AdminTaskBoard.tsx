@@ -115,7 +115,7 @@ export const AdminTaskBoard = () => {
                                     allowAnnotation={isUser()}
                                     height='80vh'
                                     width='70vw'
-                                    image={task.imageUri || ''}
+                                    image={(currenTask || task).imageUri || ''}
                                     setPolygons={setPolygons}
                                     polygonList={annotations.map(PolygonAnnotationMapper.annotationToPolygon)}
                                 />
