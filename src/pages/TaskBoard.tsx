@@ -67,13 +67,13 @@ export const TaskBoard = () => {
         >
             <TaskReviewComment />
             <Grid container height='94%' pl={1}>
-                <Grid item xs={10} display='flex' justifyContent='center' alignItems='center'>
+                <Grid item xs={10} display='flex' justifyContent='center' alignItems='flex-start'>
                     <div>
                         {job && (
                             <AnnotatorCanvas
                                 buttonsComponent={ZoomButtons}
                                 allowAnnotation={isUser()}
-                                height='80vh'
+                                height='70vh'
                                 width='70vw'
                                 image={task.imageUri || ''}
                                 setPolygons={setPolygons}

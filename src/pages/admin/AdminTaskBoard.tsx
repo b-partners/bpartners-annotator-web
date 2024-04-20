@@ -113,7 +113,7 @@ export const AdminTaskBoard = () => {
                                 <AnnotatorCanvas
                                     buttonsComponent={ZoomButtons}
                                     allowAnnotation={isUser()}
-                                    height='80vh'
+                                    height='70vh'
                                     width='70vw'
                                     image={(currenTask || task).imageUri || ''}
                                     setPolygons={setPolygons}

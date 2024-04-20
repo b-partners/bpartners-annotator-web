@@ -12,7 +12,7 @@ export const Sidebar = () => {
 
     return (
         <List
-            sx={{ maxHeight: window.innerHeight * 0.7, overflow: 'auto' }}
+            sx={{ maxHeight: window.innerHeight * 0.6, minHeight: window.innerHeight * 0.4, overflow: 'auto' }}
             subheader={<ListSubheader>Labels</ListSubheader>}
         >
             <Box py={2}>
