@@ -16,8 +16,10 @@ export class PolygonAnnotationMapper {
     public static polygonsToAnnotations = (annotations: IAnnotation[], polygons: Polygon[]) => {
         return polygons.map(({ fillColor, id: polygonId, points, strokeColor }, i) => {
             const annotation: IAnnotation =
-                annotations.find(a => a.uuid === polygonId) || ({ label: '', id: i } as any);
+                annotations.find(a => a.uuid === polygonId) || ({ label: '', id: i + 1 } as any);
+
             annotation.uuid = polygonId;
+
             annotation.polygon = {
                 fillColor,
                 points,
