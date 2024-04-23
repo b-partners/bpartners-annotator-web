@@ -17,12 +17,12 @@ export const CANVAS_FOR_CURSOR = 'annotator-canvas-cursor';
 export const MOUSE_X_POSITION = 'annotator-x-positions';
 export const MOUSE_Y_POSITION = 'annotator-y-positions';
 
-export const ANNOTATION_ITEM_1 = 'annotation-item-0';
-export const VISIBILITY_BUTTON_1 = 'visibility-button-0';
-export const SELECT_LABEL_1 = 'select-label-0';
+export const ANNOTATION_ITEM_1 = 'annotation-item-1';
+export const VISIBILITY_BUTTON_1 = 'visibility-button-1';
+export const SELECT_LABEL_1 = 'select-label-1';
 
-export const ANNOTATION_ITEM_2 = 'annotation-item-1';
-export const SELECT_LABEL_2 = 'select-label-1';
+export const ANNOTATION_ITEM_2 = 'annotation-item-2';
+export const SELECT_LABEL_2 = 'select-label-2';
 
 export const USER_CANCEL_ANNOTATION_BUTTON = 'cancel-annotation-button';
 export const USER_VALIDATE_ANNOTATION_BUTTON = 'validate-annotation-button';
