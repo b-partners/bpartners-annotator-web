@@ -15,11 +15,10 @@ export class PolygonAnnotationMapper {
 
     public static polygonsToAnnotations = (annotations: IAnnotation[], polygons: Polygon[]) => {
         return polygons.map(({ fillColor, id: polygonId, points, strokeColor }, i) => {
-            const annotation: IAnnotation =
-                annotations.find(a => a.uuid === polygonId) || ({ label: '', id: i + 1 } as any);
+            const annotation: IAnnotation = annotations.find(a => a.uuid === polygonId) || ({ label: '' } as any);
 
             annotation.uuid = polygonId;
-
+            annotation.id = i + 1;
             annotation.polygon = {
                 fillColor,
                 points,
