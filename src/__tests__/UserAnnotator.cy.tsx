@@ -64,11 +64,11 @@ describe('Test UserAnnotator', () => {
         cy.dataCy(CANVAS_FOR_CURSOR).click(3710, 0, { force: true });
         cy.dataCy(MOUSE_X_POSITION).contains('1146');
         cy.dataCy(MOUSE_Y_POSITION).contains('0');
-        
+
         cy.dataCy(CANVAS_FOR_CURSOR).click(0, 2389, { force: true });
         cy.dataCy(MOUSE_X_POSITION).contains('0');
         cy.dataCy(MOUSE_Y_POSITION).contains('1057');
-        
+
         cy.dataCy(CANVAS_FOR_CURSOR).click(3710, 2389, { force: true });
         cy.dataCy(MOUSE_X_POSITION).contains('1146');
         cy.dataCy(MOUSE_Y_POSITION).contains('1057');
