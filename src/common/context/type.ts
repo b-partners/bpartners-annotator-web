@@ -16,6 +16,7 @@ export interface IAnnotation {
     id: number;
     uuid?: string;
     isInvisible?: boolean;
+    comment?: string;
 }
 
 export interface IZoomContext {

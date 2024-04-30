@@ -72,13 +72,15 @@ export const AnnotationItem: FC<IAnnotationItemProps> = ({ annotation, selectLab
                 </IconButton>
                 {selectLabel}
             </ListItem>
-            {review && (
+            {(review || annotation.comment) && (
                 <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography>Commentaires</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Typography textAlign='justify'>{review.comment}</Typography>
+                        {annotation.comment && <Typography textAlign='justify'>{annotation.comment}</Typography>}
+                        {review && review.comment && annotation.comment && <Divider sx={{ my: 1 }} />}
+                        {review && review.comment && <Typography textAlign='justify'>{review.comment}</Typography>}
                     </AccordionDetails>
                 </Accordion>
             )}
