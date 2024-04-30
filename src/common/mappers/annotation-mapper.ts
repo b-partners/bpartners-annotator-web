@@ -16,6 +16,7 @@ export const annotationsMapper = {
                 strokeColor,
                 points: annotation.polygon?.points as any,
             },
+            comment: annotation.comment,
         };
     },
     toRest(annotation: IAnnotation, labels: Label[], taskId?: string): Annotation {
@@ -26,6 +27,7 @@ export const annotationsMapper = {
             taskId,
             polygon: { points: annotation.polygon.points },
             userId: user?.id,
+            comment: annotation.comment,
         };
     },
 };
