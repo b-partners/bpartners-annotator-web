@@ -1,4 +1,4 @@
-import { Logout as LogoutIcon } from '@mui/icons-material';
+import { ChevronLeft, Logout as LogoutIcon } from '@mui/icons-material';
 import { AppBar, Box, CircularProgress, IconButton, Toolbar } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
@@ -23,6 +23,10 @@ export const TopBarLayout = () => {
             .finally(() => setLoading(false));
     };
 
+    const goBack = () => {
+        navigate(-1);
+    };
+
     useEffect(() => {
         const accessToken = cache.getAccessToken();
         const apiKey = cache.getApiKey();
@@ -33,6 +37,9 @@ export const TopBarLayout = () => {
         <DialogProvider>
             <AppBar position='relative' sx={{ height: '64px' }}>
                 <Toolbar>
+                    <IconButton sx={{ transform: 'translateX(-50%)', color: 'white' }} onClick={goBack}>
+                        <ChevronLeft />
+                    </IconButton>
                     <LazyLoadImage src={BP_LOGO} alt='BpLogo' width={120} />
                     <Box flexGrow={2}></Box>
                     <IconButton title='Se déconnecter' onClick={logout} sx={{ color: 'white' }}>
