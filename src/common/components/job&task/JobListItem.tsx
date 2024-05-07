@@ -43,13 +43,16 @@ export const JobListItem: FC<IJobListItem> = ({ job, link, onExport }) => {
                             </Tooltip>
                         </Link>
                     )}
-                    {isAdmin() && [JobStatus.COMPLETED, JobStatus.TO_REVIEW].includes(job.status as any) && (
-                        <Tooltip title='Exporter'>
-                            <IconButton size='small' data-cy={`job-export-${job.id}`} onClick={handleExport}>
-                                <DownloadIcon />
-                            </IconButton>
-                        </Tooltip>
-                    )}
+                    {isAdmin() &&
+                        [JobStatus.COMPLETED, JobStatus.TO_REVIEW, JobStatus.TO_CORRECT].includes(
+                            job.status as any
+                        ) && (
+                            <Tooltip title='Exporter'>
+                                <IconButton size='small' data-cy={`job-export-${job.id}`} onClick={handleExport}>
+                                    <DownloadIcon />
+                                </IconButton>
+                            </Tooltip>
+                        )}
                     <Link to={link}>
                         <IconButton size='small' data-cy={`job-item-${job.id}`} onClick={() => setLoading(true)}>
                             <OpenInNewIcon />
