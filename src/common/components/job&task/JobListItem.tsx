@@ -12,7 +12,7 @@ import { IJobListItem, JOB_ITEM, getJobStatusInfo } from '.';
 import { useListPageContext } from '../../context';
 import { useSession } from '../../hooks';
 import { stringCutter } from '../../utils';
-export const JobListItem: FC<IJobListItem> = ({ job, link, onExport }) => {
+export const JobListItem: FC<IJobListItem> = ({ job, link, onExportStatistics, onExport }) => {
     const { icon, label, color } = getJobStatusInfo(job.status || JobStatus.PENDING);
     const { setLoading } = useListPageContext();
     const { isAdmin } = useSession();
@@ -21,7 +21,9 @@ export const JobListItem: FC<IJobListItem> = ({ job, link, onExport }) => {
         onExport && onExport(job.id || '');
     };
 
-    const statisticsLink = `/jobs/${job.id}/statistics`;
+    const handleExportStatistics = () => {
+        onExportStatistics && onExportStatistics(job.id || '');
+    };
 
     return (
         <ListItem sx={JOB_ITEM} alignItems='flex-start'>
@@ -35,13 +37,11 @@ export const JobListItem: FC<IJobListItem> = ({ job, link, onExport }) => {
                         }
                     />
                     {isAdmin() && (
-                        <Link to={statisticsLink}>
-                            <Tooltip title='Statistique'>
-                                <IconButton size='small' data-cy={`job-analytics-${job.id}`}>
-                                    <AnalyticsOutlinedIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Link>
+                        <Tooltip title='Statistique' onClick={handleExportStatistics}>
+                            <IconButton size='small' data-cy={`job-analytics-${job.id}`}>
+                                <AnalyticsOutlinedIcon />
+                            </IconButton>
+                        </Tooltip>
                     )}
                     {isAdmin() &&
                         [JobStatus.COMPLETED, JobStatus.TO_REVIEW, JobStatus.TO_CORRECT].includes(

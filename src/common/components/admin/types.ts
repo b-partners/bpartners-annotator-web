@@ -9,3 +9,9 @@ export interface ExportJobFetcherParams {
     page?: number;
     perPage?: number;
 }
+
+export interface ExportJobStatisticsFetcherParams {
+    email: string;
+    page?: number;
+    perPage?: number;
+}

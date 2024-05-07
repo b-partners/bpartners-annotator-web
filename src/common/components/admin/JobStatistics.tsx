@@ -7,7 +7,7 @@ import { useFetch } from '../../hooks';
 export const JobStatistics = () => {
     const { jobId } = useParams();
     const { data, isLoading } = useFetch<AnnotationNumberPerLabel[], any>({
-        fetcher: jobsProvider.getStatistics,
+        fetcher: jobsProvider.exportStatistics,
         defaultData: [],
         defaultParams: jobId,
     });
