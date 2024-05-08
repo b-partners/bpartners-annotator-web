@@ -12,14 +12,16 @@ import { getUrlParams, urlParamsHandler } from '../../common/utils';
 import { jobsProvider } from '../../providers';
 import { job_list_list_container } from '../style';
 import { useDialog } from '../../common/context';
-import { ExportJobDialog } from '../../common/components/admin';
+import { ExportJobDialog, ExportJobStatisticsDialog } from '../../common/components/admin';
 import debounce from 'debounce';
 
 export const AdminJobList = () => {
     const { setParam } = urlParamsHandler();
     const { openDialog } = useDialog();
 
-    const handleOpenDialog = (jobId: string) => openDialog(<ExportJobDialog jobId={jobId} />);
+    const handleOpenExportJobDialog = (jobId: string) => openDialog(<ExportJobDialog jobId={jobId} />);
+    const handleOpenExportJobStatisticsDialog = (jobId: string) =>
+        openDialog(<ExportJobStatisticsDialog jobId={jobId} />);
 
     const fetcher = useCallback(async ({ page, perPage, status, name, type }: any) => {
         return await jobsProvider.getList(page, perPage, status, name, type);
@@ -121,7 +123,8 @@ export const AdminJobList = () => {
                     <List sx={job_list_list_container}>
                         {(currentJobs || []).map(job => (
                             <JobListItem
-                                onExport={handleOpenDialog}
+                                onExport={handleOpenExportJobDialog}
+                                onExportStatistics={handleOpenExportJobStatisticsDialog}
                                 link={`/jobs/${job.id}/tasks/review`}
                                 key={job.id}
                                 job={job}

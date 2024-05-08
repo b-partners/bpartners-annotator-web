@@ -5,6 +5,7 @@ export interface IJobListItem {
     job: Job;
     link: string;
     onExport?: (jobId: string) => void;
+    onExportStatistics?: (jobId: string) => void;
 }
 
 export interface ITaskListItem {
