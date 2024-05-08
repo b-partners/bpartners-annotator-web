@@ -8,7 +8,7 @@ export const userAnnotationsProvider = {
         annotationBatchId: string,
         annotationBatch?: AnnotationBatch | undefined
     ) {
-        const { data } = await userAnnotationsApi().annotateAndCompleteTask(
+        const { data } = await userAnnotationsApi().annotateAndSetTaskToReview(
             userId,
             taskId,
             annotationBatchId,

@@ -13,11 +13,11 @@ import { ExportDialogProps, ExportJobStatisticsFetcherParams } from './types';
 export const ExportJobStatisticsDialog: FC<ExportDialogProps> = ({ jobId }) => {
     const { closeDialog } = useDialog();
     const { enqueueSnackbar } = useSnackbar();
-    const form = useExportStatisticForm()
+    const form = useExportStatisticForm();
     const { isLoading, fetcher } = useFetch<unknown, ExportJobStatisticsFetcherParams>({
         fetcher: async params => {
             if (params) {
-                await jobsProvider.exportStatistics(jobId);
+                await jobsProvider.exportStatistics(jobId, params.email || '');
             }
         },
     });
