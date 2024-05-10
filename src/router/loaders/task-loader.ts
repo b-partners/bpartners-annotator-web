@@ -66,7 +66,14 @@ export const taskLoader = async ({ params }: TaskLoaderArgs) => {
         annotationsReviews = ar;
     }
 
-    return { task, job, annotationBatch: lastAnnotationBatch, globalReviews, annotationsReviews };
+    return {
+        task,
+        job,
+        annotationBatch: lastAnnotationBatch,
+        globalReviews,
+        annotationsReviews,
+        annotationBatchs: annotationBatchs || [],
+    };
 };
 
 export type UserTaskLoader<T = Awaited<ReturnType<typeof taskLoader>>> = {
