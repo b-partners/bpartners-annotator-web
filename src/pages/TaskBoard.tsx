@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { AnnotatorCanvas, Polygon } from '@bpartners/annotator-component';
-import { Box, CircularProgress, Grid, Stack } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { AnnotatorCanvas } from '@bpartners/annotator-component';
+import { Box, CircularProgress, Grid, List, ListSubheader, MenuItem, Stack, TextField } from '@mui/material';
+import { useEffect } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { TaskReviewComment } from '../common/components/job&task';
 import { Sidebar } from '../common/components/sidebar';
@@ -11,29 +11,40 @@ import {
     NextAnnotationButton,
     ZoomButtons,
 } from '../common/components/task-board';
-import { CanvasAnnotationProvider, IAnnotation } from '../common/context';
-import { useGetPrevRoute, useSession, useTaskBoardState } from '../common/hooks';
-import { PolygonAnnotationMapper, annotationsMapper } from '../common/mappers';
-import { cache, isEmpty } from '../common/utils';
+import { CanvasAnnotationProvider } from '../common/context';
+import {
+    useGetAnnotationReviews,
+    useGetPrevRoute,
+    usePolygonAnnotationState,
+    useSession,
+    useTaskBoardState,
+} from '../common/hooks';
+import { cache, dateFormater, isEmpty } from '../common/utils';
 import { UserTaskLoader } from '../router/loaders';
 import { canvas_loading } from './style';
 
 export const TaskBoard = () => {
+    const {
+        polygons,
+        setPolygons,
+        annotations,
+        setAnnotations,
+        annotationBatchs,
+        annotationBatch,
+        setBatchAnnotation,
+    } = usePolygonAnnotationState();
+
     const dataLoaded = useLoaderData() as UserTaskLoader;
-    const { annotationBatch, annotationsReviews, changeState, globalReviews, isLoading, job, task } =
-        useTaskBoardState(dataLoaded);
+    const { changeState, isLoading, job, task } = useTaskBoardState(dataLoaded);
+    const {
+        annotationReviews: { annotationsReviews, globalReviews },
+        fetchAnnotationReviews,
+    } = useGetAnnotationReviews();
 
-    const [annotations, setAnnotations] = useState<IAnnotation[]>([]);
     useEffect(() => {
-        const annotation = annotationBatch?.annotations?.map((annotation, key) =>
-            annotationsMapper.toDomain(annotation, key + 1)
-        );
-        setAnnotations(annotation || []);
+        if (annotationBatch?.id && task?.id)
+            fetchAnnotationReviews({ annotationBatchId: annotationBatch?.id, taskId: task.id });
     }, [annotationBatch]);
-
-    const setPolygons = (polygons: Polygon[]) => {
-        setAnnotations(prev => PolygonAnnotationMapper.polygonsToAnnotations(prev, polygons));
-    };
 
     const params = useParams();
     const navigate = useNavigate();
@@ -77,13 +88,38 @@ export const TaskBoard = () => {
                                 width='70vw'
                                 image={task.imageUri || ''}
                                 setPolygons={setPolygons}
-                                polygonList={annotations.map(PolygonAnnotationMapper.annotationToPolygon)}
+                                polygonList={polygons}
                             />
                         )}
                     </div>
                 </Grid>
                 <Grid sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }} item xs={2}>
                     <Stack flexGrow={2}>
+                        {!!annotationBatch && (
+                            <List subheader={<ListSubheader>Versions de l'annotation</ListSubheader>}>
+                                <Stack pt={2} pb={3} px={2}>
+                                    <TextField
+                                        select
+                                        value={dateFormater(annotationBatch.creationDatetime)}
+                                        size='small'
+                                        fullWidth
+                                    >
+                                        {annotationBatchs.map(batch => {
+                                            const date = dateFormater(batch.creationDatetime);
+                                            return (
+                                                <MenuItem
+                                                    onClick={() => setBatchAnnotation(batch)}
+                                                    key={date}
+                                                    value={date}
+                                                >
+                                                    {date}
+                                                </MenuItem>
+                                            );
+                                        })}
+                                    </TextField>
+                                </Stack>
+                            </List>
+                        )}
                         <Sidebar />
                     </Stack>
                     <Stack spacing={1} m={2} mb={1}>
