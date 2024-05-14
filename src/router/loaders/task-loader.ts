@@ -1,4 +1,4 @@
-import { AnnotationBatch, AnnotationBatchReview, AnnotationReview } from '@bpartners-annotator/typescript-client';
+import { AnnotationBatch, AnnotationBatchReview } from '@bpartners-annotator/typescript-client';
 import { TaskLoaderArgs } from '.';
 import { cache, retryer } from '../../common/utils';
 import { teamJobsProvider, userTasksProvider } from '../../providers';
@@ -48,30 +48,11 @@ export const taskLoader = async ({ params }: TaskLoaderArgs) => {
         async () => await userAnnotationsProvider.getBatchs(user?.id || '', task?.id || '')
     );
     const lastAnnotationBatch = getLastCreatedAnnotationBatch(annotationBatchs || []);
-    let reviews: AnnotationBatchReview[] | null = null;
-    let globalReviews: AnnotationReview[] = [];
-    let annotationsReviews: AnnotationReview[] = [];
-
-    if (!!lastAnnotationBatch) {
-        // get all reviews that concern the last annotation batch
-        reviews = await retryer(
-            async () =>
-                await userAnnotationsProvider.getReviews(user?.id || '', task?.id || '', lastAnnotationBatch?.id || '')
-        );
-        // separate reviews in two types
-        // if it don't have an annotation id -> global
-        // else -> annotations reviews
-        const { annotationsReviews: ar, globalReviews: gr } = getUsableReviews(reviews);
-        globalReviews = gr;
-        annotationsReviews = ar;
-    }
 
     return {
         task,
         job,
         annotationBatch: lastAnnotationBatch,
-        globalReviews,
-        annotationsReviews,
         annotationBatchs: annotationBatchs || [],
     };
 };

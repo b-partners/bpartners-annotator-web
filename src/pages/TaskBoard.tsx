@@ -12,7 +12,13 @@ import {
     ZoomButtons,
 } from '../common/components/task-board';
 import { CanvasAnnotationProvider } from '../common/context';
-import { useGetPrevRoute, usePolygonAnnotationState, useSession, useTaskBoardState } from '../common/hooks';
+import {
+    useGetAnnotationReviews,
+    useGetPrevRoute,
+    usePolygonAnnotationState,
+    useSession,
+    useTaskBoardState,
+} from '../common/hooks';
 import { cache, dateFormater, isEmpty } from '../common/utils';
 import { UserTaskLoader } from '../router/loaders';
 import { canvas_loading } from './style';
@@ -29,7 +35,16 @@ export const TaskBoard = () => {
     } = usePolygonAnnotationState();
 
     const dataLoaded = useLoaderData() as UserTaskLoader;
-    const { annotationsReviews, changeState, globalReviews, isLoading, job, task } = useTaskBoardState(dataLoaded);
+    const { changeState, isLoading, job, task } = useTaskBoardState(dataLoaded);
+    const {
+        annotationReviews: { annotationsReviews, globalReviews },
+        fetchAnnotationReviews,
+    } = useGetAnnotationReviews();
+
+    useEffect(() => {
+        if (annotationBatch?.id && task?.id)
+            fetchAnnotationReviews({ annotationBatchId: annotationBatch?.id, taskId: task.id });
+    }, [annotationBatch]);
 
     const params = useParams();
     const navigate = useNavigate();
