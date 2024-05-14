@@ -2,6 +2,8 @@ import { pxToRem, responsiveFontSizes } from '.';
 
 export const primaryFont = 'Public Sans, sans-serif';
 export const secondaryFont = 'Barlow, sans-serif';
+export const defaultFontSize = { sx: 7, sm: 9, md: 11 };
+
 
 export const typography = {
     fontFamily: primaryFont,
@@ -77,7 +79,7 @@ export const typography = {
     button: {
         fontWeight: 700,
         lineHeight: 24 / 14,
-        fontSize: pxToRem(14),
+        fontSize: { sx: 7, sm: 9, md: 11 },
         textTransform: 'unset',
     },
 };
