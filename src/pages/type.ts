@@ -8,5 +8,5 @@ export interface UseJobTaskState {
 export interface IUseTaskBoardState {
     task: Task | null;
     job: Job | null;
-    annotationBatch: AnnotationBatch | null;
+    annotationBatchs: AnnotationBatch[];
 }

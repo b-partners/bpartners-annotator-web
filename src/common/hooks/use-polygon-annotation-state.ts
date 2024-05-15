@@ -2,7 +2,7 @@ import { AnnotationBatch } from '@bpartners-annotator/typescript-client';
 import { Polygon } from '@bpartners/annotator-component';
 import { Dispatch, SetStateAction, useReducer } from 'react';
 import { useLoaderData } from 'react-router-dom';
-import { UserTaskLoader } from '../../router/loaders';
+import { UserTaskLoader, getLastCreatedAnnotationBatch } from '../../router/loaders';
 import { IAnnotation } from '../context';
 import { PolygonAnnotationMapper, annotationsMapper } from '../mappers';
 
@@ -12,12 +12,14 @@ enum ActionTypes {
     setPolygons,
     setAnnotations,
     setAnnotationBatch,
+    setAnnotationBatchs,
 }
 
 interface State {
     annotationHistory: Record<string, IAnnotation[]>;
     polygons: Polygon[];
     annotationBatch: AnnotationBatch | undefined;
+    annotationBatchs: AnnotationBatch[];
     annotations: IAnnotation[];
 }
 
@@ -92,6 +94,21 @@ const reducer = (state: State, action: Action): State => {
         };
     }
 
+    if (type === ActionTypes.setAnnotationBatchs) {
+        const annotationBatchs = dispatch.annotationBatchs || [];
+        const annotationBatch = getLastCreatedAnnotationBatch(annotationBatchs) || undefined;
+        const annotationHistory = getAnnotationHistoryFromAnnotationBatchs(annotationBatchs);
+        const annotations = annotationHistory[annotationBatch?.id || ANNOTATION_WITHOUT_BATCH];
+        const polygons = getPolygonsFromAnnotations(annotations);
+        return {
+            annotationBatchs,
+            annotationBatch,
+            annotationHistory,
+            annotations,
+            polygons,
+        };
+    }
+
     return state;
 };
 
@@ -106,6 +123,7 @@ export const usePolygonAnnotationState = () => {
         annotationBatch: annotationBatchLoader,
         annotationHistory: currentAnnotationHistory,
         polygons: [],
+        annotationBatchs,
         annotations: (currentAnnotationHistory as State['annotationHistory'])[historyKey],
     };
     const [state, dispatcher] = useReducer<typeof reducer, State>(reducer, initialState, a => ({
@@ -148,11 +166,21 @@ export const usePolygonAnnotationState = () => {
         });
     };
 
+    const setBatchAnnotations = (annotationBatchs: AnnotationBatch[]) => {
+        dispatcher({
+            type: ActionTypes.setAnnotationBatchs,
+            dispatch: {
+                annotationBatchs,
+            },
+        });
+    };
+
     return {
         setAnnotations,
         setPolygons,
         setBatchAnnotation,
-        annotationBatchs,
+        setBatchAnnotations,
+        annotationBatchs: state.annotationBatchs,
         annotationBatch,
         annotations,
         polygons,
