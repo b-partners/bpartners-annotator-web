@@ -34,7 +34,7 @@ interface Action {
     dispatch: Dispatcher;
 }
 
-const getPolygonsFromAnnotations = (annotations: IAnnotation[]) =>
+const getPolygonsFromAnnotations = (annotations: IAnnotation[] = []) =>
     annotations.map(PolygonAnnotationMapper.annotationToPolygon);
 
 const getAnnotationHistoryFromAnnotationBatchs = (annotationBatchs: AnnotationBatch[] | null) => {
@@ -98,7 +98,7 @@ const reducer = (state: State, action: Action): State => {
         const annotationBatchs = dispatch.annotationBatchs || [];
         const annotationBatch = getLastCreatedAnnotationBatch(annotationBatchs) || undefined;
         const annotationHistory = getAnnotationHistoryFromAnnotationBatchs(annotationBatchs);
-        const annotations = annotationHistory[annotationBatch?.id || ANNOTATION_WITHOUT_BATCH];
+        const annotations = annotationHistory[annotationBatch?.id || ANNOTATION_WITHOUT_BATCH] || [];
         const polygons = getPolygonsFromAnnotations(annotations);
         return {
             annotationBatchs,
@@ -131,7 +131,7 @@ export const usePolygonAnnotationState = () => {
         polygons: getPolygonsFromAnnotations(a.annotations),
     }));
 
-    const { polygons, annotationBatch, annotationHistory, annotations } = state;
+    const { polygons, annotationBatch, annotationHistory, annotations = [] } = state;
 
     const setAnnotations: Dispatch<SetStateAction<IAnnotation[]>> = params => {
         let newAnnotations: IAnnotation[] = [];
@@ -180,7 +180,7 @@ export const usePolygonAnnotationState = () => {
         setPolygons,
         setBatchAnnotation,
         setBatchAnnotations,
-        annotationBatchs: state.annotationBatchs,
+        annotationBatchs: state.annotationBatchs || [],
         annotationBatch,
         annotations,
         polygons,
