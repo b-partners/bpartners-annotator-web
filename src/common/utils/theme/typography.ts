@@ -78,7 +78,6 @@ export const typography = {
     button: {
         fontWeight: 700,
         lineHeight: 24 / 14,
-        fontSize: { sx: 7, sm: 9, md: 11 },
         textTransform: 'unset',
     },
 };
