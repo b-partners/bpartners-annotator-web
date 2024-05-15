@@ -1,13 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AnnotatorCanvas } from '@bpartners/annotator-component';
-import {
-    Box,
-    CircularProgress,
-    Grid,
-    MenuItem,
-    Stack,
-    TextField
-} from '@mui/material';
+import { Box, CircularProgress, Grid, MenuItem, Stack, TextField } from '@mui/material';
 import { useEffect } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { TaskReviewComment } from '../common/components/job&task';

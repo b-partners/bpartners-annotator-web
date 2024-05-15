@@ -4,7 +4,6 @@ export const primaryFont = 'Public Sans, sans-serif';
 export const secondaryFont = 'Barlow, sans-serif';
 export const defaultFontSize = { sx: 7, sm: 9, md: 11 };
 
-
 export const typography = {
     fontFamily: primaryFont,
     fontSecondaryFamily: secondaryFont,
