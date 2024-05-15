@@ -2,7 +2,7 @@
 import { AnnotatorCanvas } from '@bpartners/annotator-component';
 import { Box, CircularProgress, Grid, MenuItem, Stack, TextField } from '@mui/material';
 import { useEffect } from 'react';
-import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { TaskReviewComment } from '../common/components/job&task';
 import { Sidebar } from '../common/components/sidebar';
 import {
@@ -20,7 +20,6 @@ import {
     useTaskBoardState,
 } from '../common/hooks';
 import { cache, dateFormater, isEmpty } from '../common/utils';
-import { UserTaskLoader } from '../router/loaders';
 import { canvas_loading } from './style';
 
 export const TaskBoard = () => {
@@ -29,22 +28,26 @@ export const TaskBoard = () => {
         setPolygons,
         annotations,
         setAnnotations,
-        annotationBatchs,
         annotationBatch,
         setBatchAnnotation,
+        annotationBatchs,
+        setBatchAnnotations,
     } = usePolygonAnnotationState();
 
-    const dataLoaded = useLoaderData() as UserTaskLoader;
-    const { changeState, isLoading, job, task } = useTaskBoardState(dataLoaded);
+    const { changeState, isLoading, job, task, annotationBatchs: fetchedAnnotationBatchs } = useTaskBoardState();
     const {
         annotationReviews: { annotationsReviews, globalReviews },
         fetchAnnotationReviews,
     } = useGetAnnotationReviews();
 
     useEffect(() => {
+        setBatchAnnotations(fetchedAnnotationBatchs || []);
+    }, [fetchedAnnotationBatchs]);
+
+    useEffect(() => {
         if (annotationBatch?.id && task?.id)
             fetchAnnotationReviews({ annotationBatchId: annotationBatch?.id, taskId: task.id });
-    }, [annotationBatch]);
+    }, [annotationBatch, annotationBatchs]);
 
     const params = useParams();
     const navigate = useNavigate();
@@ -70,7 +73,7 @@ export const TaskBoard = () => {
         <CanvasAnnotationProvider
             annotations={annotations}
             setAnnotations={setAnnotations}
-            img={task.imageUri || ''}
+            img={task?.imageUri || ''}
             batch={annotationBatch || undefined}
             annotationsReviews={annotationsReviews || undefined}
             globalReviews={globalReviews || undefined}
@@ -86,7 +89,7 @@ export const TaskBoard = () => {
                                 allowAnnotation={isUser()}
                                 height='70vh'
                                 width='70vw'
-                                image={task.imageUri || ''}
+                                image={task?.imageUri || ''}
                                 setPolygons={setPolygons}
                                 polygonList={polygons}
                             />
@@ -104,7 +107,7 @@ export const TaskBoard = () => {
                                 sx={{ mt: 2 }}
                                 fullWidth
                             >
-                                {annotationBatchs.map(batch => {
+                                {annotationBatchs?.map(batch => {
                                     const date = dateFormater(batch.creationDatetime);
                                     return (
                                         <MenuItem onClick={() => setBatchAnnotation(batch)} key={date} value={date}>
@@ -118,13 +121,17 @@ export const TaskBoard = () => {
                     </Stack>
                     <Stack spacing={1} m={2} mb={1}>
                         <CancelAnnotationButton />
-                        <NextAnnotationButton fetcher={changeState} task={task} />
-                        <ConfirmAnnotationButton
-                            isFetcherLoading={isLoading}
-                            task={task}
-                            onEnd={changeState}
-                            labels={job?.labels || []}
-                        />
+                        {task && (
+                            <>
+                                <NextAnnotationButton fetcher={changeState} task={task} />
+                                <ConfirmAnnotationButton
+                                    isFetcherLoading={isLoading}
+                                    task={task}
+                                    onEnd={changeState}
+                                    labels={job?.labels || []}
+                                />
+                            </>
+                        )}
                     </Stack>
                 </Grid>
             </Grid>
