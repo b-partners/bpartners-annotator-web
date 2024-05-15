@@ -131,7 +131,7 @@ export const usePolygonAnnotationState = () => {
         polygons: getPolygonsFromAnnotations(a.annotations),
     }));
 
-    const { polygons, annotationBatch, annotationHistory, annotations } = state;
+    const { polygons, annotationBatch, annotationHistory, annotations = [] } = state;
 
     const setAnnotations: Dispatch<SetStateAction<IAnnotation[]>> = params => {
         let newAnnotations: IAnnotation[] = [];

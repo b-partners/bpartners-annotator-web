@@ -13,7 +13,7 @@ export class PolygonAnnotationMapper {
         };
     };
 
-    public static polygonsToAnnotations = (annotations: IAnnotation[], polygons: Polygon[]) => {
+    public static polygonsToAnnotations = (annotations: IAnnotation[] = [], polygons: Polygon[]) => {
         return polygons.map(({ fillColor, id: polygonId, points, strokeColor }, i) => {
             const annotation: IAnnotation = annotations.find(a => a.uuid === polygonId) || ({ label: '' } as any);
 
