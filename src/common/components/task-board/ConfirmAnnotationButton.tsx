@@ -99,7 +99,7 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ labels, onEnd, tas
                 data-cy='validate-annotation-button'
                 label='Valider l’annotation'
                 onClick={handleClick}
-                disabled={!noAnnotation && annotations.length === 0}
+                disabled={!noAnnotation && annotations && annotations.length === 0}
                 isLoading={isLoading || isFetcherLoading}
             />
             <FormControlLabel
