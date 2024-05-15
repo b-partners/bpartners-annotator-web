@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AnnotatorCanvas } from '@bpartners/annotator-component';
-import { Box, CircularProgress, Grid, List, ListSubheader, MenuItem, Stack, TextField } from '@mui/material';
+import { Box, CircularProgress, Grid, MenuItem, Stack, TextField } from '@mui/material';
 import { useEffect } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { TaskReviewComment } from '../common/components/job&task';
@@ -96,29 +96,23 @@ export const TaskBoard = () => {
                 <Grid sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }} item xs={2}>
                     <Stack flexGrow={2}>
                         {!!annotationBatch && (
-                            <List subheader={<ListSubheader>Versions de l'annotation</ListSubheader>}>
-                                <Stack pt={2} pb={3} px={2}>
-                                    <TextField
-                                        select
-                                        value={dateFormater(annotationBatch.creationDatetime)}
-                                        size='small'
-                                        fullWidth
-                                    >
-                                        {annotationBatchs.map(batch => {
-                                            const date = dateFormater(batch.creationDatetime);
-                                            return (
-                                                <MenuItem
-                                                    onClick={() => setBatchAnnotation(batch)}
-                                                    key={date}
-                                                    value={date}
-                                                >
-                                                    {date}
-                                                </MenuItem>
-                                            );
-                                        })}
-                                    </TextField>
-                                </Stack>
-                            </List>
+                            <TextField
+                                select
+                                label="Versions de l'annotation"
+                                value={dateFormater(annotationBatch.creationDatetime)}
+                                size='small'
+                                sx={{ mt: 2 }}
+                                fullWidth
+                            >
+                                {annotationBatchs.map(batch => {
+                                    const date = dateFormater(batch.creationDatetime);
+                                    return (
+                                        <MenuItem onClick={() => setBatchAnnotation(batch)} key={date} value={date}>
+                                            {date}
+                                        </MenuItem>
+                                    );
+                                })}
+                            </TextField>
                         )}
                         <Sidebar />
                     </Stack>
