@@ -6,7 +6,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import BP_LOGO from '../../../assets/bp-white-logo.png';
 import { authProvider } from '../../../providers';
 import { DialogProvider } from '../../context';
-import { cache } from '../../utils';
+import { cache, getPrevUrl } from '../../utils';
 
 export const TopBarLayout = () => {
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ export const TopBarLayout = () => {
     };
 
     const goBack = () => {
-        navigate(-1);
+        navigate(getPrevUrl());
     };
 
     useEffect(() => {
