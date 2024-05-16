@@ -6,7 +6,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import BP_LOGO from '../../../assets/bp-white-logo.png';
 import { authProvider } from '../../../providers';
 import { DialogProvider } from '../../context';
-import { cache } from '../../utils';
+import { cache, getPrevUrl } from '../../utils';
 
 export const TopBarLayout = () => {
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ export const TopBarLayout = () => {
     };
 
     const goBack = () => {
-        navigate(-1);
+        navigate(getPrevUrl());
     };
 
     useEffect(() => {
@@ -37,7 +37,11 @@ export const TopBarLayout = () => {
         <DialogProvider>
             <AppBar position='relative' sx={{ height: '64px' }}>
                 <Toolbar>
-                    <IconButton sx={{ transform: 'translateX(-50%)', color: 'white' }} onClick={goBack}>
+                    <IconButton
+                        data-cy='top-back-button'
+                        sx={{ transform: 'translateX(-50%)', color: 'white' }}
+                        onClick={goBack}
+                    >
                         <ChevronLeft />
                     </IconButton>
                     <LazyLoadImage src={BP_LOGO} alt='BpLogo' width={120} />

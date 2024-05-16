@@ -48,3 +48,5 @@ export const REJECT_DIALOG_REJECT_BUTTON = 'reject-dialog-reject-button';
 
 export const ANNOTATION_COMMENT_BUTTON = 'comment-button-1';
 export const ANNOTATION_COMMENT_INPUT = 'comment-input-1';
+
+export const TOP_BACK_BUTTON = 'top-back-button';

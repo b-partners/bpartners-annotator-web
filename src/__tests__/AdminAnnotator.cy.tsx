@@ -18,7 +18,7 @@ import {
 } from './selectors';
 
 describe('Test UserAnnotator', () => {
-    it('Should test annotator for the user.', () => {
+    it('Should test annotator for the admin.', () => {
         cy.fixture('/auth/whoami.json').then(cache.setWhoami);
         cy.fixture('/auth/api-key.txt').then(cache.setApiKey);
         cy.intercept('GET', '/jobs?**', { fixture: '/data/jobs.json' });
