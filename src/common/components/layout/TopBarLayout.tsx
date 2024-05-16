@@ -37,7 +37,7 @@ export const TopBarLayout = () => {
         <DialogProvider>
             <AppBar position='relative' sx={{ height: '64px' }}>
                 <Toolbar>
-                    <IconButton sx={{ transform: 'translateX(-50%)', color: 'white' }} onClick={goBack}>
+                    <IconButton data-cy="top-back-button" sx={{ transform: 'translateX(-50%)', color: 'white' }} onClick={goBack}>
                         <ChevronLeft />
                     </IconButton>
                     <LazyLoadImage src={BP_LOGO} alt='BpLogo' width={120} />

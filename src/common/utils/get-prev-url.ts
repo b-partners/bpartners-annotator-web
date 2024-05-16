@@ -1,7 +1,7 @@
 const teamJobListUrlPattern = /teams\/[^/]*\/jobs$/;
 const teamTaskBoardUrlPattern = /teams\/[^/]*\/jobs\/[^/]*$/;
 
-const adminJobListUrlPattern = /jobs\/[^/]*$/;
+const adminJobListUrlPattern = /jobs[^/]*$/;
 const adminTaskBoardUrlPattern = /jobs\/[^/]*\/tasks\/review[^/]*$/;
 
 const teamIdPattern = /teams\/([^/]*)\/jobs/;
