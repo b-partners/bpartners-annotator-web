@@ -10,7 +10,7 @@ import { authProvider } from '../providers';
 
 export const Home = () => {
     const navigate = useNavigate();
-    const { mutate, isPending } = useMutation<string, AxiosError>({
+    const { mutate, isLoading } = useMutation<string, AxiosError>({
         mutationFn: () => authProvider.getRedirectionBySession(),
         onSuccess: data => navigate(data),
     });
@@ -27,7 +27,7 @@ export const Home = () => {
                         d&apos;images.
                     </Typography>
 
-                    <BpButton data-cy='start-button' label='Commencer' isLoading={isPending} onClick={handlerClick} />
+                    <BpButton data-cy='start-button' label='Commencer' isLoading={isLoading} onClick={handlerClick} />
                 </Box>
             </Stack>
         </Box>

@@ -12,13 +12,8 @@ import {
     ZoomButtons,
 } from '../common/components/task-board';
 import { CanvasAnnotationProvider } from '../common/context';
-import {
-    useGetAnnotationReviews,
-    useGetPrevRoute,
-    usePolygonAnnotationState,
-    useSession,
-    useTaskBoardState,
-} from '../common/hooks';
+import { useTaskBoardFetcher } from '../common/fetchers';
+import { useGetAnnotationReviews, useGetPrevRoute, usePolygonAnnotationState, useSession } from '../common/hooks';
 import { cache, dateFormater, isEmpty } from '../common/utils';
 import { canvas_loading } from './style';
 
@@ -34,7 +29,7 @@ export const TaskBoard = () => {
         setBatchAnnotations,
     } = usePolygonAnnotationState();
 
-    const { changeState, isLoading, job, task, annotationBatchs: fetchedAnnotationBatchs } = useTaskBoardState();
+    const { changeState, isLoading, job, task, annotationBatchs: fetchedAnnotationBatchs } = useTaskBoardFetcher();
     const {
         annotationReviews: { annotationsReviews, globalReviews },
         fetchAnnotationReviews,
