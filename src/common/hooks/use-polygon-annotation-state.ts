@@ -1,8 +1,7 @@
 import { AnnotationBatch } from '@bpartners-annotator/typescript-client';
 import { Polygon } from '@bpartners/annotator-component';
 import { Dispatch, SetStateAction, useReducer } from 'react';
-import { useLoaderData } from 'react-router-dom';
-import { UserTaskLoader, getLastCreatedAnnotationBatch } from '../../router/loaders';
+import { getLastCreatedAnnotationBatch } from '../../router/loaders';
 import { IAnnotation } from '../context';
 import { PolygonAnnotationMapper, annotationsMapper } from '../mappers';
 
@@ -113,17 +112,16 @@ const reducer = (state: State, action: Action): State => {
 };
 
 export const usePolygonAnnotationState = () => {
-    const { annotationBatchs, annotationBatch: annotationBatchLoader } = useLoaderData() as UserTaskLoader;
-    const historyKey = annotationBatchLoader?.id || ANNOTATION_WITHOUT_BATCH;
+    const historyKey = ANNOTATION_WITHOUT_BATCH;
     const currentAnnotationHistory = {
         [ANNOTATION_WITHOUT_BATCH]: [] as IAnnotation[],
-        ...getAnnotationHistoryFromAnnotationBatchs(annotationBatchs),
+        ...getAnnotationHistoryFromAnnotationBatchs([]),
     };
     const initialState = {
-        annotationBatch: annotationBatchLoader,
+        annotationBatch: {},
         annotationHistory: currentAnnotationHistory,
         polygons: [],
-        annotationBatchs,
+        annotationBatchs: [],
         annotations: (currentAnnotationHistory as State['annotationHistory'])[historyKey],
     };
     const [state, dispatcher] = useReducer<typeof reducer, State>(reducer, initialState, a => ({
