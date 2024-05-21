@@ -21,4 +21,4 @@ export const loginDefaultValues = {
 export const loginResolver = zodResolver(loginSchema);
 export type Credentials = zod.infer<typeof loginSchema>;
 
-export const useLoginForm = () => useForm({ mode: 'all', resolver: loginResolver, defaultValues: loginDefaultValues })
+export const useLoginForm = () => useForm({ mode: 'all', resolver: loginResolver, defaultValues: loginDefaultValues });

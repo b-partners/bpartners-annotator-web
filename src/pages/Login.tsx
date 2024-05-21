@@ -19,9 +19,9 @@ const useMutateLogin = (navigate: NavigateFunction) =>
 export const Login = () => {
     const navigate = useNavigate();
     const { mutate, isPending } = useMutateLogin(navigate);
-    
+
     const form = useLoginForm();
-    
+
     const handleSubmit = form.handleSubmit(data => mutate(data));
 
     return (

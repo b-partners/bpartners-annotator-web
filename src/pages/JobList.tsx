@@ -14,7 +14,7 @@ import { job_list_list_container } from './style';
 
 export const JobList = () => {
     const params = useParams();
-    const { data: jobs, isLoading: fetchJobLoading, setFilters, refetch } = useFetchJob(params.teamId ?? '');
+    const { data: jobs, isLoading: fetchJobLoading, setFilters, refetch } = useFetchJob(params.teamId);
 
     const { setParam } = urlParamsHandler();
     const { teamId = '' } = useParams();
