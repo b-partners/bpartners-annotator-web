@@ -81,7 +81,16 @@ export const JobList = () => {
                     </Box>
                 )}
                 {fetchJobLoading && (
-                    <Box textAlign='center' sx={{ color: 'text.secondary', height: 500 }}>
+                    <Box
+                        textAlign='center'
+                        sx={{
+                            color: 'text.secondary',
+                            height: 500,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
                         <CircularProgress color='primary' />
                     </Box>
                 )}
