@@ -11,8 +11,11 @@ import { authProvider } from '../providers';
 export const Home = () => {
     const navigate = useNavigate();
     const { mutate, isLoading } = useMutation<string, AxiosError>({
-        mutationFn: () => authProvider.getRedirectionBySession(),
-        onSuccess: data => navigate(data),
+        mutationFn: async () => {
+            const url = await authProvider.getRedirectionBySession();
+            navigate(url);
+            return url;
+        },
     });
 
     const handlerClick = () => mutate();
