@@ -120,3 +120,11 @@ export const canvas_loading: SxProps = {
     justifyContent: 'center',
     alignItems: 'center',
 };
+
+export const job_list_loader = {
+    color: 'text.secondary',
+    height: 500,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+};

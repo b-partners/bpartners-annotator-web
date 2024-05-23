@@ -10,7 +10,7 @@ import { Pagination } from '../common/components/pagination';
 import { useFetchJob } from '../common/fetchers';
 import { cache, getUrlParams, urlParamsHandler } from '../common/utils';
 import { teamJobsProvider } from '../providers';
-import { job_list_list_container } from './style';
+import { job_list_list_container, job_list_loader } from './style';
 
 export const JobList = () => {
     const params = useParams();
@@ -81,16 +81,7 @@ export const JobList = () => {
                     </Box>
                 )}
                 {fetchJobLoading && (
-                    <Box
-                        textAlign='center'
-                        sx={{
-                            color: 'text.secondary',
-                            height: 500,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
+                    <Box textAlign='center' sx={job_list_loader}>
                         <CircularProgress color='primary' />
                     </Box>
                 )}

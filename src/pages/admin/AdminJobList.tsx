@@ -12,7 +12,7 @@ import { useDialog } from '../../common/context';
 import { useFetchAdminJob } from '../../common/fetchers';
 import { getUrlParams, urlParamsHandler } from '../../common/utils';
 import { jobsProvider } from '../../providers';
-import { job_list_list_container } from '../style';
+import { job_list_list_container, job_list_loader } from '../style';
 
 export const AdminJobList = () => {
     const { setParam } = urlParamsHandler();
@@ -123,7 +123,7 @@ export const AdminJobList = () => {
                     </Box>
                 )}
                 {isLoading && (
-                    <Box textAlign='center' sx={{ color: 'text.secondary', height: 500 }}>
+                    <Box textAlign='center' sx={job_list_loader}>
                         <CircularProgress color='primary' />
                     </Box>
                 )}
