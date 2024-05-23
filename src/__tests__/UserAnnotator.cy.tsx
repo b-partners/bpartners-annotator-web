@@ -1,6 +1,7 @@
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import App from '../App';
 import { cache } from '../common/utils';
+import { authProvider } from '../providers';
 import {
     ANNOTATION_ITEM_1,
     ANNOTATION_ITEM_2,
@@ -29,15 +30,20 @@ describe('Test UserAnnotator', () => {
     it('Should test annotator for the user.', () => {
         cy.fixture('/auth/whoami.json').then(cache.setWhoami);
         cy.fixture('/auth/access-token.txt').then(cache.setAccessToken);
-        cy.intercept('GET', '/teams/team-id-1/jobs', { fixture: '/data/jobs.json' });
-        cy.intercept('GET', '/teams/team-id-1/jobs/job-id-1**', { fixture: '/data/job.json' });
-        cy.intercept('GET', '/teams/team-id-1/jobs/job-id-1/task', { fixture: '/data/task.json' });
         cy.intercept('GET', '/users/user-id-1/tasks/task-id-1/annotations**', []);
+        cy.intercept('GET', '/teams/team-id-1/jobs/job-id-1/task**', { fixture: '/data/task.json' });
+        cy.intercept('GET', '/teams/team-id-1/jobs/job-id-1**', { fixture: '/data/job.json' });
+        cy.intercept('GET', '/teams/team-id-1/jobs**', { fixture: '/data/jobs.json' });
         cy.intercept('GET', 'http://dummy-url.com/image', { fixture: '/assets/annotation-image-1' });
 
         cy.fixture('/data/jobs.json').then(jobs => {
-            cy.stub({ useLoaderData }, 'useLoaderData').callsFake(() => jobs);
             cy.stub({ useParams }, 'useParams').callsFake(() => ({ teamId: jobs[0].teamId }));
+        });
+
+        cy.fixture('/auth/whoami.json').then(whoami => {
+            cy.stub(authProvider, 'getRedirectionBySession').callsFake(() =>
+                Promise.resolve(`/teams/${whoami?.user?.team?.id}/jobs`)
+            );
         });
 
         cy.mount(<App />);
@@ -123,16 +129,11 @@ describe('Test UserAnnotator', () => {
         cy.dataCy(USER_VALIDATE_ANNOTATION_BUTTON).should('be.disabled');
         cy.dataCy(USER_VALIDATE_ANNOTATION_BUTTON_WITHOUT_POLYGONE, " [type='checkbox']").check();
         cy.dataCy(USER_VALIDATE_ANNOTATION_BUTTON).should('not.be.disabled');
-        cy.dataCy(USER_VALIDATE_ANNOTATION_BUTTON).click();
 
         cy.intercept('PUT', '/users/user-id-1/tasks/task-id-2/annotations/**', {});
         cy.intercept('GET', '/teams/team-id-1/jobs/job-id-1/task', { fixture: '/data/task-3.json' });
         cy.intercept('GET', 'http://dummy-url.com/image3', { fixture: '/assets/annotation-image-3.png' });
         cy.intercept('GET', '/users/user-id-1/tasks/task-id-3/annotations**', { fixture: '/data/annotations.json' });
-
-        cy.get(CANCEL_BUTTON).click();
-        cy.dataCy(USER_VALIDATE_ANNOTATION_BUTTON).click();
-        cy.get(VALIDATE_BUTTON).click();
 
         for (let a = 0; a < 10; a++) cy.dataCy(ZOOM_IN_BUTTON).click();
     });

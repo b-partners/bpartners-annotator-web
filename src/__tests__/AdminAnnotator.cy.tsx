@@ -1,4 +1,4 @@
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import App from '../App';
 import { cache } from '../common/utils';
 import {
@@ -28,7 +28,6 @@ describe('Test UserAnnotator', () => {
         cy.intercept('GET', 'jobs/job-id-1/tasks/task-id-1/annotations?**', { fixture: '/data/admin-task-1.json' });
 
         cy.fixture('/data/jobs.json').then(jobs => {
-            cy.stub({ useLoaderData }, 'useLoaderData').callsFake(() => jobs);
             cy.stub({ useParams }, 'useParams').callsFake(() => ({ teamId: jobs[0].teamId }));
         });
 

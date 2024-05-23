@@ -1,31 +1,29 @@
 import { LoginOutlined as LoginOutlinedIcon } from '@mui/icons-material';
 import { Divider, Stack } from '@mui/material';
-import { useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { FormProvider } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { BpButton, BpPasswordField, BpTextField } from '../common/components/basics';
 import { LoginLayout } from '../common/layout';
-import { FieldErrorMessage, loginDefaultValues, loginResolver } from '../common/resolvers';
-import { authProvider } from '../providers';
+import { useLoginForm } from '../common/resolvers';
+import { ICredential, authProvider } from '../providers';
 import { login_button_container } from './style';
 
-export const Login = () => {
-    const form = useForm({ mode: 'all', resolver: loginResolver, defaultValues: loginDefaultValues });
-    const [isLoading, setLoading] = useState(false);
+const useMutateLogin = () => {
     const navigate = useNavigate();
-
-    const handleSubmit = form.handleSubmit(async data => {
-        try {
-            setLoading(true);
-            const redirection = await authProvider.login(data);
-            navigate(redirection);
-        } catch (err) {
-            console.log(err);
-            form.setError('password', { message: FieldErrorMessage.incorrectPassword });
-        } finally {
-            setLoading(false);
-        }
+    return useMutation({
+        mutationKey: ['login'],
+        mutationFn: (data: ICredential) => authProvider.login(data),
+        onSuccess: data => navigate(data),
     });
+};
+
+export const Login = () => {
+    const { mutate, isLoading } = useMutateLogin();
+
+    const form = useLoginForm();
+
+    const handleSubmit = form.handleSubmit(data => mutate(data));
 
     return (
         <LoginLayout title='Connection'>

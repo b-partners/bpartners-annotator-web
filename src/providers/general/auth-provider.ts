@@ -57,14 +57,23 @@ export const authProvider = {
         cache.setApiKey('');
         return loginUrl;
     },
-    getRedirectionBySession() {
+    async getRedirectionBySession() {
         const apiKey = cache.getApiKey();
-        const whoami = cache.getWhoami();
-        if (!!apiKey) {
+        if (apiKey) {
             return '/jobs?page=1&perPage=10';
-        } else if (!!whoami) {
-            return `/teams/${whoami?.user?.team?.id}/jobs`;
         }
-        return '/login';
+
+        const whoami = cache.getWhoami();
+        if (!whoami) {
+            return '/login';
+        }
+
+        try {
+            const { getIdToken } = await Auth.currentSession();
+            cache.setAccessToken(getIdToken().getJwtToken());
+            return `/teams/${whoami?.user?.team?.id}/jobs`;
+        } catch {
+            return '/login';
+        }
     },
 };

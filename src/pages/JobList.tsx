@@ -1,29 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Job } from '@bpartners-annotator/typescript-client';
 import { Inbox as InboxIcon } from '@mui/icons-material';
 import { Box, CircularProgress, List, Stack, TextField, Typography } from '@mui/material';
 import debounce from 'debounce';
-import { ChangeEvent, useEffect, useMemo } from 'react';
-import { useLoaderData, useParams } from 'react-router-dom';
+import { ChangeEvent, useCallback, useEffect, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 import { JobListItem } from '../common/components/job&task';
 import { ListPageLayout } from '../common/components/layout';
 import { Pagination } from '../common/components/pagination';
-import { useFetch } from '../common/hooks';
+import { useFetchJob } from '../common/fetchers';
 import { cache, getUrlParams, urlParamsHandler } from '../common/utils';
 import { teamJobsProvider } from '../providers';
-import { job_list_list_container } from './style';
+import { job_list_list_container, job_list_loader } from './style';
 
 export const JobList = () => {
-    const { setParam } = urlParamsHandler();
-    const { jobs } = useLoaderData() as { jobs: Job[] };
-    const { teamId = '' } = useParams();
-    const fetcher = ({ page, perPage, name }: any) => teamJobsProvider.getList(teamId || '', page, perPage, name);
+    const params = useParams();
+    const { data: jobs, isLoading: fetchJobLoading, setFilters, refetch } = useFetchJob(params.teamId);
 
-    const {
-        data: currentJobs,
-        isLoading,
-        fetcher: jobsFetcher,
-    } = useFetch({ fetcher, defaultData: jobs, defaultParams: { teamId } as any, onlyOnMutate: true });
+    const { setParam } = urlParamsHandler();
+    const { teamId = '' } = useParams();
 
     useEffect(() => {
         cache.deleteCurrentTask();
@@ -32,21 +26,23 @@ export const JobList = () => {
     const handleSearch = useMemo(
         () =>
             debounce((e: ChangeEvent<HTMLInputElement>) => {
-                jobsFetcher({
+                setFilters({
                     name: e.target.value,
                 } as any);
+                refetch();
                 setParam('q', e.target.value);
             }, 500),
         []
     );
 
-    const handlePaginationChange = (newPage: number, newPerPage?: number) => {
+    const handlePaginationChange = useCallback((newPage: number, newPerPage?: number) => {
         const { searchParams } = getUrlParams();
-        jobsFetcher({
+        setFilters({
             page: newPage,
-            perPage: newPerPage || +(searchParams.get('perPage') as string),
+            pageSize: newPerPage || +(searchParams.get('perPage') as string),
         });
-    };
+        refetch();
+    }, []);
 
     return (
         <ListPageLayout
@@ -55,7 +51,7 @@ export const JobList = () => {
                     <Pagination
                         getLastPage={teamJobsProvider.getLastPage.bind(teamJobsProvider)}
                         onChange={handlePaginationChange}
-                        isLoading={isLoading}
+                        isLoading={fetchJobLoading}
                     />
                 </Stack>
             }
@@ -71,21 +67,21 @@ export const JobList = () => {
                         fullWidth
                     />
                 </Box>
-                {(currentJobs || []).length > 0 && !isLoading && (
+                {(jobs || []).length > 0 && !fetchJobLoading && (
                     <List sx={job_list_list_container}>
-                        {(currentJobs || []).map(job => (
+                        {(jobs || []).map(job => (
                             <JobListItem key={job.id} link={`/teams/${teamId}/jobs/${job.id}`} job={job} />
                         ))}
                     </List>
                 )}
-                {(currentJobs || []).length === 0 && !isLoading && (
+                {(jobs || []).length === 0 && !fetchJobLoading && (
                     <Box textAlign='center' sx={{ color: 'text.secondary', height: 500 }}>
                         <InboxIcon sx={{ fontSize: '15rem' }} />
                         <Typography>Pas de jobs</Typography>
                     </Box>
                 )}
-                {isLoading && (
-                    <Box textAlign='center' sx={{ color: 'text.secondary', height: 500 }}>
+                {fetchJobLoading && (
+                    <Box textAlign='center' sx={job_list_loader}>
                         <CircularProgress color='primary' />
                     </Box>
                 )}

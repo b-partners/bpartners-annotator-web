@@ -1,38 +1,35 @@
-import { AnnotationBatch, Job, Task } from '@bpartners-annotator/typescript-client';
-import { Box, CircularProgress, Grid, List, ListSubheader, MenuItem, Stack, TextField } from '@mui/material';
 import { AnnotatorCanvas, Polygon } from '@bpartners/annotator-component';
 import { CopyAll as CopyAllIcon } from '@mui/icons-material';
-import { IconButton, Typography, Chip } from '@mui/material';
-import debounce from 'debounce';
+import {
+    Box,
+    Chip,
+    CircularProgress,
+    Grid,
+    IconButton,
+    List,
+    ListSubheader,
+    MenuItem,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { useEffect, useMemo, useState } from 'react';
-import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { CancelEvaluationButton, EvaluationRejectionButton, ValidateButton } from '../../common/components/admin';
 import { Sidebar } from '../../common/components/sidebar';
+import { ZoomButtons } from '../../common/components/task-board';
 import { CanvasAnnotationProvider, IAnnotation } from '../../common/context';
 import { EvaluationCommentProvider } from '../../common/context/admin';
-import { useFetch, useSession } from '../../common/hooks';
+import { useAdminTaskFetcher } from '../../common/fetchers';
+import { useSession } from '../../common/hooks';
 import { PolygonAnnotationMapper, annotationsMapper } from '../../common/mappers';
-import { cache, dateFormater, getTaskToValidate, retryer, urlParamsHandler } from '../../common/utils';
+import { dateFormater } from '../../common/utils';
 import { palette } from '../../common/utils/theme';
-import { EMPTY_ANNOTATIONS_TO_VALIDATE, tasksProvider } from '../../providers';
-import { annotationsProvider } from '../../providers/admin/annotations-provider';
 import { canvas_loading } from '../style';
 import { CANVAS_CONTAINER, GRID_ITEM_CONTAINER, GRID_ITEM_SIDEBAR_CONTAINER, IMAGE_NAME_COPY } from './styles';
-import { ZoomButtons } from '../../common/components/task-board';
-
-type AdminTaskJobLoaderReturn = {
-    batchs: AnnotationBatch[];
-    task: Task;
-    job: Job;
-    tasks: Task[];
-};
 
 export const AdminTaskBoard = () => {
-    const { task, tasks, batchs, job } = useLoaderData() as AdminTaskJobLoaderReturn;
-    const [batch, setBatch] = useState(batchs[0] || {});
-    const params = useParams();
-    const navigate = useNavigate();
+    const { batch, batchs, job, task, tasks, setBatch, isLoading, refetch } = useAdminTaskFetcher();
     const { enqueueSnackbar } = useSnackbar();
     const { isUser } = useSession();
     const [annotations, setAnnotations] = useState<IAnnotation[]>([]);
@@ -47,61 +44,19 @@ export const AdminTaskBoard = () => {
         setAnnotations(prev => PolygonAnnotationMapper.polygonsToAnnotations(prev, polygons));
     };
 
-    const notify = useMemo(
-        () =>
-            debounce(
-                () =>
-                    enqueueSnackbar("Il n'y a pas encore d'annotation à valider dans ce job.", {
-                        style: { background: palette().info.dark },
-                    }),
-                100
-            ),
-        [enqueueSnackbar]
-    );
-
-    useEffect(() => {
-        if (task === null) {
-            navigate(`/jobs?${EMPTY_ANNOTATIONS_TO_VALIDATE}=true`);
-            notify();
-        } else {
-            const { setParam } = urlParamsHandler({ taskId: task?.id || '' });
-            setParam('taskId', task.id || '');
-        }
-    }, [task, navigate, notify]);
-
-    const fetcher = async () => {
-        cache.deleteCurrentTask();
-        const { setParam } = urlParamsHandler();
-        const tasks = (await retryer(tasksProvider.getList(params?.jobId || ''))) || [];
-        const task = getTaskToValidate(tasks);
-        if (task === null) {
-            navigate(`/jobs`);
-        }
-        const batchs = (await retryer(annotationsProvider.getBatchs(params?.jobId || '', task?.id || ''))) || [];
-        setParam('taskId', task?.id || '');
-        setBatch(batchs[0] || {});
-        return task;
-    };
-
-    const {
-        data: currenTask,
-        isLoading,
-        fetcher: changeCurrentTask,
-    } = useFetch({ fetcher, defaultData: task, onlyOnMutate: true });
-
     const handleCopyToClipBoard = () => {
-        navigator.clipboard.writeText(task.filename || '').then(() => {
+        navigator.clipboard.writeText(task?.filename || '').then(() => {
             enqueueSnackbar("Le nom de l'image a été copié.", { style: { background: palette().success.main } });
         });
     };
 
-    return currenTask !== null && !isLoading ? (
+    return batch && job && task && batchs && !isLoading ? (
         <EvaluationCommentProvider>
             <CanvasAnnotationProvider
-                changeCurrentTask={changeCurrentTask}
+                changeCurrentTask={refetch}
                 tasks={tasks}
                 batch={batch}
-                img={currenTask.imageUri || ''}
+                img={task.imageUri || ''}
                 labels={job?.labels || []}
                 annotations={annotations}
                 setAnnotations={setAnnotations}
@@ -115,7 +70,7 @@ export const AdminTaskBoard = () => {
                                     allowAnnotation={isUser()}
                                     height='70vh'
                                     width='70vw'
-                                    image={(currenTask || task).imageUri || ''}
+                                    image={task.imageUri || ''}
                                     setPolygons={setPolygons}
                                     polygonList={annotations.map(PolygonAnnotationMapper.annotationToPolygon)}
                                 />
