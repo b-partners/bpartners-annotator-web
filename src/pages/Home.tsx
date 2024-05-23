@@ -10,7 +10,7 @@ import { authProvider } from '../providers';
 
 export const Home = () => {
     const navigate = useNavigate();
-    const { mutate, isLoading } = useMutation<string, AxiosError>({
+    const { mutate, isPending: isLoading } = useMutation<string, AxiosError>({
         mutationFn: async () => {
             const url = await authProvider.getRedirectionBySession();
             navigate(url);

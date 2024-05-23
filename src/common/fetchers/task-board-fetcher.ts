@@ -64,7 +64,7 @@ export const useTaskBoardFetcher = () => {
             jobQuery.isFetching ||
             taskQuery.isLoading ||
             taskQuery.isFetching ||
-            annotationBatchMutation.isLoading,
+            annotationBatchMutation.isPending,
         changeState: () => {
             jobQuery.refetch();
             taskQuery.refetch();

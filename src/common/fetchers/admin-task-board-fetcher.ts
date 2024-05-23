@@ -92,7 +92,7 @@ export const useAdminTaskFetcher = () => {
         isLoading:
             adminTaskFetcher.isLoading ||
             adminTaskFetcher.isFetching ||
-            adminBatchsMutation.isLoading ||
+            adminBatchsMutation.isPending ||
             adminJobFetcher.isLoading ||
             adminJobFetcher.isFetching,
     };
