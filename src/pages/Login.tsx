@@ -19,7 +19,7 @@ const useMutateLogin = () => {
 };
 
 export const Login = () => {
-    const { mutate, isLoading } = useMutateLogin();
+    const { mutate, isPending: isLoading } = useMutateLogin();
 
     const form = useLoginForm();
 
