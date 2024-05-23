@@ -1,11 +1,23 @@
 import { AnnotationBatch } from '@bpartners-annotator/typescript-client';
 import { Polygon } from '@bpartners/annotator-component';
 import { Dispatch, SetStateAction, useReducer } from 'react';
-import { getLastCreatedAnnotationBatch } from '../../router/loaders';
 import { IAnnotation } from '../context';
 import { PolygonAnnotationMapper, annotationsMapper } from '../mappers';
 
 const ANNOTATION_WITHOUT_BATCH = 'without-batch';
+
+export const getLastCreatedAnnotationBatch = (annotationBatchs: AnnotationBatch[]): AnnotationBatch | null => {
+    if (annotationBatchs.length === 0) {
+        return null;
+    }
+
+    return annotationBatchs.reduce((prev, current) => {
+        const prevBatchDate = new Date(prev.creationDatetime || '');
+        const currentBatchDate = new Date(current.creationDatetime || '');
+
+        return prevBatchDate > currentBatchDate ? prev : current;
+    });
+};
 
 enum ActionTypes {
     setPolygons,
