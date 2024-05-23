@@ -1,48 +1,16 @@
 import { Annotation, AnnotationBatch, Whoami } from '@bpartners-annotator/typescript-client';
-import {
-    Checkbox,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    FormControlLabel,
-    Stack,
-} from '@mui/material';
+import { Checkbox, FormControlLabel, Stack } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import { FC, useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 import { userAnnotationsProvider } from '../../../providers/annotator/user-annotations-provider';
-import { IAnnotation, useCanvasAnnotationContext, useDialog } from '../../context';
+import { IAnnotation, useCanvasAnnotationContext } from '../../context';
 import { useFetch } from '../../hooks';
 import { annotationsMapper } from '../../mappers';
 import { cache } from '../../utils';
+import { palette } from '../../utils/theme';
 import { BpButton } from '../basics';
 import { IConfirmButton } from './types';
-import { useSnackbar } from 'notistack';
-import { palette } from '../../utils/theme';
-
-const NoAnnotationConfirm: FC<{ fetcher: () => Promise<void> }> = ({ fetcher }) => {
-    const { closeDialog } = useDialog();
-    const { fetcher: fetch, isLoading } = useFetch({ fetcher, onlyOnMutate: true });
-
-    const handleClick = () => fetch({}, () => closeDialog());
-
-    return (
-        <>
-            <DialogTitle>Valider l'annotation</DialogTitle>
-            <DialogContent>
-                <DialogContentText id='alert-dialog-slide-description'>
-                    Aucune annotation ne sera faite sur cette image.
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Stack width='100%' justifyContent='space-between' direction='row'>
-                    <BpButton label='Annuler' isLoading={isLoading} onClick={closeDialog} />
-                    <BpButton label='Valider' isLoading={isLoading} onClick={handleClick} />
-                </Stack>
-            </DialogActions>
-        </>
-    );
-};
 
 const areReadyForValidation = (annotations: IAnnotation[]) => {
     for (let i = 0; i < annotations.length; i++) {
@@ -54,7 +22,6 @@ const areReadyForValidation = (annotations: IAnnotation[]) => {
 export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ labels, onEnd, task, isFetcherLoading }) => {
     const { annotations, setAnnotations } = useCanvasAnnotationContext();
     const [noAnnotation, setNoAnnotation] = useState(false);
-    const { openDialog } = useDialog();
     const { enqueueSnackbar } = useSnackbar();
 
     const fetcher = async () => {
@@ -82,10 +49,9 @@ export const ConfirmAnnotationButton: FC<IConfirmButton> = ({ labels, onEnd, tas
 
     const handleClick = () => {
         const areReady = areReadyForValidation(annotations);
-        if (areReady && !noAnnotation) {
+        if (areReady) {
             fetch();
-        } else if (areReady) {
-            openDialog(<NoAnnotationConfirm fetcher={fetcher} />);
+            return;
         } else {
             enqueueSnackbar('Veuillez donner un label pour chaque annotation.', {
                 style: { background: palette().error.dark },
