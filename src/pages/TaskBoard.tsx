@@ -2,7 +2,6 @@
 import { AnnotatorCanvas } from '@bpartners/annotator-component';
 import { Box, CircularProgress, Grid, MenuItem, Stack, TextField } from '@mui/material';
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { TaskReviewComment } from '../common/components/job&task';
 import { Sidebar } from '../common/components/sidebar';
 import {
@@ -13,8 +12,8 @@ import {
 } from '../common/components/task-board';
 import { CanvasAnnotationProvider } from '../common/context';
 import { useTaskBoardFetcher } from '../common/fetchers';
-import { useGetAnnotationReviews, useGetPrevRoute, usePolygonAnnotationState, useSession } from '../common/hooks';
-import { cache, dateFormater, isEmpty } from '../common/utils';
+import { useGetAnnotationReviews, usePolygonAnnotationState, useSession } from '../common/hooks';
+import { dateFormater } from '../common/utils';
 import { canvas_loading } from './style';
 
 export const TaskBoard = () => {
@@ -43,24 +42,6 @@ export const TaskBoard = () => {
         if (annotationBatch?.id && task?.id)
             fetchAnnotationReviews({ annotationBatchId: annotationBatch?.id, taskId: task.id });
     }, [annotationBatch, annotationBatchs]);
-
-    const params = useParams();
-    const navigate = useNavigate();
-    const prevRoute = useGetPrevRoute(1);
-
-    useEffect(() => {
-        if (!task) {
-            navigate(`/teams/${params.teamId}/jobs`);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (isEmpty(task || {})) {
-            cache.deleteCurrentTask();
-            navigate(prevRoute());
-            return () => {};
-        }
-    }, [task]);
 
     const { isUser } = useSession();
 
