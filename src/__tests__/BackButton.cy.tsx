@@ -1,8 +1,8 @@
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import App from '../App';
 import { cache } from '../common/utils';
-import { HOME_BEGIN_BUTTON, JOB_ITEM_1, TOP_BACK_BUTTON } from './selectors';
 import { authProvider } from '../providers';
+import { HOME_BEGIN_BUTTON, JOB_ITEM_1, TOP_BACK_BUTTON } from './selectors';
 
 describe('Test top back button', () => {
     it('Should test back button the user.', () => {
@@ -15,7 +15,6 @@ describe('Test top back button', () => {
         cy.intercept('GET', 'http://dummy-url.com/image', { fixture: '/assets/annotation-image-1' });
 
         cy.fixture('/data/jobs.json').then(jobs => {
-            cy.stub({ useLoaderData }, 'useLoaderData').callsFake(() => jobs);
             cy.stub({ useParams }, 'useParams').callsFake(() => ({ teamId: jobs[0].teamId }));
         });
 
@@ -64,7 +63,6 @@ describe('Test top back button', () => {
         cy.intercept('GET', 'jobs/job-id-1/tasks/task-id-1/annotations?**', { fixture: '/data/admin-task-1.json' });
 
         cy.fixture('/data/jobs.json').then(jobs => {
-            cy.stub({ useLoaderData }, 'useLoaderData').callsFake(() => jobs);
             cy.stub({ useParams }, 'useParams').callsFake(() => ({ teamId: jobs[0].teamId }));
         });
 

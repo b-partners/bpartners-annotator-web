@@ -1,6 +1,7 @@
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import App from '../App';
 import { cache } from '../common/utils';
+import { authProvider } from '../providers';
 import {
     ANNOTATION_ITEM_1,
     ANNOTATION_ITEM_2,
@@ -22,7 +23,6 @@ import {
     ZOOM_OUT_BUTTON,
     ZOOM_RESET_BUTTON,
 } from './selectors';
-import { authProvider } from '../providers';
 
 const expected_text_no_annotation_yet = "Pas encore d'annotation effectuée.";
 
@@ -37,7 +37,6 @@ describe('Test UserAnnotator', () => {
         cy.intercept('GET', 'http://dummy-url.com/image', { fixture: '/assets/annotation-image-1' });
 
         cy.fixture('/data/jobs.json').then(jobs => {
-            cy.stub({ useLoaderData }, 'useLoaderData').callsFake(() => jobs);
             cy.stub({ useParams }, 'useParams').callsFake(() => ({ teamId: jobs[0].teamId }));
         });
 
