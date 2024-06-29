@@ -4,18 +4,41 @@ import {
     Download as DownloadIcon,
     OpenInNew as OpenInNewIcon,
 } from '@mui/icons-material';
-import { Avatar, Chip, IconButton, ListItem, ListItemText, Stack, Tooltip } from '@mui/material';
+import { Avatar, Chip, IconButton, IconButtonProps, ListItem, ListItemText, Stack, Tooltip } from '@mui/material';
 import { blue } from '@mui/material/colors';
 import { FC, createElement } from 'react';
 import { Link } from 'react-router-dom';
+import { enqueueSnackbar } from 'notistack';
 import { IJobListItem, JOB_ITEM, getJobStatusInfo } from '.';
 import { useListPageContext } from '../../context';
 import { useSession } from '../../hooks';
 import { stringCutter } from '../../utils';
+import { palette } from '../../utils/theme';
+
+const OpenListItemButton: FC<{ jobId: string; alreadyFinished: boolean } & Partial<IconButtonProps>> = ({
+    jobId,
+    alreadyFinished,
+    ...iconButtonProps
+}) => {
+    const { setLoading } = useListPageContext();
+    return (
+        <IconButton
+            size='small'
+            data-cy={`job-item-${jobId}`}
+            onClick={() => setLoading(!alreadyFinished)}
+            {...iconButtonProps}
+        >
+            <OpenInNewIcon />
+        </IconButton>
+    );
+};
+
 export const JobListItem: FC<IJobListItem> = ({ job, link, onExportStatistics, onExport }) => {
     const { icon, label, color } = getJobStatusInfo(job.status || JobStatus.PENDING);
-    const { setLoading } = useListPageContext();
     const { isAdmin } = useSession();
+
+    const isAlreadyFinished =
+        !job.taskStatistics?.remainingTasksForUserId || job.taskStatistics?.remainingTasksForUserId === 0;
 
     const handleExport = () => {
         onExport && onExport(job.id || '');
@@ -53,11 +76,21 @@ export const JobListItem: FC<IJobListItem> = ({ job, link, onExportStatistics, o
                                 </IconButton>
                             </Tooltip>
                         )}
-                    <Link to={link}>
-                        <IconButton size='small' data-cy={`job-item-${job.id}`} onClick={() => setLoading(true)}>
-                            <OpenInNewIcon />
-                        </IconButton>
-                    </Link>
+                    {isAlreadyFinished ? (
+                        <OpenListItemButton
+                            alreadyFinished={isAlreadyFinished}
+                            jobId={job.id!}
+                            onClick={() => {
+                                enqueueSnackbar('Les tâches restantes sont vides.', {
+                                    style: { background: palette().success.main },
+                                });
+                            }}
+                        />
+                    ) : (
+                        <Link to={link}>
+                            <OpenListItemButton alreadyFinished={isAlreadyFinished} jobId={job.id!} />
+                        </Link>
+                    )}
                 </Stack>
                 <Stack direction='row' mt={2} spacing={1}>
                     <Chip

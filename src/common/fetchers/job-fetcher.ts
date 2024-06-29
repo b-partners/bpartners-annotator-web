@@ -16,10 +16,6 @@ export const useFetchJob = (teamId?: string) => {
     const query = useQuery<Job[], AxiosError>({
         queryKey: ['job', page, pageSize, name],
         queryFn: () => teamJobsProvider.getList(teamId ?? '', page || DEFAULT_PAGE, pageSize || DEFAULT_PER_PAGE, name),
-        select: jobs =>
-            jobs.filter(
-                job => !!job.taskStatistics?.remainingTasksForUserId && job.taskStatistics?.remainingTasksForUserId > 0
-            ),
         enabled: !!teamId,
     });
 
