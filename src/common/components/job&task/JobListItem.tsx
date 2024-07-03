@@ -38,7 +38,8 @@ export const JobListItem: FC<IJobListItem> = ({ job, link, onExportStatistics, o
     const { isAdmin } = useSession();
 
     const isAlreadyFinished =
-        !job.taskStatistics?.remainingTasksForUserId || job.taskStatistics?.remainingTasksForUserId === 0;
+        (!job.taskStatistics?.remainingTasksForUserId || job.taskStatistics?.remainingTasksForUserId === 0) &&
+        !isAdmin();
 
     const handleExport = () => {
         onExport && onExport(job.id || '');
